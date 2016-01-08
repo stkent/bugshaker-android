@@ -1,19 +1,30 @@
 package com.github.stkent.bugshaker;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.hardware.SensorManager;
-import android.view.WindowManager;
+import android.support.annotation.Nullable;
 
 import com.squareup.seismic.ShakeDetector;
 
+import java.lang.ref.WeakReference;
+
 public class CustomApplication extends Application implements ShakeDetector.Listener {
+
+    @Nullable
+    private WeakReference<Activity> wActivity;
+
+    @Nullable
+    private AlertDialog bugShakerAlertDialog;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         if (BuildConfig.DEBUG) {
+            registerActivityLifecycleCallbacks(simpleActivityLifecycleCallbacks);
+
             final SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
             final ShakeDetector shakeDetector = new ShakeDetector(this);
             shakeDetector.start(sensorManager);
@@ -33,18 +44,34 @@ public class CustomApplication extends Application implements ShakeDetector.List
     }
 
     private void showDialog() {
-        final AlertDialog alertDialog =
-                new AlertDialog.Builder(this)
-                        .setTitle("Hello, world!")
-                        .setMessage("You rang?")
-                        .setPositiveButton("Yes, I Rang", null)
-                        .setNegativeButton("No, you crazy", null)
-                        .setCancelable(false)
-                        .create();
+        if (bugShakerAlertDialog != null && bugShakerAlertDialog.isShowing()) {
+            return;
+        }
 
-        alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        if (wActivity == null) {
+            return;
+        }
 
-        alertDialog.show();
+        final Activity currentActivity = wActivity.get();
+
+        if (currentActivity == null) {
+            return;
+        }
+
+        bugShakerAlertDialog = new AlertDialog.Builder(currentActivity)
+                .setTitle("yo!")
+                .setMessage("how's it?")
+                .setPositiveButton("yey", null)
+                .setNegativeButton("cray", null)
+                .setCancelable(false)
+                .show();
     }
+
+    private SimpleActivityLifecycleCallbacks simpleActivityLifecycleCallbacks = new SimpleActivityLifecycleCallbacks() {
+        @Override
+        public void onActivityResumed(final Activity activity) {
+            wActivity = new WeakReference<>(activity);
+        }
+    };
 
 }
