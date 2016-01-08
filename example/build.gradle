@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.github.stkent.bugshaker"
         minSdkVersion 16
-        targetSdkVersion 22 // TODO: http://stackoverflow.com/a/34061521/2911458
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }

@@ -33,11 +33,6 @@ public class CustomApplication extends Application implements ShakeDetector.List
 
     @Override
     public void hearShake() {
-        // TODO: prompt user; did they really want to submit a bug report?
-        // TODO: better to capture screenshot before or after prompt?
-        // TODO: how do we handle Maps?
-        // TODO: how do we handle activities that do not allow screenshots (for security purposes)?
-
         if (BuildConfig.DEBUG) {
             showDialog();
         }
