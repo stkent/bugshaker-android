@@ -1,72 +1,17 @@
 package com.github.stkent.bugshaker;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Application;
-import android.hardware.SensorManager;
-import android.support.annotation.Nullable;
 
-import com.squareup.seismic.ShakeDetector;
-
-import java.lang.ref.WeakReference;
-
-public class CustomApplication extends Application implements ShakeDetector.Listener {
-
-    @Nullable
-    private WeakReference<Activity> wActivity;
-
-    @Nullable
-    private AlertDialog bugShakerAlertDialog;
+public class CustomApplication extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         if (BuildConfig.DEBUG) {
-            registerActivityLifecycleCallbacks(simpleActivityLifecycleCallbacks);
-
-            final SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-            final ShakeDetector shakeDetector = new ShakeDetector(this);
-            shakeDetector.start(sensorManager);
+            final BugShaker bugShaker = new BugShaker(this, "stuart@detroitlabs.com");
+            bugShaker.start();
         }
     }
-
-    @Override
-    public void hearShake() {
-        if (BuildConfig.DEBUG) {
-            showDialog();
-        }
-    }
-
-    private void showDialog() {
-        if (bugShakerAlertDialog != null && bugShakerAlertDialog.isShowing()) {
-            return;
-        }
-
-        if (wActivity == null) {
-            return;
-        }
-
-        final Activity currentActivity = wActivity.get();
-
-        if (currentActivity == null) {
-            return;
-        }
-
-        bugShakerAlertDialog = new AlertDialog.Builder(currentActivity)
-                .setTitle("yo!")
-                .setMessage("how's it?")
-                .setPositiveButton("yey", null)
-                .setNegativeButton("cray", null)
-                .setCancelable(false)
-                .show();
-    }
-
-    private SimpleActivityLifecycleCallbacks simpleActivityLifecycleCallbacks = new SimpleActivityLifecycleCallbacks() {
-        @Override
-        public void onActivityResumed(final Activity activity) {
-            wActivity = new WeakReference<>(activity);
-        }
-    };
 
 }
