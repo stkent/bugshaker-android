@@ -19,11 +19,25 @@ package com.github.stkent.library.utils;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.github.stkent.library.interfaces.ILogger;
-
-public final class Logger implements ILogger {
+public final class Logger {
 
     private static final String TAG = "BugShaker Library";
+
+    public enum LogLevel {
+        NONE(0),
+        ERROR(1),
+        DEBUG(2);
+
+        private final int verbosity;
+
+        LogLevel(final int verbosity) {
+            this.verbosity = verbosity;
+        }
+
+        public int getVerbosity() {
+            return verbosity;
+        }
+    }
 
     private LogLevel logLevel = LogLevel.ERROR;
 

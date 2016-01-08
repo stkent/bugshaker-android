@@ -6,9 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 
-import com.github.stkent.library.interfaces.IApplicationDataProvider;
-
-public class ApplicationDataProvider implements IApplicationDataProvider {
+public class ApplicationDataProvider {
 
     @NonNull
     private final Context applicationContext;
@@ -18,7 +16,6 @@ public class ApplicationDataProvider implements IApplicationDataProvider {
     }
 
     @NonNull
-    @Override
     public String getDeviceName() {
         final String manufacturer = Build.MANUFACTURER;
         final String model = Build.MODEL;
@@ -35,7 +32,6 @@ public class ApplicationDataProvider implements IApplicationDataProvider {
     }
 
     @NonNull
-    @Override
     public String getVersionDisplayString() throws PackageManager.NameNotFoundException {
         final PackageInfo packageInfo = ApplicationUtils.getPackageInfo(applicationContext);
         final String applicationVersionName = packageInfo.versionName;

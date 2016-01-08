@@ -9,7 +9,6 @@ import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.github.stkent.library.interfaces.ActivityResumedCallback;
 import com.github.stkent.library.interfaces.IEnvironmentCapabilitiesProvider;
 import com.github.stkent.library.interfaces.ILogger;
 import com.github.stkent.library.utils.ApplicationDataProvider;

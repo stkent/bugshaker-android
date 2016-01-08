@@ -24,21 +24,17 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.github.stkent.library.interfaces.IApplicationDataProvider;
-import com.github.stkent.library.interfaces.ILogger;
-import com.github.stkent.library.utils.time.SystemTimeProviderWrapper;
-
 public final class FeedbackUtils {
 
     @NonNull
-    private final IApplicationDataProvider applicationDataProvider;
+    private final ApplicationDataProvider applicationDataProvider;
 
     @NonNull
-    private final ILogger logger;
+    private final Logger logger;
 
     public FeedbackUtils(
-            @NonNull final IApplicationDataProvider applicationDataProvider,
-            @NonNull final ILogger logger) {
+            @NonNull final ApplicationDataProvider applicationDataProvider,
+            @NonNull final Logger logger) {
         this.applicationDataProvider = applicationDataProvider;
         this.logger = logger;
     }
@@ -92,7 +88,7 @@ public final class FeedbackUtils {
                 + "\n"
                 + "Android OS Version: " + getAndroidOsVersionDisplayString()
                 + "\n"
-                + "Date: " + SystemTimeProviderWrapper.currentTimeMillis();
+                + "Date: " + System.currentTimeMillis();
     }
 
     private String getAndroidOsVersionDisplayString() {

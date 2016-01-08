@@ -22,11 +22,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.support.annotation.NonNull;
 
-import com.github.stkent.library.interfaces.IEnvironmentCapabilitiesProvider;
-
 import java.util.List;
 
-public final class EnvironmentCapabilitiesProvider implements IEnvironmentCapabilitiesProvider {
+public final class EnvironmentCapabilitiesProvider {
 
     @NonNull
     private final Context applicationContext;
@@ -35,7 +33,6 @@ public final class EnvironmentCapabilitiesProvider implements IEnvironmentCapabi
         this.applicationContext = applicationContext;
     }
 
-    @Override
     public boolean canHandleIntent(@NonNull final Intent intent) {
         final List<ResolveInfo> resolveInfoList = applicationContext.getPackageManager()
                 .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);

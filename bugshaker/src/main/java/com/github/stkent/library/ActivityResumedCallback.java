@@ -1,4 +1,4 @@
-package com.github.stkent.library.interfaces;
+package com.github.stkent.library;
 
 import android.app.Activity;
 import android.app.Application;
