@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.utils;
+package com.github.stkent.library.utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +22,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.support.annotation.NonNull;
 
-import com.github.stkent.bugshaker.interfaces.IEnvironmentCapabilitiesProvider;
+import com.github.stkent.library.interfaces.IEnvironmentCapabilitiesProvider;
 
 import java.util.List;
 

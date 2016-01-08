@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.utils.time;
+package com.github.stkent.library.utils.time;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

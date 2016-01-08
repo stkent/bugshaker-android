@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.utils;
+package com.github.stkent.library.utils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,9 +24,9 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.github.stkent.bugshaker.interfaces.IApplicationDataProvider;
-import com.github.stkent.bugshaker.interfaces.ILogger;
-import com.github.stkent.bugshaker.utils.time.SystemTimeProviderWrapper;
+import com.github.stkent.library.interfaces.IApplicationDataProvider;
+import com.github.stkent.library.interfaces.ILogger;
+import com.github.stkent.library.utils.time.SystemTimeProviderWrapper;
 
 public final class FeedbackUtils {
 

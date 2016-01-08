@@ -1,4 +1,4 @@
-package com.github.stkent.bugshaker;
+package com.github.stkent.library;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,13 +9,13 @@ import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.github.stkent.bugshaker.interfaces.ActivityResumedCallback;
-import com.github.stkent.bugshaker.interfaces.IEnvironmentCapabilitiesProvider;
-import com.github.stkent.bugshaker.interfaces.ILogger;
-import com.github.stkent.bugshaker.utils.ApplicationDataProvider;
-import com.github.stkent.bugshaker.utils.EnvironmentCapabilitiesProvider;
-import com.github.stkent.bugshaker.utils.FeedbackUtils;
-import com.github.stkent.bugshaker.utils.Logger;
+import com.github.stkent.library.interfaces.ActivityResumedCallback;
+import com.github.stkent.library.interfaces.IEnvironmentCapabilitiesProvider;
+import com.github.stkent.library.interfaces.ILogger;
+import com.github.stkent.library.utils.ApplicationDataProvider;
+import com.github.stkent.library.utils.EnvironmentCapabilitiesProvider;
+import com.github.stkent.library.utils.FeedbackUtils;
+import com.github.stkent.library.utils.Logger;
 import com.squareup.seismic.ShakeDetector;
 
 import java.lang.ref.WeakReference;

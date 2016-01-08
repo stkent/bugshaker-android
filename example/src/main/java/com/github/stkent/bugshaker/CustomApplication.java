@@ -9,8 +9,8 @@ public class CustomApplication extends Application {
         super.onCreate();
 
         if (BuildConfig.DEBUG) {
-            final BugShaker bugShaker = new BugShaker(this, "stuart@detroitlabs.com");
-            bugShaker.start();
+//            final BugShaker bugShaker = new BugShaker(this, "stuart@detroitlabs.com");
+//            bugShaker.start();
         }
     }
 

@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -14,4 +14,5 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.squareup:seismic:1.0.2'
 }

@@ -1,4 +1,4 @@
-package com.github.stkent.bugshaker.utils;
+package com.github.stkent.library.utils;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 
-import com.github.stkent.bugshaker.interfaces.IApplicationDataProvider;
+import com.github.stkent.library.interfaces.IApplicationDataProvider;
 
 public class ApplicationDataProvider implements IApplicationDataProvider {
 

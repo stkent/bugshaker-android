@@ -14,10 +14,22 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.utils.time;
+package com.github.stkent.library.utils;
 
-public interface ISystemTimeProvider {
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 
-    long currentTimeMillis();
+public final class ApplicationUtils {
+
+    private ApplicationUtils() {
+
+    }
+
+    public static PackageInfo getPackageInfo(@NonNull final Context applicationContext) throws PackageManager.NameNotFoundException {
+        final PackageManager packageManager = applicationContext.getPackageManager();
+        return packageManager.getPackageInfo(applicationContext.getPackageName(), 0);
+    }
 
 }

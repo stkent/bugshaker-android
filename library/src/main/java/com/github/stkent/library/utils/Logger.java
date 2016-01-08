@@ -14,12 +14,12 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.utils;
+package com.github.stkent.library.utils;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.github.stkent.bugshaker.interfaces.ILogger;
+import com.github.stkent.library.interfaces.ILogger;
 
 public final class Logger implements ILogger {
 

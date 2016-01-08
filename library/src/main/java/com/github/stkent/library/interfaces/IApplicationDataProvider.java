@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Stuart Kent
+ * Copyright 2015 Stuart Kent
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.
@@ -14,22 +14,28 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.utils;
+package com.github.stkent.library.interfaces;
 
-import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 
-public final class ApplicationUtils {
+/**
+ * An abstract representation of a class that provides the (necessary and nice-to-have) data for
+ * receiving critical feedback from the user.
+ */
+public interface IApplicationDataProvider {
 
-    private ApplicationUtils() {
+    /**
+     * @return the human-readable name of the current device
+     */
+    @NonNull
+    String getDeviceName();
 
-    }
-
-    public static PackageInfo getPackageInfo(@NonNull final Context applicationContext) throws PackageManager.NameNotFoundException {
-        final PackageManager packageManager = applicationContext.getPackageManager();
-        return packageManager.getPackageInfo(applicationContext.getPackageName(), 0);
-    }
+    /**
+     * @return the current version string of the application in which this library is embedded
+     * @throws PackageManager.NameNotFoundException
+     */
+    @NonNull
+    String getVersionDisplayString() throws PackageManager.NameNotFoundException;
 
 }
