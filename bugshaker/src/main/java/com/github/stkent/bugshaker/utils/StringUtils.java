@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.library.utils;
+package com.github.stkent.bugshaker.utils;
 
 import android.support.annotation.Nullable;
 

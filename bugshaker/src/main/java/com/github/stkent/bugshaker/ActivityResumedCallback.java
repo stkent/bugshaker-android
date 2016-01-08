@@ -1,4 +1,4 @@
-package com.github.stkent.library;
+package com.github.stkent.bugshaker;
 
 import android.app.Activity;
 import android.app.Application;

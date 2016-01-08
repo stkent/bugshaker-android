@@ -1,4 +1,4 @@
-package com.github.stkent.library;
+package com.github.stkent.bugshaker;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,12 +9,10 @@ import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.github.stkent.library.interfaces.IEnvironmentCapabilitiesProvider;
-import com.github.stkent.library.interfaces.ILogger;
-import com.github.stkent.library.utils.ApplicationDataProvider;
-import com.github.stkent.library.utils.EnvironmentCapabilitiesProvider;
-import com.github.stkent.library.utils.FeedbackUtils;
-import com.github.stkent.library.utils.Logger;
+import com.github.stkent.bugshaker.utils.ApplicationDataProvider;
+import com.github.stkent.bugshaker.utils.EnvironmentCapabilitiesProvider;
+import com.github.stkent.bugshaker.utils.FeedbackUtils;
+import com.github.stkent.bugshaker.utils.Logger;
 import com.squareup.seismic.ShakeDetector;
 
 import java.lang.ref.WeakReference;
@@ -26,7 +24,7 @@ public final class BugShaker implements ShakeDetector.Listener {
     private final Application application;
     private final String emailAddress;
 
-    private final ILogger logger;
+    private final Logger logger;
     private final Context applicationContext;
     private final FeedbackUtils feedbackUtils;
 
@@ -78,7 +76,7 @@ public final class BugShaker implements ShakeDetector.Listener {
     // Public methods
 
     public final void start() {
-        final IEnvironmentCapabilitiesProvider environmentCapabilitiesProvider
+        final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider
                 = new EnvironmentCapabilitiesProvider(applicationContext);
 
         if (environmentCapabilitiesProvider.canHandleIntent(feedbackUtils.getDummyFeedbackEmailIntent())) {
