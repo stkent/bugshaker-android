@@ -1,8 +1,9 @@
 package com.github.stkent.bugshaker;
 
+import android.app.AlertDialog;
 import android.app.Application;
 import android.hardware.SensorManager;
-import android.widget.Toast;
+import android.view.WindowManager;
 
 import com.squareup.seismic.ShakeDetector;
 
@@ -25,9 +26,25 @@ public class CustomApplication extends Application implements ShakeDetector.List
         // TODO: better to capture screenshot before or after prompt?
         // TODO: how do we handle Maps?
         // TODO: how do we handle activities that do not allow screenshots (for security purposes)?
-        // startActivity();
 
-        Toast.makeText(this, "Shake detected", Toast.LENGTH_SHORT).show();
+        if (BuildConfig.DEBUG) {
+            showDialog();
+        }
+    }
+
+    private void showDialog() {
+        final AlertDialog alertDialog =
+                new AlertDialog.Builder(this)
+                        .setTitle("Hello, world!")
+                        .setMessage("You rang?")
+                        .setPositiveButton("Yes, I Rang", null)
+                        .setNegativeButton("No, you crazy", null)
+                        .setCancelable(false)
+                        .create();
+
+        alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+
+        alertDialog.show();
     }
 
 }
