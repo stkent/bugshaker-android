@@ -19,6 +19,7 @@ package com.github.stkent.bugshaker.utils;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -65,7 +66,7 @@ public final class FeedbackUtils {
         final String appInfo = getApplicationInfoString();
 
         final Intent result = new Intent(Intent.ACTION_SENDTO);
-        result.setType("text/plain");
+        result.setData(Uri.parse("mailto:"));
 
         result.putExtra(Intent.EXTRA_EMAIL,   emailAddresses);
         result.putExtra(Intent.EXTRA_SUBJECT, emailSubjectLine);
