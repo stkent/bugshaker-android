@@ -65,6 +65,8 @@ public final class FeedbackUtils {
         final String appInfo = getApplicationInfoString();
 
         final Intent result = new Intent(Intent.ACTION_SENDTO);
+        result.setType("text/plain");
+
         result.putExtra(Intent.EXTRA_EMAIL,   emailAddresses);
         result.putExtra(Intent.EXTRA_SUBJECT, emailSubjectLine);
         result.putExtra(Intent.EXTRA_TEXT,    appInfo);
