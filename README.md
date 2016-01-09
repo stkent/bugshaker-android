@@ -1,8 +1,10 @@
-# BugShaker
+# BugShaker-Android
 
-BugShaker allows your users to simply submit bug reports by shaking the device.
+BugShaker-Android allows your users to simply submit bug reports by shaking their device.
 When a shake is detected, the current screen state is captured and the user is
 prompted to submit a bug report via a mail composer with the screenshot attached.
+
+The iOS version of BugShaker was written by [Dan Trenz](https://github.com/dtrenz) and is available [here](https://github.com/detroit-labs/BugShaker).
 
 ## Screenshots
 
