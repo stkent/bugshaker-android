@@ -21,11 +21,24 @@ import static android.content.Context.SENSOR_SERVICE;
 
 public final class BugShaker implements ShakeDetector.Listener {
 
-    private final Application application;
-    private final String emailAddress;
+    private static final String DEFAULT_EMAIL_SUBJECT_LINE = "Android App Feedback";
 
-    private final Logger logger;
+    @NonNull
+    private final Application application;
+
+    @NonNull
+    private final String[] emailAddresses;
+
+    @NonNull
+    private final String emailSubjectLine;
+
+    @NonNull
+    private final Logger logger = new Logger();
+
+    @NonNull
     private final Context applicationContext;
+
+    @NonNull
     private final FeedbackUtils feedbackUtils;
 
     @Nullable
@@ -33,7 +46,6 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     @Nullable
     private WeakReference<Activity> wActivity;
-
 
     @NonNull
     private ActivityResumedCallback activityResumedCallback = new ActivityResumedCallback() {
@@ -57,19 +69,49 @@ public final class BugShaker implements ShakeDetector.Listener {
                 return;
             }
 
-            feedbackUtils.showFeedbackEmailChooser(activity, emailAddress);
+            feedbackUtils.showFeedbackEmailChooser(activity, emailAddresses, emailSubjectLine);
         }
     };
 
     // Constructors
 
-    public BugShaker(@NonNull final Application application, @NonNull final String emailAddress) {
+    public BugShaker(
+            @NonNull final Application application,
+            @NonNull final String emailAddress) {
+
+        this(application, new String[] { emailAddress });
+    }
+
+    public BugShaker(
+            @NonNull final Application application,
+            @NonNull final String[] emailAddresses) {
+
+        this(application, emailAddresses, null);
+    }
+
+    public BugShaker(
+            @NonNull final Application application,
+            @NonNull final String emailAddress,
+            @Nullable final String emailSubjectLine) {
+
+        this(application, new String[] { emailAddress }, emailSubjectLine);
+    }
+
+    public BugShaker(
+            @NonNull final Application application,
+            @NonNull final String[] emailAddresses,
+            @Nullable final String emailSubjectLine) {
+
         this.application = application;
-        this.emailAddress = emailAddress;
+        this.emailAddresses = emailAddresses;
+
+        if (emailSubjectLine != null) {
+            this.emailSubjectLine = emailSubjectLine;
+        } else {
+            this.emailSubjectLine = DEFAULT_EMAIL_SUBJECT_LINE;
+        }
 
         this.applicationContext = application.getApplicationContext();
-
-        this.logger = new Logger();
         this.feedbackUtils = new FeedbackUtils(new ApplicationDataProvider(applicationContext), logger);
     }
 

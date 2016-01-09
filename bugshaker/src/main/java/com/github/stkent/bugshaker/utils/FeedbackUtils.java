@@ -19,7 +19,6 @@ package com.github.stkent.bugshaker.utils;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,13 +34,18 @@ public final class FeedbackUtils {
     public FeedbackUtils(
             @NonNull final ApplicationDataProvider applicationDataProvider,
             @NonNull final Logger logger) {
+
         this.applicationDataProvider = applicationDataProvider;
         this.logger = logger;
     }
 
-    public void showFeedbackEmailChooser(@Nullable final Activity activity, @NonNull final String emailAddress) {
+    public void showFeedbackEmailChooser(
+            @Nullable final Activity activity,
+            @NonNull final String[] emailAddresses,
+            @NonNull final String emailSubjectLine) {
+
         if (ActivityStateUtils.isActivityValid(activity)) {
-            final Intent feedbackEmailIntent = getFeedbackEmailIntent(emailAddress);
+            final Intent feedbackEmailIntent = getFeedbackEmailIntent(emailAddresses, emailSubjectLine);
 
             activity.startActivity(Intent.createChooser(feedbackEmailIntent, "Choose an email provider:"));
             activity.overridePendingTransition(0, 0);
@@ -50,23 +54,22 @@ public final class FeedbackUtils {
 
     @NonNull
     public Intent getDummyFeedbackEmailIntent() {
-        return getFeedbackEmailIntent("");
+        return getFeedbackEmailIntent(new String[] { "test@example.com" }, "Test Subject Line");
     }
 
     @NonNull
-    private Intent getFeedbackEmailIntent(@NonNull final String emailAddress) {
-        final String feedbackEmailSubject = Uri.encode("Android App Feedback", "UTF-8");
+    private Intent getFeedbackEmailIntent(
+            @NonNull final String[] emailAddresses,
+            @NonNull final String emailSubjectLine) {
+
         final String appInfo = getApplicationInfoString();
 
-        // Uri.Builder is not useful here; see http://stackoverflow.com/a/12035226/2911458
-        final String uriString =
-                "mailto:" + emailAddress +
-                "?subject=" + feedbackEmailSubject +
-                "&body=" + appInfo;
+        final Intent result = new Intent(Intent.ACTION_SENDTO);
+        result.putExtra(Intent.EXTRA_EMAIL,   emailAddresses);
+        result.putExtra(Intent.EXTRA_SUBJECT, emailSubjectLine);
+        result.putExtra(Intent.EXTRA_TEXT,    appInfo);
 
-        final Uri uri = Uri.parse(uriString);
-
-        return new Intent(Intent.ACTION_SENDTO, uri);
+        return result;
     }
 
     @NonNull
