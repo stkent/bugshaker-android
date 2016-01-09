@@ -173,10 +173,10 @@ public final class BugShaker implements ShakeDetector.Listener {
         }
 
         bugShakerAlertDialog = new AlertDialog.Builder(currentActivity)
-                .setTitle("yo!")
-                .setMessage("how's it?")
-                .setPositiveButton("yey", reportBugClickListener)
-                .setNegativeButton("cray", null)
+                .setTitle("Shake detected!")
+                .setMessage("Would you like to report a bug?")
+                .setPositiveButton("Report", reportBugClickListener)
+                .setNegativeButton("Cancel", null)
                 .setCancelable(false)
                 .show();
     }
