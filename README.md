@@ -1,23 +1,28 @@
 # BugShaker-Android
 
+# Introduction
+
 BugShaker-Android allows your users to simply submit bug reports by shaking their device.
 When a shake is detected, the current screen state is captured and the user is
 prompted to submit a bug report via a mail composer with the screenshot attached.
 
-The iOS version of BugShaker was written by [Dan Trenz](https://github.com/dtrenz) and is available [here](https://github.com/detroit-labs/BugShaker).
+The iOS version of BugShaker was written by [Dan Trenz](https://github.com/dtrenz) and is available [here](https://github.com/detroit-labs/BugShaker). This Android version builds on Square's shake-detection library, [seismic](https://github.com/square/seismic).
 
 ## Screenshots
 
 TODO
 
-## Usage
+# Getting Started
 
-TODO: update this info for the Android version:
-<!--To run the example project, clone the repo, and run `pod install` from the Example directory first.
+(1) Specify BugShaker-Android as a dependency in your build.gradle file:
 
-All you have to do to enable bug reporting is import `BugShaker` in your `AppDelegate`
-and call the `configure()` method in `application:didFinishLaunchingWithOptions`,
-passing in the array of email recipients and an optional custom subject line:-->
+```groovy
+dependencies {
+    compile 'com.github.stkent:bugshaker:0.1.0'
+}
+```
+
+(2) Configure a `BugShaker` instance in your custom `Application` class, and call `start()` to begin listening for shakes:
 
 ```java
 public class CustomApplication extends Application {
@@ -26,14 +31,30 @@ public class CustomApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        if (BuildConfig.DEBUG) {
-//            final BugShaker bugShaker = new BugShaker(this, ["stuart@detroitlabs.com"], "Bug Report");
-//            bugShaker.start();
-        }
+        final BugShaker bugShaker = new BugShaker(this, "stuart@detroitlabs.com");
+        bugShaker.start();
     }
 
 }
 ```
+
+The `BugShaker` class contains several alternate constructors to allow you to specify multiple recipient email addresses and/or a custom subject line for your bug report emails.
+
+# Contributing
+
+## Issue Tracking
+
+Library issues are tracked using GitHub Issues. Please review all tag types to understand issue categorization.
+
+Always review open issues before opening a new one. If you would like to work on an existing issue, please comment to that effect and assign yourself to the issue.
+
+## Generating Inline Licenses
+
+Before opening a pull request, you must generate license headers in any new source files by executing the Gradle command:
+
+    ./gradlew licenseFormat
+
+<!-- The Travis CI pull request build will fail if any source file is missing this generated header. -->
 
 # License
 
