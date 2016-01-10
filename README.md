@@ -1,5 +1,7 @@
 # BugShaker-Android
 
+Shake to submit a bug report (w/ screenshot) via email.
+
 # Introduction
 
 BugShaker-Android allows your users to simply submit bug reports by shaking their device.
