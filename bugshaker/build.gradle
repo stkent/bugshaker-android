@@ -121,7 +121,7 @@ bintray {
             project.property(bintrayKeyParameterName) : System.getenv(bintrayKeyEnvVarName)
 
     dryRun = false
-    publish = true
+    publish = false
 
     configurations = ['archives']
 
