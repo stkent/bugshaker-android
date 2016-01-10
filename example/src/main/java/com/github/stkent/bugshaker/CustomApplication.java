@@ -8,10 +8,8 @@ public class CustomApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        if (BuildConfig.DEBUG) {
-//            final BugShaker bugShaker = new BugShaker(this, "stuart@detroitlabs.com");
-//            bugShaker.start();
-        }
+        final BugShaker bugShaker = new BugShaker(this, "someone@example.com");
+        bugShaker.start();
     }
 
 }
