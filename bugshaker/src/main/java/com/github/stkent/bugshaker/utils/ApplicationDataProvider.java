@@ -22,7 +22,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 
-public class ApplicationDataProvider {
+public final class ApplicationDataProvider {
 
     @NonNull
     private final Context applicationContext;
