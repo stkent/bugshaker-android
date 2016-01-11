@@ -5,6 +5,10 @@ buildscript {
     }
 }
 
+repositories {
+    jcenter()
+}
+
 plugins {
     id "com.github.hierynomus.license" version "0.12.1"
 }
