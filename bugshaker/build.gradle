@@ -16,7 +16,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 // Shared project metadata
 
 ext {
-    bugShakerVersion = "0.2.0"
+    bugShakerVersion = "0.2.1"
     bugShakerWebsiteUrl = 'https://github.com/stkent/bugshaker-android'
     bugShakerVcsUrl = 'https://github.com/stkent/bugshaker-android.git'
     bugShakerGroupId = 'com.github.stkent'
@@ -138,6 +138,7 @@ bintray {
 
         version {
             name = bugShakerVersion
+            desc = bugShakerDescription
             // todo: set this up later for pulling release notes from github
             // vcsTag = bugShakerVersion
             released = new Date()
