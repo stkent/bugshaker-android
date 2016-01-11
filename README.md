@@ -2,6 +2,8 @@
 
 Send Android bug reports via email. Shake to summon!
 
+[![Build Status](https://travis-ci.org/stkent/bugshaker-android.svg?branch=master)](https://travis-ci.org/stkent/bugshaker-android)
+
 # Introduction
 
 BugShaker-Android allows your users to simply submit bug reports by shaking their device.
