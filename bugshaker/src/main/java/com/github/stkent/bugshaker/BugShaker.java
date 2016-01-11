@@ -204,6 +204,7 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     @Override
     public final void hearShake() {
+        logger.d("Shake detected!");
         showDialog();
     }
 
