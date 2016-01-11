@@ -75,22 +75,22 @@ public final class EnvironmentCapabilitiesProvider {
         return true;
     }
 
+    // Private Implementation
+
     @NonNull
-    public List<ResolveInfo> getEmailAppList() {
+    private List<ResolveInfo> getEmailAppList() {
         return packageManager.queryIntentActivities(
                 getBasicPlaceholderEmailIntent(), PackageManager.MATCH_DEFAULT_ONLY);
     }
 
     @NonNull
-    public List<ResolveInfo> getEmailWithAttachmentAppList() {
+    private List<ResolveInfo> getEmailWithAttachmentAppList() {
         final Intent placeholderIntent = getBasicPlaceholderEmailIntent();
         placeholderIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, new ArrayList<Uri>());
 
         return packageManager.queryIntentActivities(
                 placeholderIntent, PackageManager.MATCH_DEFAULT_ONLY);
     }
-
-    // Private Implementation
 
     @NonNull
     private Intent getBasicPlaceholderEmailIntent() {
