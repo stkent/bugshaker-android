@@ -73,7 +73,7 @@ public final class FeedbackUtils {
                 + "\n"
                 + "Android OS Version: " + getAndroidOsVersionDisplayString()
                 + "\n"
-                + "Date: " + getCurrentUtcTimeString()
+                + "Date: " + getCurrentUtcTimeStringForDate(new Date())
                 + "\n"
                 + "---------------------"
                 + "\n\n\n";
@@ -83,14 +83,12 @@ public final class FeedbackUtils {
         return Build.VERSION.RELEASE + " (" + Build.VERSION.SDK_INT + ")";
     }
 
-    private String getCurrentUtcTimeString() {
+    private String getCurrentUtcTimeStringForDate(final Date date) {
         final SimpleDateFormat simpleDateFormat
                 = new SimpleDateFormat("MMM d, yyyy - h:mm:ss a (z)", Locale.getDefault());
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        final Date currentDate = new Date();
-
-        return simpleDateFormat.format(currentDate);
+        return simpleDateFormat.format(date);
     }
 
 }
