@@ -42,32 +42,19 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     private static BugShaker sharedInstance;
 
-    @NonNull
     private final EmailIntentProvider emailIntentProvider = new EmailIntentProvider();
-
-    @NonNull
     private final Logger logger = new Logger();
-
-    @NonNull
     private final Application application;
-
-    @NonNull
     private final Context applicationContext;
-
-    @NonNull
     private final FeedbackUtils feedbackUtils;
 
     private boolean isConfigured = false;
     private String[] emailAddresses;
     private String emailSubjectLine;
 
-    @Nullable
     private AlertDialog bugShakerAlertDialog;
-
-    @Nullable
     private WeakReference<Activity> wActivity;
 
-    @NonNull
     private ActivityResumedCallback activityResumedCallback = new ActivityResumedCallback() {
         @Override
         public void onActivityResumed(final Activity activity) {
@@ -75,7 +62,6 @@ public final class BugShaker implements ShakeDetector.Listener {
         }
     };
 
-    @NonNull
     private DialogInterface.OnClickListener reportBugClickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(final DialogInterface dialog, final int which) {
