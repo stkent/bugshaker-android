@@ -16,7 +16,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 // Shared project metadata
 
 ext {
-    bugShakerVersion = "0.3.0"
+    bugShakerVersion = "0.3.2"
     bugShakerWebsiteUrl = 'https://github.com/stkent/bugshaker-android'
     bugShakerVcsUrl = 'https://github.com/stkent/bugshaker-android.git'
     bugShakerGroupId = 'com.github.stkent'
