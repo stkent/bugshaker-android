@@ -23,6 +23,10 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public final class FeedbackUtils {
 
     @NonNull
@@ -82,13 +86,22 @@ public final class FeedbackUtils {
                 + "\n"
                 + "Android OS Version: " + getAndroidOsVersionDisplayString()
                 + "\n"
-                + "Date: " + System.currentTimeMillis()
+                + "Date: " + getCurrentUtcTimeString()
+                + "\n"
                 + "---------------------"
                 + "\n\n\n";
     }
 
     private String getAndroidOsVersionDisplayString() {
         return Build.VERSION.RELEASE + " - " + Build.VERSION.SDK_INT;
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
+    private String getCurrentUtcTimeString() {
+        final Date currentDate = new Date();
+        final SimpleDateFormat simpleDateFormat
+                = new SimpleDateFormat("EEEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+        return simpleDateFormat.format(currentDate);
     }
 
 }
