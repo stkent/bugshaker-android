@@ -130,7 +130,7 @@ public final class BugShaker implements ShakeDetector.Listener {
             @Nullable final String emailSubjectLine) {
 
         this.emailAddresses   = emailAddresses;
-        this.emailSubjectLine = emailSubjectLine;
+        this.emailSubjectLine = emailSubjectLine != null ? emailSubjectLine : DEFAULT_EMAIL_SUBJECT_LINE;
         this.isConfigured     = true;
         return this;
     }
