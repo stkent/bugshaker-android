@@ -21,39 +21,23 @@ import android.util.Log;
 
 public final class Logger {
 
-    private static final String TAG = "BugShaker Library";
+    private static final String TAG = "BugShaker-Library";
 
-    public enum LogLevel {
-        NONE(0),
-        ERROR(1),
-        DEBUG(2);
+    private boolean loggingEnabled = false;
 
-        private final int verbosity;
+    public void setLoggingEnabled(final boolean loggingEnabled) {
+        this.loggingEnabled = loggingEnabled;
+    }
 
-        LogLevel(final int verbosity) {
-            this.verbosity = verbosity;
-        }
-
-        public int getVerbosity() {
-            return verbosity;
+    public void d(@NonNull final CharSequence message) {
+        if (loggingEnabled) {
+            Log.d(TAG, message.toString());
         }
     }
 
-    private LogLevel logLevel = LogLevel.ERROR;
-
-    public void setLogLevel(@NonNull final LogLevel logLevel) {
-        this.logLevel = logLevel;
-    }
-
-    public void d(@NonNull final String message) {
-        if (logLevel.getVerbosity() >= LogLevel.DEBUG.getVerbosity()) {
-            Log.d(TAG, message);
-        }
-    }
-
-    public void e(@NonNull final String message) {
-        if (logLevel.getVerbosity() >= LogLevel.ERROR.getVerbosity()) {
-            Log.e(TAG, message);
+    public void e(@NonNull final CharSequence message) {
+        if (loggingEnabled) {
+            Log.e(TAG, message.toString());
         }
     }
 

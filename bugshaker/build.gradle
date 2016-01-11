@@ -20,7 +20,7 @@ repositories {
 // Shared project metadata
 
 ext {
-    bugShakerVersion = "0.4.0"
+    bugShakerVersion = "0.5.0-local"
     bugShakerWebsiteUrl = 'https://github.com/stkent/bugshaker-android'
     bugShakerVcsUrl = 'https://github.com/stkent/bugshaker-android.git'
     bugShakerGroupId = 'com.github.stkent'

@@ -12,6 +12,7 @@ public class CustomApplication extends Application {
 
         BugShaker.get(this)
                  .configure("someone@example.com")
+                 .enableDebugLogging()
                  .start();
     }
 

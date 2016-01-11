@@ -18,7 +18,6 @@ package com.github.stkent.bugshaker.utils;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,13 +33,18 @@ public final class FeedbackUtils {
     private final ApplicationDataProvider applicationDataProvider;
 
     @NonNull
+    private final EmailIntentProvider emailIntentProvider;
+
+    @NonNull
     private final Logger logger;
 
     public FeedbackUtils(
             @NonNull final ApplicationDataProvider applicationDataProvider,
+            @NonNull final EmailIntentProvider emailIntentProvider,
             @NonNull final Logger logger) {
 
         this.applicationDataProvider = applicationDataProvider;
+        this.emailIntentProvider = emailIntentProvider;
         this.logger = logger;
     }
 
@@ -58,25 +62,13 @@ public final class FeedbackUtils {
     }
 
     @NonNull
-    public Intent getDummyFeedbackEmailIntent() {
-        return getFeedbackEmailIntent(new String[] { "test@example.com" }, "Test Subject Line");
-    }
-
-    @NonNull
     private Intent getFeedbackEmailIntent(
             @NonNull final String[] emailAddresses,
             @NonNull final String emailSubjectLine) {
 
         final String appInfo = getApplicationInfoString();
 
-        final Intent result = new Intent(Intent.ACTION_SENDTO);
-        result.setData(Uri.parse("mailto:"));
-
-        result.putExtra(Intent.EXTRA_EMAIL,   emailAddresses);
-        result.putExtra(Intent.EXTRA_SUBJECT, emailSubjectLine);
-        result.putExtra(Intent.EXTRA_TEXT,    appInfo);
-
-        return result;
+        return emailIntentProvider.getBasicEmailIntent(emailAddresses, emailSubjectLine, appInfo);
     }
 
     @NonNull

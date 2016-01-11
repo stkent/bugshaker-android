@@ -26,6 +26,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.github.stkent.bugshaker.utils.ApplicationDataProvider;
+import com.github.stkent.bugshaker.utils.EmailIntentProvider;
 import com.github.stkent.bugshaker.utils.EnvironmentCapabilitiesProvider;
 import com.github.stkent.bugshaker.utils.FeedbackUtils;
 import com.github.stkent.bugshaker.utils.Logger;
@@ -37,9 +38,12 @@ import static android.content.Context.SENSOR_SERVICE;
 
 public final class BugShaker implements ShakeDetector.Listener {
 
-    private static final String DEFAULT_EMAIL_SUBJECT_LINE = "Android App Feedback";
+    private static final String DEFAULT_SUBJECT_LINE = "Android App Feedback";
 
     private static BugShaker sharedInstance;
+
+    @NonNull
+    private final EmailIntentProvider emailIntentProvider = new EmailIntentProvider();
 
     @NonNull
     private final Logger logger = new Logger();
@@ -104,8 +108,8 @@ public final class BugShaker implements ShakeDetector.Listener {
     private BugShaker(@NonNull final Application application) {
         this.application = application;
         this.applicationContext = application.getApplicationContext();
-        this.feedbackUtils
-                = new FeedbackUtils(new ApplicationDataProvider(applicationContext), logger);
+        this.feedbackUtils = new FeedbackUtils(
+                new ApplicationDataProvider(applicationContext), emailIntentProvider, logger);
     }
 
     // Configuration methods
@@ -130,8 +134,13 @@ public final class BugShaker implements ShakeDetector.Listener {
             @Nullable final String emailSubjectLine) {
 
         this.emailAddresses   = emailAddresses;
-        this.emailSubjectLine = emailSubjectLine != null ? emailSubjectLine : DEFAULT_EMAIL_SUBJECT_LINE;
+        this.emailSubjectLine = emailSubjectLine != null ? emailSubjectLine : DEFAULT_SUBJECT_LINE;
         this.isConfigured     = true;
+        return this;
+    }
+
+    public BugShaker enableDebugLogging() {
+        logger.setLoggingEnabled(true);
         return this;
     }
 
@@ -143,9 +152,10 @@ public final class BugShaker implements ShakeDetector.Listener {
         }
 
         final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider
-                = new EnvironmentCapabilitiesProvider(applicationContext);
+                = new EnvironmentCapabilitiesProvider(
+                        applicationContext.getPackageManager(), emailIntentProvider, logger);
 
-        if (environmentCapabilitiesProvider.canHandleIntent(feedbackUtils.getDummyFeedbackEmailIntent())) {
+        if (environmentCapabilitiesProvider.canSendEmails()) {
             application.registerActivityLifecycleCallbacks(activityResumedCallback);
 
             final SensorManager sensorManager
