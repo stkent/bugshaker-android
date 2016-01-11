@@ -99,11 +99,11 @@ public final class FeedbackUtils {
 
     @SuppressWarnings("SpellCheckingInspection")
     private String getCurrentUtcTimeString() {
-        final Date currentDate = new Date();
         final SimpleDateFormat simpleDateFormat
-                = new SimpleDateFormat("EEEE, dd MMM yyyy HH:mm:ss z", Locale.US);
-
+                = new SimpleDateFormat("MMM d, yyyy - h:mm:ss a (z)", Locale.getDefault());
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        final Date currentDate = new Date();
 
         return simpleDateFormat.format(currentDate);
     }

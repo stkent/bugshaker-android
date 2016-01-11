@@ -5,10 +5,6 @@ buildscript {
     }
 }
 
-repositories {
-    jcenter()
-}
-
 plugins {
     id "com.github.hierynomus.license" version "0.12.1"
 }
@@ -17,10 +13,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
+repositories {
+    jcenter()
+}
+
 // Shared project metadata
 
 ext {
-    bugShakerVersion = "0.3.2"
+    bugShakerVersion = "0.4.0"
     bugShakerWebsiteUrl = 'https://github.com/stkent/bugshaker-android'
     bugShakerVcsUrl = 'https://github.com/stkent/bugshaker-android.git'
     bugShakerGroupId = 'com.github.stkent'
