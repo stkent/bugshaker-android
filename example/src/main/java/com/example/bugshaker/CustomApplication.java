@@ -10,9 +10,9 @@ public class CustomApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        BugShaker.withApplication(this)
-                .configure("someone@example.com")
-                .start();
+        BugShaker.get(this)
+                 .configure("someone@example.com")
+                 .start();
     }
 
 }
