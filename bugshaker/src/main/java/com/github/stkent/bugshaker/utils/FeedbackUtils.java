@@ -26,6 +26,7 @@ import android.support.annotation.Nullable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public final class FeedbackUtils {
 
@@ -101,6 +102,9 @@ public final class FeedbackUtils {
         final Date currentDate = new Date();
         final SimpleDateFormat simpleDateFormat
                 = new SimpleDateFormat("EEEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
         return simpleDateFormat.format(currentDate);
     }
 
