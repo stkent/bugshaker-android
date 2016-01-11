@@ -94,7 +94,7 @@ public final class FeedbackUtils {
     }
 
     private String getAndroidOsVersionDisplayString() {
-        return Build.VERSION.RELEASE + "(" + Build.VERSION.SDK_INT + ")";
+        return Build.VERSION.RELEASE + " (" + Build.VERSION.SDK_INT + ")";
     }
 
     @SuppressWarnings("SpellCheckingInspection")
