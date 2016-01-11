@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.utils;
+package com.github.stkent.bugshaker;
 
 import android.content.Intent;
 import android.net.Uri;
