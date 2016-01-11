@@ -16,12 +16,12 @@ apply plugin: 'com.github.dcendents.android-maven'
 // Shared project metadata
 
 ext {
-    bugShakerVersion = "0.1.0"
+    bugShakerVersion = "0.2.0"
     bugShakerWebsiteUrl = 'https://github.com/stkent/bugshaker-android'
     bugShakerVcsUrl = 'https://github.com/stkent/bugshaker-android.git'
     bugShakerGroupId = 'com.github.stkent'
     bugShakerArtifactId = 'bugshaker'
-    bugShakerDescription = ""
+    bugShakerDescription = "Send Android bug reports via email. Shake to summon!"
 }
 
 license {
