@@ -114,22 +114,22 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     // Configuration methods
 
-    public BugShaker configure(@NonNull final String emailAddress) {
-        return configure(new String[] { emailAddress }, null);
+    public BugShaker setEmailInfo(@NonNull final String emailAddress) {
+        return setEmailInfo(new String[] { emailAddress }, null);
     }
 
-    public BugShaker configure(@NonNull final String[] emailAddresses) {
-        return configure(emailAddresses, null);
+    public BugShaker setEmailInfo(@NonNull final String[] emailAddresses) {
+        return setEmailInfo(emailAddresses, null);
     }
 
-    public BugShaker configure(
+    public BugShaker setEmailInfo(
             @NonNull final String emailAddress,
             @Nullable final String emailSubjectLine) {
 
-        return configure(new String[] { emailAddress }, emailSubjectLine);
+        return setEmailInfo(new String[] { emailAddress }, emailSubjectLine);
     }
 
-    public BugShaker configure(
+    public BugShaker setEmailInfo(
             @NonNull final String[] emailAddresses,
             @Nullable final String emailSubjectLine) {
 
@@ -139,8 +139,8 @@ public final class BugShaker implements ShakeDetector.Listener {
         return this;
     }
 
-    public BugShaker enableDebugLogging() {
-        logger.setLoggingEnabled(true);
+    public BugShaker setLoggingEnabled(final boolean enabled) {
+        logger.setLoggingEnabled(enabled);
         return this;
     }
 

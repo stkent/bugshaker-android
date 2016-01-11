@@ -11,8 +11,8 @@ public class CustomApplication extends Application {
         super.onCreate();
 
         BugShaker.get(this)
-                 .configure("someone@example.com")
-                 .enableDebugLogging()
+                 .setEmailInfo("someone@example.com")
+                 .setLoggingEnabled(BuildConfig.DEBUG)
                  .start();
     }
 
