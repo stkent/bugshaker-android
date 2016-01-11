@@ -35,17 +35,12 @@ public final class FeedbackUtils {
     @NonNull
     private final EmailIntentProvider emailIntentProvider;
 
-    @NonNull
-    private final Logger logger;
-
     public FeedbackUtils(
             @NonNull final ApplicationDataProvider applicationDataProvider,
-            @NonNull final EmailIntentProvider emailIntentProvider,
-            @NonNull final Logger logger) {
+            @NonNull final EmailIntentProvider emailIntentProvider) {
 
         this.applicationDataProvider = applicationDataProvider;
         this.emailIntentProvider = emailIntentProvider;
-        this.logger = logger;
     }
 
     public void startEmailActivity(
