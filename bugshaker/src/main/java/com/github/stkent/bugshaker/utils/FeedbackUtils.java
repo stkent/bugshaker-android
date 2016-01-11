@@ -88,7 +88,6 @@ public final class FeedbackUtils {
         return Build.VERSION.RELEASE + " (" + Build.VERSION.SDK_INT + ")";
     }
 
-    @SuppressWarnings("SpellCheckingInspection")
     private String getCurrentUtcTimeString() {
         final SimpleDateFormat simpleDateFormat
                 = new SimpleDateFormat("MMM d, yyyy - h:mm:ss a (z)", Locale.getDefault());
