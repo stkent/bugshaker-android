@@ -48,12 +48,16 @@ public final class ApplicationDataProvider {
     }
 
     @NonNull
-    public String getVersionDisplayString() throws PackageManager.NameNotFoundException {
-        final PackageInfo packageInfo = ApplicationUtils.getPackageInfo(applicationContext);
-        final String applicationVersionName = packageInfo.versionName;
-        final int applicationVersionCode = packageInfo.versionCode;
+    public String getVersionDisplayString() {
+        try {
+            final PackageInfo packageInfo = ApplicationUtils.getPackageInfo(applicationContext);
+            final String applicationVersionName = packageInfo.versionName;
+            final int applicationVersionCode = packageInfo.versionCode;
 
-        return String.format("%s (%s)", applicationVersionName, applicationVersionCode);
+            return String.format("%s (%s)", applicationVersionName, applicationVersionCode);
+        } catch (final PackageManager.NameNotFoundException e) {
+            return "Unknown Version";
+        }
     }
 
 }

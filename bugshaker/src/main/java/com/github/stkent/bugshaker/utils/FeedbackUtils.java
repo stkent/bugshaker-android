@@ -18,7 +18,6 @@ package com.github.stkent.bugshaker.utils;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -77,24 +76,15 @@ public final class FeedbackUtils {
 
     @NonNull
     private String getApplicationInfoString() {
-        String applicationVersionDisplayString;
-
-        try {
-            applicationVersionDisplayString = applicationDataProvider.getVersionDisplayString();
-        } catch (PackageManager.NameNotFoundException e) {
-            applicationVersionDisplayString = "Unknown";
-        }
-
-        return    "\n\n\n"
-                + "---------------------"
+        return    "Device: " + applicationDataProvider.getDeviceName()
                 + "\n"
-                + "Device: " + applicationDataProvider.getDeviceName()
-                + "\n"
-                + "App Version: " + applicationVersionDisplayString
+                + "App Version: " + applicationDataProvider.getVersionDisplayString()
                 + "\n"
                 + "Android OS Version: " + getAndroidOsVersionDisplayString()
                 + "\n"
-                + "Date: " + System.currentTimeMillis();
+                + "Date: " + System.currentTimeMillis()
+                + "---------------------"
+                + "\n\n\n";
     }
 
     private String getAndroidOsVersionDisplayString() {
