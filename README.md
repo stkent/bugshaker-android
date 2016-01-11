@@ -1,6 +1,6 @@
 # BugShaker-Android
 
-An Android bug reporting library - shake to summon me!
+Send Android bug reports via email. Shake to summon!
 
 # Introduction
 
