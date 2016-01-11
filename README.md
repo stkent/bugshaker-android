@@ -1,6 +1,6 @@
 # BugShaker-Android
 
-Shake to submit a bug report (w/ screenshot) via email.
+Send Android bug reports via email. Shake to summon!
 
 # Introduction
 
