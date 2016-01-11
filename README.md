@@ -36,14 +36,15 @@ public class CustomApplication extends Application {
         super.onCreate();
 
         BugShaker.get(this)
-                 .configure("someone@example.com")
+                 .setEmailInfo("someone@example.com")
+                 .setLoggingEnabled(BuildConfig.DEBUG)
                  .start();
     }
 
 }
 ```
 
-The `BugShaker` class contains several alternate configuration methods to allow you to specify multiple recipient email addresses and/or a custom subject line for your bug report emails.
+The `BugShaker` class contains several alternate `setEmailInfo` methods to allow you to specify multiple recipient email addresses and/or a custom subject line for your bug report emails. It is recommended that logging always be disabled in production builds.
 
 # Contributing
 
