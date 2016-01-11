@@ -1,4 +1,4 @@
-package com.github.stkent.bugshaker;
+package com.example.bugshaker;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

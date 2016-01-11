@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.github.stkent.bugshaker.MainActivity">
+    tools:context="com.example.bugshaker.MainActivity">
 
     <TextView
         android:layout_width="wrap_content"

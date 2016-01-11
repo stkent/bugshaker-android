@@ -20,11 +20,11 @@ TODO
 
 ```groovy
 dependencies {
-    compile 'com.github.stkent:bugshaker:0.1.0'
+    compile 'com.github.stkent:bugshaker:0.3.0'
 }
 ```
 
-(2) Configure a `BugShaker` instance in your custom `Application` class, and call `start()` to begin listening for shakes:
+(2) Configure `BugShaker` in your custom `Application` class, and call `start()` to begin listening for shakes:
 
 ```java
 public class CustomApplication extends Application {
@@ -33,14 +33,15 @@ public class CustomApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        final BugShaker bugShaker = new BugShaker(this, "someone@example.com");
-        bugShaker.start();
+        BugShaker.withApplication(this)
+                .configure("someone@example.com")
+                .start()
     }
 
 }
 ```
 
-The `BugShaker` class contains several alternate constructors to allow you to specify multiple recipient email addresses and/or a custom subject line for your bug report emails.
+The `BugShaker` class contains several alternate configuration methods to allow you to specify multiple recipient email addresses and/or a custom subject line for your bug report emails.
 
 # Contributing
 

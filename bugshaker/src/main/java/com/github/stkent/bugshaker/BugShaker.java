@@ -39,23 +39,23 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     private static final String DEFAULT_EMAIL_SUBJECT_LINE = "Android App Feedback";
 
-    @NonNull
-    private final Application application;
-
-    @NonNull
-    private final String[] emailAddresses;
-
-    @NonNull
-    private final String emailSubjectLine;
+    private static BugShaker sharedInstance;
 
     @NonNull
     private final Logger logger = new Logger();
+
+    @NonNull
+    private final Application application;
 
     @NonNull
     private final Context applicationContext;
 
     @NonNull
     private final FeedbackUtils feedbackUtils;
+
+    private boolean isConfigured = false;
+    private String[] emailAddresses;
+    private String emailSubjectLine;
 
     @Nullable
     private AlertDialog bugShakerAlertDialog;
@@ -89,58 +89,67 @@ public final class BugShaker implements ShakeDetector.Listener {
         }
     };
 
-    // Constructors
+    public static BugShaker get(@NonNull final Application application) {
+        if (sharedInstance == null) {
+            synchronized (BugShaker.class) {
+                if (sharedInstance == null) {
+                    sharedInstance = new BugShaker(application);
+                }
+            }
+        }
 
-    public BugShaker(
-            @NonNull final Application application,
-            @NonNull final String emailAddress) {
-
-        this(application, new String[] { emailAddress });
+        return sharedInstance;
     }
 
-    public BugShaker(
-            @NonNull final Application application,
-            @NonNull final String[] emailAddresses) {
-
-        this(application, emailAddresses, null);
+    private BugShaker(@NonNull final Application application) {
+        this.application = application;
+        this.applicationContext = application.getApplicationContext();
+        this.feedbackUtils
+                = new FeedbackUtils(new ApplicationDataProvider(applicationContext), logger);
     }
 
-    public BugShaker(
-            @NonNull final Application application,
+    // Configuration methods
+
+    public BugShaker configure(@NonNull final String emailAddress) {
+        return configure(new String[] { emailAddress }, null);
+    }
+
+    public BugShaker configure(@NonNull final String[] emailAddresses) {
+        return configure(emailAddresses, null);
+    }
+
+    public BugShaker configure(
             @NonNull final String emailAddress,
             @Nullable final String emailSubjectLine) {
 
-        this(application, new String[] { emailAddress }, emailSubjectLine);
+        return configure(new String[] { emailAddress }, emailSubjectLine);
     }
 
-    public BugShaker(
-            @NonNull final Application application,
+    public BugShaker configure(
             @NonNull final String[] emailAddresses,
             @Nullable final String emailSubjectLine) {
 
-        this.application = application;
-        this.emailAddresses = emailAddresses;
-
-        if (emailSubjectLine != null) {
-            this.emailSubjectLine = emailSubjectLine;
-        } else {
-            this.emailSubjectLine = DEFAULT_EMAIL_SUBJECT_LINE;
-        }
-
-        this.applicationContext = application.getApplicationContext();
-        this.feedbackUtils = new FeedbackUtils(new ApplicationDataProvider(applicationContext), logger);
+        this.emailAddresses   = emailAddresses;
+        this.emailSubjectLine = emailSubjectLine;
+        this.isConfigured     = true;
+        return this;
     }
 
     // Public methods
 
     public final void start() {
+        if (!isConfigured) {
+            throw new IllegalStateException("You must call configure before calling start.");
+        }
+
         final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider
                 = new EnvironmentCapabilitiesProvider(applicationContext);
 
         if (environmentCapabilitiesProvider.canHandleIntent(feedbackUtils.getDummyFeedbackEmailIntent())) {
             application.registerActivityLifecycleCallbacks(activityResumedCallback);
 
-            final SensorManager sensorManager = (SensorManager) applicationContext.getSystemService(SENSOR_SERVICE);
+            final SensorManager sensorManager
+                    = (SensorManager) applicationContext.getSystemService(SENSOR_SERVICE);
             final ShakeDetector shakeDetector = new ShakeDetector(this);
 
             final boolean didStart = shakeDetector.start(sensorManager);
@@ -148,7 +157,7 @@ public final class BugShaker implements ShakeDetector.Listener {
             if (didStart) {
                 logger.d("Shake detection successfully started!");
             } else {
-                logger.e("Error starting shake detection: device hardware does not support detection.");
+                logger.e("Error starting shake detection: hardware does not support detection.");
             }
         } else {
             logger.e("Error starting shake detection: device cannot send emails.");
