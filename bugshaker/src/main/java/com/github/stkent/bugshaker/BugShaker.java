@@ -25,7 +25,6 @@ import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.github.stkent.bugshaker.utils.ApplicationDataProvider;
 import com.github.stkent.bugshaker.utils.EmailIntentProvider;
 import com.github.stkent.bugshaker.utils.EnvironmentCapabilitiesProvider;
 import com.github.stkent.bugshaker.utils.FeedbackUtils;
@@ -94,8 +93,7 @@ public final class BugShaker implements ShakeDetector.Listener {
     private BugShaker(@NonNull final Application application) {
         this.application = application;
         this.applicationContext = application.getApplicationContext();
-        this.feedbackUtils = new FeedbackUtils(
-                new ApplicationDataProvider(applicationContext), emailIntentProvider, logger);
+        this.feedbackUtils = new FeedbackUtils(applicationContext, emailIntentProvider);
     }
 
     // Configuration methods

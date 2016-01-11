@@ -17,7 +17,10 @@
 package com.github.stkent.bugshaker.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,16 +33,16 @@ import java.util.TimeZone;
 public final class FeedbackUtils {
 
     @NonNull
-    private final ApplicationDataProvider applicationDataProvider;
+    private final Context applicationContext;
 
     @NonNull
     private final EmailIntentProvider emailIntentProvider;
 
     public FeedbackUtils(
-            @NonNull final ApplicationDataProvider applicationDataProvider,
+            @NonNull final Context applicationContext,
             @NonNull final EmailIntentProvider emailIntentProvider) {
 
-        this.applicationDataProvider = applicationDataProvider;
+        this.applicationContext = applicationContext;
         this.emailIntentProvider = emailIntentProvider;
     }
 
@@ -67,9 +70,9 @@ public final class FeedbackUtils {
 
     @NonNull
     private String getApplicationInfoString() {
-        return    "Device: " + applicationDataProvider.getDeviceName()
+        return    "Device: " + getDeviceName()
                 + "\n"
-                + "App Version: " + applicationDataProvider.getVersionDisplayString()
+                + "App Version: " + getVersionDisplayString()
                 + "\n"
                 + "Android OS Version: " + getAndroidOsVersionDisplayString()
                 + "\n"
@@ -79,10 +82,44 @@ public final class FeedbackUtils {
                 + "\n\n\n";
     }
 
+    @NonNull
+    private String getDeviceName() {
+        final String manufacturer = Build.MANUFACTURER;
+        final String model = Build.MODEL;
+
+        String deviceName;
+
+        if (model.startsWith(manufacturer)) {
+            deviceName = StringUtils.capitalize(model);
+        } else {
+            deviceName = StringUtils.capitalize(manufacturer) + " " + model;
+        }
+
+        return deviceName == null ? "Unknown Device" : deviceName;
+    }
+
+    @NonNull
+    private String getVersionDisplayString() {
+        try {
+            final PackageManager packageManager = applicationContext.getPackageManager();
+            final PackageInfo packageInfo
+                    = packageManager.getPackageInfo(applicationContext.getPackageName(), 0);
+
+            final String applicationVersionName = packageInfo.versionName;
+            final int applicationVersionCode = packageInfo.versionCode;
+
+            return String.format("%s (%s)", applicationVersionName, applicationVersionCode);
+        } catch (final PackageManager.NameNotFoundException e) {
+            return "Unknown Version";
+        }
+    }
+
+    @NonNull
     private String getAndroidOsVersionDisplayString() {
         return Build.VERSION.RELEASE + " (" + Build.VERSION.SDK_INT + ")";
     }
 
+    @NonNull
     private String getCurrentUtcTimeStringForDate(final Date date) {
         final SimpleDateFormat simpleDateFormat
                 = new SimpleDateFormat("MMM d, yyyy - h:mm:ss a (z)", Locale.getDefault());
