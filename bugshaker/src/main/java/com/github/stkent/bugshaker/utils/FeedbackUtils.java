@@ -48,7 +48,7 @@ public final class FeedbackUtils {
         this.logger = logger;
     }
 
-    public void showFeedbackEmailChooser(
+    public void startEmailActivity(
             @Nullable final Activity activity,
             @NonNull final String[] emailAddresses,
             @NonNull final String emailSubjectLine) {
@@ -56,8 +56,7 @@ public final class FeedbackUtils {
         if (ActivityStateUtils.isActivityValid(activity)) {
             final Intent feedbackEmailIntent = getFeedbackEmailIntent(emailAddresses, emailSubjectLine);
 
-            activity.startActivity(Intent.createChooser(feedbackEmailIntent, "Choose an email provider:"));
-            activity.overridePendingTransition(0, 0);
+            activity.startActivity(feedbackEmailIntent);
         }
     }
 

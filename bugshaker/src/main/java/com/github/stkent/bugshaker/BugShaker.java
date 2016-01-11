@@ -89,7 +89,7 @@ public final class BugShaker implements ShakeDetector.Listener {
                 return;
             }
 
-            feedbackUtils.showFeedbackEmailChooser(activity, emailAddresses, emailSubjectLine);
+            feedbackUtils.startEmailActivity(activity, emailAddresses, emailSubjectLine);
         }
     };
 
