@@ -37,7 +37,7 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     private static BugShaker sharedInstance;
 
-    private final EmailIntentProvider emailIntentProvider = new EmailIntentProvider();
+    private final GenericEmailIntentProvider genericEmailIntentProvider = new GenericEmailIntentProvider();
     private final Logger logger = new Logger();
     private final Application application;
     private final Context applicationContext;
@@ -89,7 +89,7 @@ public final class BugShaker implements ShakeDetector.Listener {
     private BugShaker(@NonNull final Application application) {
         this.application = application;
         this.applicationContext = application.getApplicationContext();
-        this.feedbackEmailIntentProvider = new FeedbackEmailIntentProvider(applicationContext, emailIntentProvider);
+        this.feedbackEmailIntentProvider = new FeedbackEmailIntentProvider(applicationContext, genericEmailIntentProvider);
     }
 
     // Configuration methods
@@ -133,7 +133,7 @@ public final class BugShaker implements ShakeDetector.Listener {
 
         final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider
                 = new EnvironmentCapabilitiesProvider(
-                        applicationContext.getPackageManager(), emailIntentProvider, logger);
+                        applicationContext.getPackageManager(), genericEmailIntentProvider, logger);
 
         if (environmentCapabilitiesProvider.canSendEmails()) {
             application.registerActivityLifecycleCallbacks(activityResumedCallback);

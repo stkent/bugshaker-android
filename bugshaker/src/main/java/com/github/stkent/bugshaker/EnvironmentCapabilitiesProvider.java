@@ -32,18 +32,18 @@ public final class EnvironmentCapabilitiesProvider {
     private final PackageManager packageManager;
 
     @NonNull
-    private final EmailIntentProvider emailIntentProvider;
+    private final GenericEmailIntentProvider genericEmailIntentProvider;
 
     @NonNull
     private final Logger logger;
 
     public EnvironmentCapabilitiesProvider(
             @NonNull final PackageManager packageManager,
-            @NonNull final EmailIntentProvider emailIntentProvider,
+            @NonNull final GenericEmailIntentProvider genericEmailIntentProvider,
             @NonNull final Logger logger) {
 
         this.packageManager = packageManager;
-        this.emailIntentProvider = emailIntentProvider;
+        this.genericEmailIntentProvider = genericEmailIntentProvider;
         this.logger = logger;
     }
 
@@ -94,7 +94,7 @@ public final class EnvironmentCapabilitiesProvider {
 
     @NonNull
     private Intent getBasicPlaceholderEmailIntent() {
-        return emailIntentProvider.getBasicEmailIntent(
+        return genericEmailIntentProvider.getBasicEmailIntent(
                 new String[] { "someone@example.com" }, "Any Subject", "Any Body");
     }
 

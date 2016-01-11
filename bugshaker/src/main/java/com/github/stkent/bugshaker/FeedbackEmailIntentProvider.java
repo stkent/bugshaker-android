@@ -34,14 +34,14 @@ public final class FeedbackEmailIntentProvider {
     private final Context applicationContext;
 
     @NonNull
-    private final EmailIntentProvider emailIntentProvider;
+    private final GenericEmailIntentProvider genericEmailIntentProvider;
 
     public FeedbackEmailIntentProvider(
             @NonNull final Context applicationContext,
-            @NonNull final EmailIntentProvider emailIntentProvider) {
+            @NonNull final GenericEmailIntentProvider genericEmailIntentProvider) {
 
         this.applicationContext = applicationContext;
-        this.emailIntentProvider = emailIntentProvider;
+        this.genericEmailIntentProvider = genericEmailIntentProvider;
     }
 
     @NonNull
@@ -51,7 +51,7 @@ public final class FeedbackEmailIntentProvider {
 
         final String appInfo = getApplicationInfoString();
 
-        return emailIntentProvider.getBasicEmailIntent(emailAddresses, emailSubjectLine, appInfo);
+        return genericEmailIntentProvider.getBasicEmailIntent(emailAddresses, emailSubjectLine, appInfo);
     }
 
     @NonNull
