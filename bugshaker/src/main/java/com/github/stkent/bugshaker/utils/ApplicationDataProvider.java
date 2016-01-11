@@ -50,7 +50,10 @@ public final class ApplicationDataProvider {
     @NonNull
     public String getVersionDisplayString() {
         try {
-            final PackageInfo packageInfo = ApplicationUtils.getPackageInfo(applicationContext);
+            final PackageManager packageManager = applicationContext.getPackageManager();
+            final PackageInfo packageInfo
+                    = packageManager.getPackageInfo(applicationContext.getPackageName(), 0);
+
             final String applicationVersionName = packageInfo.versionName;
             final int applicationVersionCode = packageInfo.versionCode;
 
