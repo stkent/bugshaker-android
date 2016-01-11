@@ -16,21 +16,19 @@
  */
 package com.github.stkent.bugshaker;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public final class FeedbackUtils {
+public final class FeedbackEmailIntentProvider {
 
     @NonNull
     private final Context applicationContext;
@@ -38,7 +36,7 @@ public final class FeedbackUtils {
     @NonNull
     private final EmailIntentProvider emailIntentProvider;
 
-    public FeedbackUtils(
+    public FeedbackEmailIntentProvider(
             @NonNull final Context applicationContext,
             @NonNull final EmailIntentProvider emailIntentProvider) {
 
@@ -46,20 +44,8 @@ public final class FeedbackUtils {
         this.emailIntentProvider = emailIntentProvider;
     }
 
-    public void startEmailActivity(
-            @Nullable final Activity activity,
-            @NonNull final String[] emailAddresses,
-            @NonNull final String emailSubjectLine) {
-
-        if (ActivityStateUtils.isActivityValid(activity)) {
-            final Intent feedbackEmailIntent = getFeedbackEmailIntent(emailAddresses, emailSubjectLine);
-
-            activity.startActivity(feedbackEmailIntent);
-        }
-    }
-
     @NonNull
-    private Intent getFeedbackEmailIntent(
+    public Intent getFeedbackEmailIntent(
             @NonNull final String[] emailAddresses,
             @NonNull final String emailSubjectLine) {
 

@@ -41,7 +41,7 @@ public final class BugShaker implements ShakeDetector.Listener {
     private final Logger logger = new Logger();
     private final Application application;
     private final Context applicationContext;
-    private final FeedbackUtils feedbackUtils;
+    private final FeedbackEmailIntentProvider feedbackEmailIntentProvider;
 
     private boolean isConfigured = false;
     private String[] emailAddresses;
@@ -70,7 +70,7 @@ public final class BugShaker implements ShakeDetector.Listener {
                 return;
             }
 
-            feedbackUtils.startEmailActivity(activity, emailAddresses, emailSubjectLine);
+            feedbackEmailIntentProvider.startEmailActivity(activity, emailAddresses, emailSubjectLine);
         }
     };
 
@@ -89,7 +89,7 @@ public final class BugShaker implements ShakeDetector.Listener {
     private BugShaker(@NonNull final Application application) {
         this.application = application;
         this.applicationContext = application.getApplicationContext();
-        this.feedbackUtils = new FeedbackUtils(applicationContext, emailIntentProvider);
+        this.feedbackEmailIntentProvider = new FeedbackEmailIntentProvider(applicationContext, emailIntentProvider);
     }
 
     // Configuration methods
