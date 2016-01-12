@@ -67,6 +67,7 @@ public final class FeedbackEmailIntentProvider {
 
         if (screenshotUri != null) {
             emailIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+            emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
 
         return emailIntent;

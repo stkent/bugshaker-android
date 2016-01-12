@@ -26,8 +26,11 @@ import android.hardware.SensorManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.squareup.seismic.ShakeDetector;
+
+import java.io.IOException;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -40,7 +43,6 @@ public final class BugShaker implements ShakeDetector.Listener {
     private final GenericEmailIntentProvider genericEmailIntentProvider = new GenericEmailIntentProvider();
     private final ActivityReferenceManager activityReferenceManager = new ActivityReferenceManager();
     private final Logger logger = new Logger();
-
     private final Application application;
     private final Context applicationContext;
     private final FeedbackEmailIntentProvider feedbackEmailIntentProvider;
@@ -68,23 +70,26 @@ public final class BugShaker implements ShakeDetector.Listener {
                 return;
             }
 
-            Intent feedbackEmailIntent;
-
             if (environmentCapabilitiesProvider.canSendEmailsWithAttachments()) {
-                logger.d("Capturing screenshot...");
+                try {
+                    sendEmailWithScreenshot(activity);
+                } catch (final IOException exception) {
+                    final String errorString = "Screenshot capture failed";
 
-                final Uri screenshotUri = screenshotProvider.getScreenshotUri(activity);
+                    Toast.makeText(
+                            applicationContext,
+                            errorString,
+                            Toast.LENGTH_LONG)
+                            .show();
 
-                feedbackEmailIntent = feedbackEmailIntentProvider
-                        .getFeedbackEmailIntent(emailAddresses, emailSubjectLine, screenshotUri);
+                    logger.e(errorString);
+                    logger.printStackTrace(exception);
+
+                    sendEmailWithNoScreenshot(activity);
+                }
             } else {
-                logger.d("Sending email with no screenshot.");
-
-                feedbackEmailIntent = feedbackEmailIntentProvider
-                        .getFeedbackEmailIntent(emailAddresses, emailSubjectLine);
+                sendEmailWithNoScreenshot(activity);
             }
-
-            activity.startActivity(feedbackEmailIntent);
         }
     };
 
@@ -109,7 +114,7 @@ public final class BugShaker implements ShakeDetector.Listener {
         this.environmentCapabilitiesProvider = new EnvironmentCapabilitiesProvider(
                 applicationContext.getPackageManager(), genericEmailIntentProvider, logger);
 
-        this.screenshotProvider = new ScreenshotProvider(logger);
+        this.screenshotProvider = new ScreenshotProvider(applicationContext, logger);
     }
 
     // Configuration methods
@@ -189,6 +194,26 @@ public final class BugShaker implements ShakeDetector.Listener {
                 .setNegativeButton("Cancel", null)
                 .setCancelable(false)
                 .show();
+    }
+
+    private void sendEmailWithScreenshot(@NonNull final Activity activity) throws IOException {
+        final Uri screenshotUri = screenshotProvider.getScreenshotUri(activity);
+
+        final Intent feedbackEmailIntent = feedbackEmailIntentProvider
+                .getFeedbackEmailIntent(emailAddresses, emailSubjectLine, screenshotUri);
+
+        activity.startActivity(feedbackEmailIntent);
+
+        logger.d("Sending email with screenshot.");
+    }
+
+    private void sendEmailWithNoScreenshot(@NonNull final Activity activity) {
+        final Intent feedbackEmailIntent = feedbackEmailIntentProvider
+                .getFeedbackEmailIntent(emailAddresses, emailSubjectLine);
+
+        activity.startActivity(feedbackEmailIntent);
+
+        logger.d("Sending email with no screenshot.");
     }
 
     // ShakeDetector.Listener methods:
