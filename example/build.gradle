@@ -1,8 +1,3 @@
-repositories {
-    mavenLocal()
-    jcenter()
-}
-
 apply plugin: 'com.android.application'
 
 android {
@@ -20,5 +15,5 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.github.stkent:bugshaker:0.5.2-local'
+    compile project(':bugshaker')
 }
