@@ -20,8 +20,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,9 +51,25 @@ public final class FeedbackEmailIntentProvider {
             @NonNull final String[] emailAddresses,
             @NonNull final String emailSubjectLine) {
 
+        return getFeedbackEmailIntent(emailAddresses, emailSubjectLine, null);
+    }
+
+    @NonNull
+    public Intent getFeedbackEmailIntent(
+            @NonNull final String[] emailAddresses,
+            @NonNull final String emailSubjectLine,
+            @Nullable final Uri screenshotUri) {
+
         final String appInfo = getApplicationInfoString();
 
-        return genericEmailIntentProvider.getBasicEmailIntent(emailAddresses, emailSubjectLine, appInfo);
+        final Intent emailIntent = genericEmailIntentProvider
+                .getBasicEmailIntent(emailAddresses, emailSubjectLine, appInfo);
+
+        if (screenshotUri != null) {
+            emailIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+        }
+
+        return emailIntent;
     }
 
     @NonNull

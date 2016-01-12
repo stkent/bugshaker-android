@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -44,6 +45,7 @@ public final class BugShaker implements ShakeDetector.Listener {
     private final Context applicationContext;
     private final FeedbackEmailIntentProvider feedbackEmailIntentProvider;
     private final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider;
+    private final ScreenshotProvider screenshotProvider;
 
     private boolean isConfigured = false;
     private String[] emailAddresses;
@@ -61,22 +63,28 @@ public final class BugShaker implements ShakeDetector.Listener {
     private DialogInterface.OnClickListener reportBugClickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(final DialogInterface dialog, final int which) {
+            final Activity activity = activityReferenceManager.getValidatedActivity();
+            if (activity == null) {
+                return;
+            }
+
             Intent feedbackEmailIntent;
 
             if (environmentCapabilitiesProvider.canSendEmailsWithAttachments()) {
-                // TODO: take a screenshot here, and include it with the Intent.
+                logger.d("Capturing screenshot...");
+
+                final Uri screenshotUri = screenshotProvider.getScreenshotUri(activity);
 
                 feedbackEmailIntent = feedbackEmailIntentProvider
-                        .getFeedbackEmailIntent(emailAddresses, emailSubjectLine);
+                        .getFeedbackEmailIntent(emailAddresses, emailSubjectLine, screenshotUri);
             } else {
+                logger.d("Sending email with no screenshot.");
+
                 feedbackEmailIntent = feedbackEmailIntentProvider
                         .getFeedbackEmailIntent(emailAddresses, emailSubjectLine);
             }
 
-            final Activity activity = activityReferenceManager.getValidatedActivity();
-            if (activity != null) {
-                activity.startActivity(feedbackEmailIntent);
-            }
+            activity.startActivity(feedbackEmailIntent);
         }
     };
 
@@ -100,6 +108,8 @@ public final class BugShaker implements ShakeDetector.Listener {
 
         this.environmentCapabilitiesProvider = new EnvironmentCapabilitiesProvider(
                 applicationContext.getPackageManager(), genericEmailIntentProvider, logger);
+
+        this.screenshotProvider = new ScreenshotProvider(logger);
     }
 
     // Configuration methods
