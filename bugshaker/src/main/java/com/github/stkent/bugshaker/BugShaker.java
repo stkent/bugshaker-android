@@ -39,9 +39,11 @@ public final class BugShaker implements ShakeDetector.Listener {
     private final GenericEmailIntentProvider genericEmailIntentProvider = new GenericEmailIntentProvider();
     private final ActivityReferenceManager activityReferenceManager = new ActivityReferenceManager();
     private final Logger logger = new Logger();
+
     private final Application application;
     private final Context applicationContext;
     private final FeedbackEmailIntentProvider feedbackEmailIntentProvider;
+    private final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider;
 
     private boolean isConfigured = false;
     private String[] emailAddresses;
@@ -59,12 +61,21 @@ public final class BugShaker implements ShakeDetector.Listener {
     private DialogInterface.OnClickListener reportBugClickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(final DialogInterface dialog, final int which) {
-            final Intent emailIntent = feedbackEmailIntentProvider.getFeedbackEmailIntent(
-                    emailAddresses, emailSubjectLine);
+            Intent feedbackEmailIntent;
+
+            if (environmentCapabilitiesProvider.canSendEmailsWithAttachments()) {
+                // TODO: take a screenshot here, and include it with the Intent.
+
+                feedbackEmailIntent = feedbackEmailIntentProvider
+                        .getFeedbackEmailIntent(emailAddresses, emailSubjectLine);
+            } else {
+                feedbackEmailIntent = feedbackEmailIntentProvider
+                        .getFeedbackEmailIntent(emailAddresses, emailSubjectLine);
+            }
 
             final Activity activity = activityReferenceManager.getValidatedActivity();
             if (activity != null) {
-                activity.startActivity(emailIntent);
+                activity.startActivity(feedbackEmailIntent);
             }
         }
     };
@@ -84,7 +95,11 @@ public final class BugShaker implements ShakeDetector.Listener {
     private BugShaker(@NonNull final Application application) {
         this.application = application;
         this.applicationContext = application.getApplicationContext();
-        this.feedbackEmailIntentProvider = new FeedbackEmailIntentProvider(applicationContext, genericEmailIntentProvider);
+        this.feedbackEmailIntentProvider
+                = new FeedbackEmailIntentProvider(applicationContext, genericEmailIntentProvider);
+
+        this.environmentCapabilitiesProvider = new EnvironmentCapabilitiesProvider(
+                applicationContext.getPackageManager(), genericEmailIntentProvider, logger);
     }
 
     // Configuration methods
@@ -125,10 +140,6 @@ public final class BugShaker implements ShakeDetector.Listener {
         if (!isConfigured) {
             throw new IllegalStateException("You must call configure before calling start.");
         }
-
-        final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider
-                = new EnvironmentCapabilitiesProvider(
-                        applicationContext.getPackageManager(), genericEmailIntentProvider, logger);
 
         if (environmentCapabilitiesProvider.canSendEmails()) {
             application.registerActivityLifecycleCallbacks(activityResumedCallback);
