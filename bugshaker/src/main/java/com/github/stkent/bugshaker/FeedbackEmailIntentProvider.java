@@ -76,12 +76,12 @@ public final class FeedbackEmailIntentProvider {
         String deviceName;
 
         if (model.startsWith(manufacturer)) {
-            deviceName = StringUtils.capitalize(model);
+            deviceName = model;
         } else {
-            deviceName = StringUtils.capitalize(manufacturer) + " " + model;
+            deviceName = manufacturer + " " + model;
         }
 
-        return deviceName == null ? "Unknown Device" : deviceName;
+        return deviceName;
     }
 
     @NonNull
