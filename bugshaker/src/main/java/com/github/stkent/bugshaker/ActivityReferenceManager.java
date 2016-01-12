@@ -16,19 +16,43 @@
  */
 package com.github.stkent.bugshaker;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-public final class ActivityStateUtils {
+import java.lang.ref.WeakReference;
 
-    private ActivityStateUtils() {
+public class ActivityReferenceManager {
+
+    @Nullable
+    private WeakReference<Activity> wActivity;
+
+    public ActivityReferenceManager() {
 
     }
 
-    @SuppressLint("NewApi")
-    public static boolean isActivityValid(@Nullable final Activity activity) {
+    public void setActivity(@NonNull final Activity activity) {
+        this.wActivity = new WeakReference<>(activity);
+    }
+
+    @Nullable
+    public Activity getValidatedActivity() {
+        if (wActivity == null) {
+            return null;
+        }
+
+        final Activity activity = wActivity.get();
+        if (!isActivityValid(activity)) {
+            return null;
+        }
+
+        return activity;
+    }
+
+    // Private Implementation
+
+    private boolean isActivityValid(@Nullable final Activity activity) {
         if (activity == null) {
             return false;
         }

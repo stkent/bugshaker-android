@@ -21,13 +21,12 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.squareup.seismic.ShakeDetector;
-
-import java.lang.ref.WeakReference;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -38,6 +37,7 @@ public final class BugShaker implements ShakeDetector.Listener {
     private static BugShaker sharedInstance;
 
     private final GenericEmailIntentProvider genericEmailIntentProvider = new GenericEmailIntentProvider();
+    private final ActivityReferenceManager activityReferenceManager = new ActivityReferenceManager();
     private final Logger logger = new Logger();
     private final Application application;
     private final Context applicationContext;
@@ -48,29 +48,24 @@ public final class BugShaker implements ShakeDetector.Listener {
     private String emailSubjectLine;
 
     private AlertDialog bugShakerAlertDialog;
-    private WeakReference<Activity> wActivity;
 
     private ActivityResumedCallback activityResumedCallback = new ActivityResumedCallback() {
         @Override
         public void onActivityResumed(final Activity activity) {
-            wActivity = new WeakReference<>(activity);
+            activityReferenceManager.setActivity(activity);
         }
     };
 
     private DialogInterface.OnClickListener reportBugClickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(final DialogInterface dialog, final int which) {
-            if (wActivity == null) {
-                return;
+            final Intent emailIntent = feedbackEmailIntentProvider.getFeedbackEmailIntent(
+                    emailAddresses, emailSubjectLine);
+
+            final Activity activity = activityReferenceManager.getValidatedActivity();
+            if (activity != null) {
+                activity.startActivity(emailIntent);
             }
-
-            final Activity activity = wActivity.get();
-
-            if (activity == null) {
-                return;
-            }
-
-            feedbackEmailIntentProvider.startEmailActivity(activity, emailAddresses, emailSubjectLine);
         }
     };
 
@@ -161,12 +156,7 @@ public final class BugShaker implements ShakeDetector.Listener {
             return;
         }
 
-        if (wActivity == null) {
-            return;
-        }
-
-        final Activity currentActivity = wActivity.get();
-
+        final Activity currentActivity = activityReferenceManager.getValidatedActivity();
         if (currentActivity == null) {
             return;
         }
