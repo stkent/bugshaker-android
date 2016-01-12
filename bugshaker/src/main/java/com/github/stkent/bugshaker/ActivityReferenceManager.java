@@ -23,7 +23,7 @@ import android.support.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 
-public class ActivityReferenceManager {
+public final class ActivityReferenceManager {
 
     @Nullable
     private WeakReference<Activity> wActivity;
