@@ -27,7 +27,6 @@ import android.content.pm.ResolveInfo;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.squareup.seismic.ShakeDetector;
@@ -54,7 +53,7 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     private boolean isConfigured = false;
     private String[] emailAddresses;
-    private String emailSubjectLine;
+    private String emailSubjectLine = DEFAULT_SUBJECT_LINE;
 
     private AlertDialog bugShakerAlertDialog;
 
@@ -116,30 +115,18 @@ public final class BugShaker implements ShakeDetector.Listener {
         this.screenshotProvider = new ScreenshotProvider(applicationContext, logger);
     }
 
-    // Configuration methods
+    // Required configuration methods
 
-    public BugShaker setEmailInfo(@NonNull final String emailAddress) {
-        return setEmailInfo(new String[] { emailAddress }, null);
-    }
-
-    public BugShaker setEmailInfo(@NonNull final String[] emailAddresses) {
-        return setEmailInfo(emailAddresses, null);
-    }
-
-    public BugShaker setEmailInfo(
-            @NonNull final String emailAddress,
-            @Nullable final String emailSubjectLine) {
-
-        return setEmailInfo(new String[] { emailAddress }, emailSubjectLine);
-    }
-
-    public BugShaker setEmailInfo(
-            @NonNull final String[] emailAddresses,
-            @Nullable final String emailSubjectLine) {
-
+    public BugShaker setEmailAddresses(@NonNull final String... emailAddresses) {
         this.emailAddresses   = emailAddresses;
-        this.emailSubjectLine = emailSubjectLine != null ? emailSubjectLine : DEFAULT_SUBJECT_LINE;
         this.isConfigured     = true;
+        return this;
+    }
+
+    // Optional configuration methods
+
+    public BugShaker setEmailSubjectLine(@NonNull final String emailSubjectLine) {
+        this.emailSubjectLine = emailSubjectLine;
         return this;
     }
 
