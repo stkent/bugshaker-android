@@ -24,32 +24,32 @@ public abstract class ActivityResumedCallback implements Application.ActivityLif
 
     @Override
     public final void onActivityCreated(final Activity activity, final Bundle savedInstanceState) {
-
+        // This method intentionally left blank
     }
 
     @Override
     public final void onActivityStarted(final Activity activity) {
-
+        // This method intentionally left blank
     }
 
     @Override
     public final void onActivityPaused(final Activity activity) {
-
+        // This method intentionally left blank
     }
 
     @Override
     public final void onActivityStopped(final Activity activity) {
-
+        // This method intentionally left blank
     }
 
     @Override
     public final void onActivitySaveInstanceState(final Activity activity, final Bundle outState) {
-
+        // This method intentionally left blank
     }
 
     @Override
     public final void onActivityDestroyed(final Activity activity) {
-
+        // This method intentionally left blank
     }
 
 }

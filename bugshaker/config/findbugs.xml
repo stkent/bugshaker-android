@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!--
+FindBugs custom exclude filter
+-->
+<FindBugsFilter>
+    <!-- Default `hard` options -->
+    <Match>
+        <Class name="~.*\.BuildConfig" />
+    </Match>
+    <Match>
+        <Class name="~.*\.R" />
+    </Match>
+    <Match>
+        <Class name="~.*\.R\$.*" />
+    </Match>
+
+    <!-- Custom excludes -->
+    <Match>
+        <Class name="com.github.stkent.bugshaker.ScreenshotProvider" />
+        <Method name="getScreenshotFile" />
+        <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
+    </Match>
+</FindBugsFilter>

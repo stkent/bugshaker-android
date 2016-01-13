@@ -27,7 +27,6 @@ import android.content.pm.ResolveInfo;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.squareup.seismic.ShakeDetector;
@@ -54,18 +53,18 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     private boolean isConfigured = false;
     private String[] emailAddresses;
-    private String emailSubjectLine;
+    private String emailSubjectLine = DEFAULT_SUBJECT_LINE;
 
     private AlertDialog bugShakerAlertDialog;
 
-    private ActivityResumedCallback activityResumedCallback = new ActivityResumedCallback() {
+    private final ActivityResumedCallback activityResumedCallback = new ActivityResumedCallback() {
         @Override
         public void onActivityResumed(final Activity activity) {
             activityReferenceManager.setActivity(activity);
         }
     };
 
-    private DialogInterface.OnClickListener reportBugClickListener = new DialogInterface.OnClickListener() {
+    private final DialogInterface.OnClickListener reportBugClickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(final DialogInterface dialog, final int which) {
             final Activity activity = activityReferenceManager.getValidatedActivity();
@@ -97,11 +96,9 @@ public final class BugShaker implements ShakeDetector.Listener {
     };
 
     public static BugShaker get(@NonNull final Application application) {
-        if (sharedInstance == null) {
-            synchronized (BugShaker.class) {
-                if (sharedInstance == null) {
-                    sharedInstance = new BugShaker(application);
-                }
+        synchronized (BugShaker.class) {
+            if (sharedInstance == null) {
+                sharedInstance = new BugShaker(application);
             }
         }
 
@@ -120,30 +117,18 @@ public final class BugShaker implements ShakeDetector.Listener {
         this.screenshotProvider = new ScreenshotProvider(applicationContext, logger);
     }
 
-    // Configuration methods
+    // Required configuration methods
 
-    public BugShaker setEmailInfo(@NonNull final String emailAddress) {
-        return setEmailInfo(new String[] { emailAddress }, null);
-    }
-
-    public BugShaker setEmailInfo(@NonNull final String[] emailAddresses) {
-        return setEmailInfo(emailAddresses, null);
-    }
-
-    public BugShaker setEmailInfo(
-            @NonNull final String emailAddress,
-            @Nullable final String emailSubjectLine) {
-
-        return setEmailInfo(new String[] { emailAddress }, emailSubjectLine);
-    }
-
-    public BugShaker setEmailInfo(
-            @NonNull final String[] emailAddresses,
-            @Nullable final String emailSubjectLine) {
-
+    public BugShaker setEmailAddresses(@NonNull final String... emailAddresses) {
         this.emailAddresses   = emailAddresses;
-        this.emailSubjectLine = emailSubjectLine != null ? emailSubjectLine : DEFAULT_SUBJECT_LINE;
         this.isConfigured     = true;
+        return this;
+    }
+
+    // Optional configuration methods
+
+    public BugShaker setEmailSubjectLine(@NonNull final String emailSubjectLine) {
+        this.emailSubjectLine = emailSubjectLine;
         return this;
     }
 
@@ -154,7 +139,7 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     // Public methods
 
-    public final void start() {
+    public void start() {
         if (!isConfigured) {
             throw new IllegalStateException("You must call configure before calling start.");
         }
@@ -233,7 +218,7 @@ public final class BugShaker implements ShakeDetector.Listener {
     // ShakeDetector.Listener methods:
 
     @Override
-    public final void hearShake() {
+    public void hearShake() {
         logger.d("Shake detected!");
         showDialog();
     }

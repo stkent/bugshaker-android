@@ -43,7 +43,7 @@ public final class Logger {
 
     public void printStackTrace(@NonNull final Exception exception) {
         if (loggingEnabled) {
-            exception.printStackTrace();
+            Log.e(TAG, "Logging caught exception", exception);
         }
     }
 

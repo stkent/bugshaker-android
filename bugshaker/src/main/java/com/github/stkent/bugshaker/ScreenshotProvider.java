@@ -25,6 +25,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.view.View;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -35,6 +36,7 @@ public final class ScreenshotProvider {
     private static final String AUTHORITY = "com.github.stkent.bugshaker.fileprovider";
     private static final String SCREENSHOTS_DIRECTORY_NAME = "bug-reports";
     private static final String SCREENSHOT_FILE_NAME = "latest-screenshot.jpg";
+    private static final int JPEG_COMPRESSION_QUALITY = 90;
 
     @NonNull
     private final Context applicationContext;
@@ -55,10 +57,19 @@ public final class ScreenshotProvider {
         final File screenshotFile = getScreenshotFile();
         final Bitmap screenshotBitmap = getBitmapFromRootView(activity);
 
-        final OutputStream fileOutputStream = new FileOutputStream(screenshotFile);
-        screenshotBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream);
-        fileOutputStream.flush();
-        fileOutputStream.close();
+        OutputStream fileOutputStream = null;
+
+        try {
+            fileOutputStream = new BufferedOutputStream(new FileOutputStream(screenshotFile));
+            screenshotBitmap.compress(
+                    Bitmap.CompressFormat.JPEG, JPEG_COMPRESSION_QUALITY, fileOutputStream);
+
+            fileOutputStream.flush();
+        } finally {
+            if (fileOutputStream != null) {
+                fileOutputStream.close();
+            }
+        }
 
         logger.d("Screenshot successfully saved to file: " + screenshotFile.getAbsolutePath());
 
