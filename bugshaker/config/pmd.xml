@@ -93,6 +93,7 @@
         <exclude name="AvoidInstantiatingObjectsInLoops" />
         <exclude name="LocalVariableCouldBeFinal" />
         <exclude name="MethodArgumentCouldBeFinal" />
+        <exclude name="RedundantFieldInitializer" />
     </rule>
 
     <rule ref="rulesets/java/strictexception.xml" />
