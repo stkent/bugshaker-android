@@ -25,6 +25,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.view.View;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -55,10 +56,17 @@ public final class ScreenshotProvider {
         final File screenshotFile = getScreenshotFile();
         final Bitmap screenshotBitmap = getBitmapFromRootView(activity);
 
-        final OutputStream fileOutputStream = new FileOutputStream(screenshotFile);
-        screenshotBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream);
-        fileOutputStream.flush();
-        fileOutputStream.close();
+        OutputStream fileOutputStream = null;
+
+        try {
+            fileOutputStream = new BufferedOutputStream(new FileOutputStream(screenshotFile));
+            screenshotBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream);
+            fileOutputStream.flush();
+        } finally {
+            if (fileOutputStream != null) {
+                fileOutputStream.close();
+            }
+        }
 
         logger.d("Screenshot successfully saved to file: " + screenshotFile.getAbsolutePath());
 
