@@ -137,7 +137,7 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     // Public methods
 
-    public final void start() {
+    public void start() {
         if (!isConfigured) {
             throw new IllegalStateException("You must call configure before calling start.");
         }
@@ -216,7 +216,7 @@ public final class BugShaker implements ShakeDetector.Listener {
     // ShakeDetector.Listener methods:
 
     @Override
-    public final void hearShake() {
+    public void hearShake() {
         logger.d("Shake detected!");
         showDialog();
     }
