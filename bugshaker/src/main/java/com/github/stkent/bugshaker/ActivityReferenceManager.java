@@ -28,10 +28,6 @@ public final class ActivityReferenceManager {
     @Nullable
     private WeakReference<Activity> wActivity;
 
-    public ActivityReferenceManager() {
-
-    }
-
     public void setActivity(@NonNull final Activity activity) {
         this.wActivity = new WeakReference<>(activity);
     }
