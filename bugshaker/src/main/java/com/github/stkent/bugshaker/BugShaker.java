@@ -58,14 +58,14 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     private AlertDialog bugShakerAlertDialog;
 
-    private ActivityResumedCallback activityResumedCallback = new ActivityResumedCallback() {
+    private final ActivityResumedCallback activityResumedCallback = new ActivityResumedCallback() {
         @Override
         public void onActivityResumed(final Activity activity) {
             activityReferenceManager.setActivity(activity);
         }
     };
 
-    private DialogInterface.OnClickListener reportBugClickListener = new DialogInterface.OnClickListener() {
+    private final DialogInterface.OnClickListener reportBugClickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(final DialogInterface dialog, final int which) {
             final Activity activity = activityReferenceManager.getValidatedActivity();
