@@ -95,7 +95,7 @@ public final class EnvironmentCapabilitiesProvider {
     @NonNull
     private Intent getBasicPlaceholderEmailIntent() {
         return genericEmailIntentProvider.getBasicEmailIntent(
-                new String[] { "someone@example.com" }, "Any Subject", "Any Body");
+                new String[] {"someone@example.com"}, "Any Subject", "Any Body");
     }
 
     private void logEmailAppNames(
