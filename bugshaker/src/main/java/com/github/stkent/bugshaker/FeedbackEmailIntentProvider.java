@@ -62,7 +62,6 @@ public final class FeedbackEmailIntentProvider {
         final Intent emailIntent = getBaseFeedbackEmailIntent(emailAddresses, emailSubjectLine);
 
         emailIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
-        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         return emailIntent;
     }

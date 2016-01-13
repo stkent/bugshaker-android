@@ -17,8 +17,8 @@ import java.io.OutputStream;
 public final class ScreenshotProvider {
 
     private static final String AUTHORITY = "com.github.stkent.bugshaker.fileprovider";
-    private static final String SCREENSHOTS_DIRECTORY_NAME = "screenshots";
-    private static final String SCREENSHOT_FILE_NAME = "screenshot.jpg";
+    private static final String SCREENSHOTS_DIRECTORY_NAME = "bug-reports";
+    private static final String SCREENSHOT_FILE_NAME = "latest-screenshot.jpg";
 
     @NonNull
     private final Context applicationContext;

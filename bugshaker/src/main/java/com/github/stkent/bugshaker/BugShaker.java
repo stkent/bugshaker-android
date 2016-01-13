@@ -22,6 +22,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -31,6 +33,7 @@ import android.widget.Toast;
 import com.squareup.seismic.ShakeDetector;
 
 import java.io.IOException;
+import java.util.List;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -201,6 +204,17 @@ public final class BugShaker implements ShakeDetector.Listener {
 
         final Intent feedbackEmailIntent = feedbackEmailIntentProvider
                 .getFeedbackEmailIntent(emailAddresses, emailSubjectLine, screenshotUri);
+
+        final List<ResolveInfo> resolveInfoList = applicationContext.getPackageManager()
+                .queryIntentActivities(feedbackEmailIntent, PackageManager.MATCH_DEFAULT_ONLY);
+
+        for (final ResolveInfo receivingApplicationInfo: resolveInfoList) {
+            // FIXME: revoke these permissions at some point!
+            applicationContext.grantUriPermission(
+                    receivingApplicationInfo.activityInfo.packageName,
+                    (Uri) feedbackEmailIntent.getParcelableExtra(Intent.EXTRA_STREAM),
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
 
         activity.startActivity(feedbackEmailIntent);
 
