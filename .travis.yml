@@ -18,4 +18,4 @@ branches:
   only:
     - master
 
-script: ./gradlew bugshaker:check
+script: ./travis-build.sh
