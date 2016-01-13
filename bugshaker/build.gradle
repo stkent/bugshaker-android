@@ -75,15 +75,15 @@ dependencies {
 check {
     abortOnError false
     checkstyle {
-        config project.file('config/checkstyle.xml')
+        config 'config/checkstyle.xml'
     }
 
     findbugs {
-        config hard()
+        config 'config/findbugs.xml'
     }
 
     pmd {
-        config project.file('config/pmd.xml')
+        config 'config/pmd.xml'
     }
 }
 
