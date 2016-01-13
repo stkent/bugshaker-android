@@ -11,7 +11,8 @@ public class CustomApplication extends Application {
         super.onCreate();
 
         BugShaker.get(this)
-                 .setEmailAddresses("someone@example.com")
+                 .setEmailAddresses("someone@example.com", "someone.else@example.com")
+                 .setEmailSubjectLine("Custom Subject Line")
                  .setLoggingEnabled(BuildConfig.DEBUG)
                  .start();
     }
