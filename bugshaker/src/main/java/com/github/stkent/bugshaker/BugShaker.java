@@ -96,13 +96,9 @@ public final class BugShaker implements ShakeDetector.Listener {
         }
     };
 
-    public static BugShaker get(@NonNull final Application application) {
+    public static synchronized  BugShaker get(@NonNull final Application application) {
         if (sharedInstance == null) {
-            synchronized (BugShaker.class) {
-                if (sharedInstance == null) {
-                    sharedInstance = new BugShaker(application);
-                }
-            }
+            sharedInstance = new BugShaker(application);
         }
 
         return sharedInstance;
