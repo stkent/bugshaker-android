@@ -77,7 +77,6 @@
 
     <rule ref="rulesets/java/logging-java.xml">
         <exclude name="GuardLogStatementJavaUtil" />
-        <exclude name="LoggerIsNotStaticFinal" />
     </rule>
 
     <rule ref="rulesets/java/migrating.xml" />
