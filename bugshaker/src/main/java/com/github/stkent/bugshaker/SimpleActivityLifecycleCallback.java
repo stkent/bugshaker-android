@@ -20,7 +20,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-public abstract class ActivityResumedCallback implements Application.ActivityLifecycleCallbacks {
+public abstract class SimpleActivityLifecycleCallback implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public final void onActivityCreated(final Activity activity, final Bundle savedInstanceState) {
@@ -34,11 +34,6 @@ public abstract class ActivityResumedCallback implements Application.ActivityLif
 
     @Override
     public final void onActivityPaused(final Activity activity) {
-        // This method intentionally left blank
-    }
-
-    @Override
-    public final void onActivityStopped(final Activity activity) {
         // This method intentionally left blank
     }
 

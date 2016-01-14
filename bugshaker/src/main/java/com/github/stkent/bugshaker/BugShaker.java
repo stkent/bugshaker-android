@@ -42,10 +42,17 @@ public final class BugShaker implements ShakeDetector.Listener {
     private String emailSubjectLine = DEFAULT_SUBJECT_LINE;
     private boolean ignoreFlagSecure = false;
 
-    private final ActivityResumedCallback activityResumedCallback = new ActivityResumedCallback() {
+    private final SimpleActivityLifecycleCallback simpleActivityLifecycleCallback
+            = new SimpleActivityLifecycleCallback() {
+
         @Override
         public void onActivityResumed(final Activity activity) {
             feedbackEmailFlowManager.onActivityResumed(activity);
+        }
+
+        @Override
+        public void onActivityStopped(final Activity activity) {
+            feedbackEmailFlowManager.onActivityStopped(activity);
         }
     };
 
@@ -111,7 +118,7 @@ public final class BugShaker implements ShakeDetector.Listener {
         }
 
         if (environmentCapabilitiesProvider.canSendEmails()) {
-            application.registerActivityLifecycleCallbacks(activityResumedCallback);
+            application.registerActivityLifecycleCallbacks(simpleActivityLifecycleCallback);
 
             final SensorManager sensorManager
                     = (SensorManager) applicationContext.getSystemService(SENSOR_SERVICE);
@@ -135,7 +142,10 @@ public final class BugShaker implements ShakeDetector.Listener {
     public void hearShake() {
         Logger.d("Shake detected!");
 
-        feedbackEmailFlowManager.startFlowIfNeeded(emailAddresses, emailSubjectLine, ignoreFlagSecure);
+        feedbackEmailFlowManager.startFlowIfNeeded(
+                emailAddresses,
+                emailSubjectLine,
+                ignoreFlagSecure);
     }
 
 }
