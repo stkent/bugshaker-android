@@ -9,13 +9,22 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.bugshaker.MainActivity">
+
+        <activity
+            android:name=".UnsecuredActivity"
+            android:launchMode="singleTop">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+        <activity
+            android:name=".SecuredActivity"
+            android:launchMode="singleTop" />
+
     </application>
 
 </manifest>
