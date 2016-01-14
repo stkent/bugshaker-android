@@ -23,25 +23,29 @@ public final class Logger {
 
     private static final String TAG = "BugShaker-Library";
 
-    private boolean loggingEnabled = false;
+    private static boolean loggingEnabled = false;
 
-    public void setLoggingEnabled(final boolean loggingEnabled) {
-        this.loggingEnabled = loggingEnabled;
+    private Logger() {
+
     }
 
-    public void d(@NonNull final CharSequence message) {
+    public static void setLoggingEnabled(final boolean loggingEnabled) {
+        Logger.loggingEnabled = loggingEnabled;
+    }
+
+    public static void d(@NonNull final CharSequence message) {
         if (loggingEnabled) {
             Log.d(TAG, message.toString());
         }
     }
 
-    public void e(@NonNull final CharSequence message) {
+    public static void e(@NonNull final CharSequence message) {
         if (loggingEnabled) {
             Log.e(TAG, message.toString());
         }
     }
 
-    public void printStackTrace(@NonNull final Exception exception) {
+    public static void printStackTrace(@NonNull final Exception exception) {
         if (loggingEnabled) {
             Log.e(TAG, "Logging caught exception", exception);
         }

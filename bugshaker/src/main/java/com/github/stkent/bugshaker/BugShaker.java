@@ -17,22 +17,12 @@
 package com.github.stkent.bugshaker;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.squareup.seismic.ShakeDetector;
-
-import java.io.IOException;
-import java.util.List;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -42,56 +32,20 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     private static BugShaker sharedInstance;
 
-    private final GenericEmailIntentProvider genericEmailIntentProvider = new GenericEmailIntentProvider();
-    private final ActivityReferenceManager activityReferenceManager = new ActivityReferenceManager();
-    private final Logger logger = new Logger();
     private final Application application;
     private final Context applicationContext;
-    private final FeedbackEmailIntentProvider feedbackEmailIntentProvider;
     private final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider;
-    private final ScreenshotProvider screenshotProvider;
+    private final FeedbackEmailFlowManager feedbackEmailFlowManager;
 
     private boolean isConfigured = false;
     private String[] emailAddresses;
     private String emailSubjectLine = DEFAULT_SUBJECT_LINE;
-
-    private AlertDialog bugShakerAlertDialog;
+    private boolean ignoreFlagSecure = false;
 
     private final ActivityResumedCallback activityResumedCallback = new ActivityResumedCallback() {
         @Override
         public void onActivityResumed(final Activity activity) {
-            activityReferenceManager.setActivity(activity);
-        }
-    };
-
-    private final DialogInterface.OnClickListener reportBugClickListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(final DialogInterface dialog, final int which) {
-            final Activity activity = activityReferenceManager.getValidatedActivity();
-            if (activity == null) {
-                return;
-            }
-
-            if (environmentCapabilitiesProvider.canSendEmailsWithAttachments()) {
-                try {
-                    sendEmailWithScreenshot(activity);
-                } catch (final IOException exception) {
-                    final String errorString = "Screenshot capture failed";
-
-                    Toast.makeText(
-                            applicationContext,
-                            errorString,
-                            Toast.LENGTH_LONG)
-                            .show();
-
-                    logger.e(errorString);
-                    logger.printStackTrace(exception);
-
-                    sendEmailWithNoScreenshot(activity);
-                }
-            } else {
-                sendEmailWithNoScreenshot(activity);
-            }
+            feedbackEmailFlowManager.onActivityResumed(activity);
         }
     };
 
@@ -108,13 +62,20 @@ public final class BugShaker implements ShakeDetector.Listener {
     private BugShaker(@NonNull final Application application) {
         this.application = application;
         this.applicationContext = application.getApplicationContext();
-        this.feedbackEmailIntentProvider
-                = new FeedbackEmailIntentProvider(applicationContext, genericEmailIntentProvider);
+
+        final GenericEmailIntentProvider genericEmailIntentProvider
+                = new GenericEmailIntentProvider();
 
         this.environmentCapabilitiesProvider = new EnvironmentCapabilitiesProvider(
-                applicationContext.getPackageManager(), genericEmailIntentProvider, logger);
+                applicationContext.getPackageManager(), genericEmailIntentProvider);
 
-        this.screenshotProvider = new ScreenshotProvider(applicationContext, logger);
+        this.feedbackEmailFlowManager = new FeedbackEmailFlowManager(
+                applicationContext,
+                environmentCapabilitiesProvider,
+                new Toaster(applicationContext),
+                new ActivityReferenceManager(),
+                new FeedbackEmailIntentProvider(applicationContext, genericEmailIntentProvider),
+                new ScreenshotProvider(applicationContext));
     }
 
     // Required configuration methods
@@ -133,7 +94,12 @@ public final class BugShaker implements ShakeDetector.Listener {
     }
 
     public BugShaker setLoggingEnabled(final boolean enabled) {
-        logger.setLoggingEnabled(enabled);
+        Logger.setLoggingEnabled(enabled);
+        return this;
+    }
+
+    public BugShaker setIgnoreFlagSecure(final boolean ignoreFlagSecure) {
+        this.ignoreFlagSecure = ignoreFlagSecure;
         return this;
     }
 
@@ -154,73 +120,22 @@ public final class BugShaker implements ShakeDetector.Listener {
             final boolean didStart = shakeDetector.start(sensorManager);
 
             if (didStart) {
-                logger.d("Shake detection successfully started!");
+                Logger.d("Shake detection successfully started!");
             } else {
-                logger.e("Error starting shake detection: hardware does not support detection.");
+                Logger.e("Error starting shake detection: hardware does not support detection.");
             }
         } else {
-            logger.e("Error starting shake detection: device cannot send emails.");
+            Logger.e("Error starting shake detection: device cannot send emails.");
         }
-    }
-
-    // Private implementation
-
-    private void showDialog() {
-        if (bugShakerAlertDialog != null && bugShakerAlertDialog.isShowing()) {
-            return;
-        }
-
-        final Activity currentActivity = activityReferenceManager.getValidatedActivity();
-        if (currentActivity == null) {
-            return;
-        }
-
-        bugShakerAlertDialog = new AlertDialog.Builder(currentActivity)
-                .setTitle("Shake detected!")
-                .setMessage("Would you like to report a bug?")
-                .setPositiveButton("Report", reportBugClickListener)
-                .setNegativeButton("Cancel", null)
-                .setCancelable(false)
-                .show();
-    }
-
-    private void sendEmailWithScreenshot(@NonNull final Activity activity) throws IOException {
-        final Uri screenshotUri = screenshotProvider.getScreenshotUri(activity);
-
-        final Intent feedbackEmailIntent = feedbackEmailIntentProvider
-                .getFeedbackEmailIntent(emailAddresses, emailSubjectLine, screenshotUri);
-
-        final List<ResolveInfo> resolveInfoList = applicationContext.getPackageManager()
-                .queryIntentActivities(feedbackEmailIntent, PackageManager.MATCH_DEFAULT_ONLY);
-
-        for (final ResolveInfo receivingApplicationInfo: resolveInfoList) {
-            // FIXME: revoke these permissions at some point!
-            applicationContext.grantUriPermission(
-                    receivingApplicationInfo.activityInfo.packageName,
-                    (Uri) feedbackEmailIntent.getParcelableExtra(Intent.EXTRA_STREAM),
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
-
-        activity.startActivity(feedbackEmailIntent);
-
-        logger.d("Sending email with screenshot.");
-    }
-
-    private void sendEmailWithNoScreenshot(@NonNull final Activity activity) {
-        final Intent feedbackEmailIntent = feedbackEmailIntentProvider
-                .getFeedbackEmailIntent(emailAddresses, emailSubjectLine);
-
-        activity.startActivity(feedbackEmailIntent);
-
-        logger.d("Sending email with no screenshot.");
     }
 
     // ShakeDetector.Listener methods:
 
     @Override
     public void hearShake() {
-        logger.d("Shake detected!");
-        showDialog();
+        Logger.d("Shake detected!");
+
+        feedbackEmailFlowManager.startFlowIfNeeded(emailAddresses, emailSubjectLine, ignoreFlagSecure);
     }
 
 }

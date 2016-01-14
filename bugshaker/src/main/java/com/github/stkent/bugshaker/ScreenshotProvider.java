@@ -41,15 +41,8 @@ public final class ScreenshotProvider {
     @NonNull
     private final Context applicationContext;
 
-    @NonNull
-    private final Logger logger;
-
-    public ScreenshotProvider(
-            @NonNull final Context applicationContext,
-            @NonNull final Logger logger) {
-
+    public ScreenshotProvider(@NonNull final Context applicationContext) {
         this.applicationContext = applicationContext;
-        this.logger = logger;
     }
 
     @NonNull
@@ -71,14 +64,14 @@ public final class ScreenshotProvider {
             }
         }
 
-        logger.d("Screenshot successfully saved to file: " + screenshotFile.getAbsolutePath());
+        Logger.d("Screenshot successfully saved to file: " + screenshotFile.getAbsolutePath());
 
         final Uri result = FileProvider.getUriForFile(
                 applicationContext,
                 AUTHORITY,
                 screenshotFile);
 
-        logger.d("URI for screenshot file successfully created: " + result);
+        Logger.d("URI for screenshot file successfully created: " + result);
 
         return result;
     }

@@ -14,6 +14,7 @@ public class CustomApplication extends Application {
                  .setEmailAddresses("someone@example.com", "someone.else@example.com")
                  .setEmailSubjectLine("Custom Subject Line")
                  .setLoggingEnabled(BuildConfig.DEBUG)
+                 .setIgnoreFlagSecure(true)
                  .start();
     }
 
