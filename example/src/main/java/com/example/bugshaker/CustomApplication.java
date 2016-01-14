@@ -11,11 +11,11 @@ public class CustomApplication extends Application {
         super.onCreate();
 
         BugShaker.get(this)
-                 .setEmailAddresses("someone@example.com", "someone.else@example.com")
-                 .setEmailSubjectLine("Custom Subject Line")
-                 .setLoggingEnabled(BuildConfig.DEBUG)
-                 .setIgnoreFlagSecure(true)
-                 .start();
+                 .setEmailAddresses("someone@example.com")   // required
+                 .setEmailSubjectLine("Custom Subject Line") // optional
+                 .setLoggingEnabled(BuildConfig.DEBUG)       // optional
+                 .setIgnoreFlagSecure(true)                  // optional
+                 .start();                                   // required
     }
 
 }
