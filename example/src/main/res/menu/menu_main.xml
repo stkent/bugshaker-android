@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/unsecured_activity_menu_entry"
+        android:title="@string/unsecured_activity_title"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/secured_activity_menu_entry"
+        android:title="@string/secured_activity_title"
+        app:showAsAction="never" />
+
+</menu>
