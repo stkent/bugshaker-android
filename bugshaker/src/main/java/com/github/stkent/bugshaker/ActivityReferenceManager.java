@@ -46,8 +46,6 @@ public final class ActivityReferenceManager {
         return activity;
     }
 
-    // Private Implementation
-
     private boolean isActivityValid(@Nullable final Activity activity) {
         if (activity == null) {
             return false;
