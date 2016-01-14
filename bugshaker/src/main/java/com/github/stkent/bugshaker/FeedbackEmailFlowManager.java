@@ -64,7 +64,7 @@ public final class FeedbackEmailFlowManager {
     private final DialogInterface.OnClickListener reportBugClickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(final DialogInterface dialog, final int which) {
-            final Activity activity = activityReferenceManager.getValidatedActivity();
+            final Activity activity = activityReferenceManager.getValidatedTopActivity();
             if (activity == null) {
                 return;
             }
@@ -114,12 +114,12 @@ public final class FeedbackEmailFlowManager {
     }
 
     public void onActivityResumed(@NonNull final Activity activity) {
-        activityReferenceManager.setActivity(activity);
+        activityReferenceManager.setTopActivity(activity);
     }
 
     public void onActivityStopped(@NonNull final Activity activity) {
         //noinspection ObjectEquality
-        if (activity == activityReferenceManager.getValidatedActivity()
+        if (activity == activityReferenceManager.getValidatedPresentingActivity()
                 && bugShakerAlertDialog != null) {
 
             bugShakerAlertDialog.dismiss();
@@ -148,10 +148,12 @@ public final class FeedbackEmailFlowManager {
     }
 
     private void showDialog() {
-        final Activity currentActivity = activityReferenceManager.getValidatedActivity();
+        final Activity currentActivity = activityReferenceManager.getValidatedTopActivity();
         if (currentActivity == null) {
             return;
         }
+
+        activityReferenceManager.setPresentingActivity(currentActivity);
 
         bugShakerAlertDialog = new AlertDialog.Builder(currentActivity)
                 .setTitle("Shake detected!")
