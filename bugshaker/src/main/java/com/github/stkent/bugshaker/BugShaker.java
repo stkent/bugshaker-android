@@ -26,6 +26,10 @@ import com.squareup.seismic.ShakeDetector;
 
 import static android.content.Context.SENSOR_SERVICE;
 
+/**
+ * The main interaction point for library users. Encapsulates all shake detection. Setters allow
+ * users to customize some aspects (recipients, subject line) of bug report emails.
+ */
 public final class BugShaker implements ShakeDetector.Listener {
 
     private static final String DEFAULT_SUBJECT_LINE = "Android App Feedback";
@@ -56,6 +60,10 @@ public final class BugShaker implements ShakeDetector.Listener {
         }
     };
 
+    /**
+     * @param application the embedding application
+     * @return the singleton <code>BugShaker</code> instance
+     */
     public static BugShaker get(@NonNull final Application application) {
         synchronized (BugShaker.class) {
             if (sharedInstance == null) {
@@ -85,36 +93,61 @@ public final class BugShaker implements ShakeDetector.Listener {
                 new ScreenshotProvider(applicationContext));
     }
 
-    // Required configuration methods
-
+    /**
+     * Defines one or more email addresses to send bug reports to. This method MUST be called before
+     * calling <code>start</code>.
+     *
+     * @param emailAddresses one or more email addresses
+     * @return the current <code>BugShaker</code> instance (to allow for method chaining)
+     */
     public BugShaker setEmailAddresses(@NonNull final String... emailAddresses) {
         this.emailAddresses   = emailAddresses;
         this.isConfigured     = true;
         return this;
     }
 
-    // Optional configuration methods
-
+    /**
+     * (Optionally) defines a custom subject line to use for all bug reports. By default, reports
+     * will use the string defined in <code>DEFAULT_SUBJECT_LINE</code>.
+     *
+     * @param emailSubjectLine a custom email subject line
+     * @return the current <code>BugShaker</code> instance (to allow for method chaining)
+     */
     public BugShaker setEmailSubjectLine(@NonNull final String emailSubjectLine) {
         this.emailSubjectLine = emailSubjectLine;
         return this;
     }
 
+    /**
+     * (Optionally) enables debug and error log messages. Logging is disabled by default.
+     *
+     * @param enabled true if logging should be enabled; false otherwise
+     * @return the current <code>BugShaker</code> instance (to allow for method chaining)
+     */
     public BugShaker setLoggingEnabled(final boolean enabled) {
         Logger.setLoggingEnabled(enabled);
         return this;
     }
 
+    /**
+     * @param ignoreFlagSecure true if screenshots should be allowed even when
+     *                         <code>FLAG_SECURE</code> is set on the current <code>Window</code>;
+     *                         false otherwise
+     * @return the current <code>BugShaker</code> instance (to allow for method chaining)
+     */
     public BugShaker setIgnoreFlagSecure(final boolean ignoreFlagSecure) {
         this.ignoreFlagSecure = ignoreFlagSecure;
         return this;
     }
 
-    // Public methods
-
+    /**
+     * Start listening for shakes. You MUST call <code>setEmailAddresses</code> before calling this
+     * method.
+     */
     public void start() {
         if (!isConfigured) {
-            throw new IllegalStateException("You must call configure before calling start.");
+            throw new IllegalStateException(
+                    "You MUST call setEmailAddresses before calling start.");
         }
 
         if (environmentCapabilitiesProvider.canSendEmails()) {
@@ -135,8 +168,6 @@ public final class BugShaker implements ShakeDetector.Listener {
             Logger.e("Error starting shake detection: device cannot send emails.");
         }
     }
-
-    // ShakeDetector.Listener methods:
 
     @Override
     public void hearShake() {

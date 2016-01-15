@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public final class FeedbackEmailFlowManager {
+final class FeedbackEmailFlowManager {
 
     private static final int FLAG_SECURE_VALUE = 0x00002000;
 
@@ -97,7 +97,7 @@ public final class FeedbackEmailFlowManager {
         }
     };
 
-    public FeedbackEmailFlowManager(
+    FeedbackEmailFlowManager(
             @NonNull final Context applicationContext,
             @NonNull final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider,
             @NonNull final Toaster toaster,
@@ -113,18 +113,18 @@ public final class FeedbackEmailFlowManager {
         this.screenshotProvider = screenshotProvider;
     }
 
-    public void onActivityResumed(@NonNull final Activity activity) {
+    void onActivityResumed(@NonNull final Activity activity) {
         activityReferenceManager.setActivity(activity);
     }
 
-    public void onActivityStopped() {
+    void onActivityStopped() {
         if (bugShakerAlertDialog != null) {
             bugShakerAlertDialog.dismiss();
             bugShakerAlertDialog = null;
         }
     }
 
-    public void startFlowIfNeeded(
+    void startFlowIfNeeded(
             @NonNull final String[] emailAddresses,
             @NonNull final String emailSubjectLine,
             final boolean ignoreFlagSecure) {

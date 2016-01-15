@@ -26,7 +26,7 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class EnvironmentCapabilitiesProvider {
+final class EnvironmentCapabilitiesProvider {
 
     @NonNull
     private final PackageManager packageManager;
@@ -34,7 +34,7 @@ public final class EnvironmentCapabilitiesProvider {
     @NonNull
     private final GenericEmailIntentProvider genericEmailIntentProvider;
 
-    public EnvironmentCapabilitiesProvider(
+    EnvironmentCapabilitiesProvider(
             @NonNull final PackageManager packageManager,
             @NonNull final GenericEmailIntentProvider genericEmailIntentProvider) {
 
@@ -42,7 +42,7 @@ public final class EnvironmentCapabilitiesProvider {
         this.genericEmailIntentProvider = genericEmailIntentProvider;
     }
 
-    public boolean canSendEmails() {
+    boolean canSendEmails() {
         Logger.d("Checking for email apps...");
 
         final List<ResolveInfo> emailAppInfoList = getEmailAppList();
@@ -56,7 +56,7 @@ public final class EnvironmentCapabilitiesProvider {
         return true;
     }
 
-    public boolean canSendEmailsWithAttachments() {
+    boolean canSendEmailsWithAttachments() {
         Logger.d("Checking for email apps that can send attachments...");
 
         final List<ResolveInfo> emailAppInfoList = getEmailWithAttachmentAppList();
@@ -69,8 +69,6 @@ public final class EnvironmentCapabilitiesProvider {
         logEmailAppNames("Available email apps that can send attachments: ", emailAppInfoList);
         return true;
     }
-
-    // Private Implementation
 
     @NonNull
     private List<ResolveInfo> getEmailAppList() {
