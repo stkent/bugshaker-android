@@ -117,6 +117,13 @@ final class FeedbackEmailFlowManager {
         activityReferenceManager.setActivity(activity);
     }
 
+    void onActivityStopped() {
+        if (bugShakerAlertDialog != null) {
+            bugShakerAlertDialog.dismiss();
+            bugShakerAlertDialog = null;
+        }
+    }
+
     void startFlowIfNeeded(
             @NonNull final String[] emailAddresses,
             @NonNull final String emailSubjectLine,

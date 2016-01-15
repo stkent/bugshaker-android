@@ -20,35 +20,40 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-abstract class ActivityResumedCallback implements Application.ActivityLifecycleCallbacks {
+abstract class SimpleActivityLifecycleCallback implements Application.ActivityLifecycleCallbacks {
 
     @Override
-    public final void onActivityCreated(final Activity activity, final Bundle savedInstanceState) {
+    public void onActivityCreated(final Activity activity, final Bundle savedInstanceState) {
         // This method intentionally left blank
     }
 
     @Override
-    public final void onActivityStarted(final Activity activity) {
+    public void onActivityResumed(final Activity activity) {
         // This method intentionally left blank
     }
 
     @Override
-    public final void onActivityPaused(final Activity activity) {
+    public void onActivityStarted(final Activity activity) {
         // This method intentionally left blank
     }
 
     @Override
-    public final void onActivityStopped(final Activity activity) {
+    public void onActivityPaused(final Activity activity) {
         // This method intentionally left blank
     }
 
     @Override
-    public final void onActivitySaveInstanceState(final Activity activity, final Bundle outState) {
+    public void onActivityStopped(final Activity activity) {
         // This method intentionally left blank
     }
 
     @Override
-    public final void onActivityDestroyed(final Activity activity) {
+    public void onActivitySaveInstanceState(final Activity activity, final Bundle outState) {
+        // This method intentionally left blank
+    }
+
+    @Override
+    public void onActivityDestroyed(final Activity activity) {
         // This method intentionally left blank
     }
 

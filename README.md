@@ -2,13 +2,13 @@
 
 Send Android bug reports via email. Shake to summon!
 
-[![Build Status](https://travis-ci.org/stkent/bugshaker-android.svg?branch=master)](https://travis-ci.org/stkent/bugshaker-android) <a href="http://www.detroitlabs.com/"><img src="https://img.shields.io/badge/Sponsor-Detroit%20Labs-lightgrey.svg" /></a>
+[![Build Status](https://travis-ci.org/stkent/bugshaker-android.svg?branch=master)](https://travis-ci.org/stkent/bugshaker-android) <a href="https://bintray.com/stkent/android-libraries/bugshaker/"><img src="https://img.shields.io/bintray/v/stkent/android-libraries/bugshaker.svg" /></a> <a href="http://www.detroitlabs.com/"><img src="https://img.shields.io/badge/Sponsor-Detroit%20Labs-000000.svg" /></a>
 
 # Introduction
 
-BugShaker-Android allows your users to simply submit bug reports by shaking their device.
+BugShaker-Android allows your testers and/or users to easily submit bug reports by shaking their device.
 When a shake is detected, the current screen state is captured and the user is
-prompted to submit a bug report via a mail composer with the screenshot attached.
+prompted to submit a bug report via email with this screenshot attached.
 
 The iOS version of BugShaker was written by [Dan Trenz](https://github.com/dtrenz) and is available [here](https://github.com/detroit-labs/BugShaker). This Android version builds on Square's shake-detection library, [seismic](https://github.com/square/seismic).
 
@@ -22,11 +22,11 @@ TODO
 
 ```groovy
 dependencies {
-    compile 'com.github.stkent:bugshaker:0.3.0'
+    compile 'com.github.stkent:bugshaker:{latest-version}'
 }
 ```
 
-(2) Configure `BugShaker` in your custom `Application` class, and call `start()` to begin listening for shakes:
+(2) Configure the shared `BugShaker` instance in your custom `Application` class, and call `start()` to begin listening for shakes:
 
 ```java
 public class CustomApplication extends Application {
