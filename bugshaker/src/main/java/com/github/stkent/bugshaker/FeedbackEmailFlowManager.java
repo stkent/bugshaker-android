@@ -117,12 +117,10 @@ public final class FeedbackEmailFlowManager {
         activityReferenceManager.setActivity(activity);
     }
 
-    public void onActivityStopped(@NonNull final Activity activity) {
-        //noinspection ObjectEquality
-        if (activity == activityReferenceManager.getValidatedActivity()
-                && bugShakerAlertDialog != null) {
-
+    public void onActivityStopped() {
+        if (bugShakerAlertDialog != null) {
             bugShakerAlertDialog.dismiss();
+            bugShakerAlertDialog = null;
         }
     }
 

@@ -52,7 +52,7 @@ public final class BugShaker implements ShakeDetector.Listener {
 
         @Override
         public void onActivityStopped(final Activity activity) {
-            feedbackEmailFlowManager.onActivityStopped(activity);
+            feedbackEmailFlowManager.onActivityStopped();
         }
     };
 
