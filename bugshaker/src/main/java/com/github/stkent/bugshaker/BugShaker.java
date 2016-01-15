@@ -78,15 +78,11 @@ public final class BugShaker implements ShakeDetector.Listener {
                 new ScreenshotProvider(applicationContext));
     }
 
-    // Required configuration methods
-
     public BugShaker setEmailAddresses(@NonNull final String... emailAddresses) {
         this.emailAddresses   = emailAddresses;
         this.isConfigured     = true;
         return this;
     }
-
-    // Optional configuration methods
 
     public BugShaker setEmailSubjectLine(@NonNull final String emailSubjectLine) {
         this.emailSubjectLine = emailSubjectLine;
@@ -102,8 +98,6 @@ public final class BugShaker implements ShakeDetector.Listener {
         this.ignoreFlagSecure = ignoreFlagSecure;
         return this;
     }
-
-    // Public methods
 
     public void start() {
         if (!isConfigured) {
@@ -128,8 +122,6 @@ public final class BugShaker implements ShakeDetector.Listener {
             Logger.e("Error starting shake detection: device cannot send emails.");
         }
     }
-
-    // ShakeDetector.Listener methods:
 
     @Override
     public void hearShake() {

@@ -70,8 +70,6 @@ final class EnvironmentCapabilitiesProvider {
         return true;
     }
 
-    // Private Implementation
-
     @NonNull
     private List<ResolveInfo> getEmailAppList() {
         return packageManager.queryIntentActivities(
