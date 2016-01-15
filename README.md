@@ -1,4 +1,4 @@
-# BugShaker-Android
+![image](/assets/bugshaker_logo.png?raw=true "BugShaker")
 
 Send Android bug reports via email. Shake to summon!
 
