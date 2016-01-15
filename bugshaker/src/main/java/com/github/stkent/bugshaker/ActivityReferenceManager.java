@@ -26,35 +26,14 @@ import java.lang.ref.WeakReference;
 public final class ActivityReferenceManager {
 
     @Nullable
-    private WeakReference<Activity> wTopActivity;
+    private WeakReference<Activity> wActivity;
 
-    @Nullable
-    private WeakReference<Activity> wPresentingActivity;
-
-    public void setTopActivity(@NonNull final Activity activity) {
-        wTopActivity = new WeakReference<>(activity);
-    }
-
-    public void setPresentingActivity(@NonNull final Activity activity) {
-        wPresentingActivity = new WeakReference<>(activity);
-    }
-
-    public void clearPresentingActivity() {
-        wPresentingActivity = null;
+    public void setActivity(@NonNull final Activity activity) {
+        this.wActivity = new WeakReference<>(activity);
     }
 
     @Nullable
-    public Activity getValidatedTopActivity() {
-        return getValidatedActivity(wTopActivity);
-    }
-
-    @Nullable
-    public Activity getValidatedPresentingActivity() {
-        return getValidatedActivity(wPresentingActivity);
-    }
-
-    @Nullable
-    private Activity getValidatedActivity(@Nullable final WeakReference<Activity> wActivity) {
+    public Activity getValidatedActivity() {
         if (wActivity == null) {
             return null;
         }
