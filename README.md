@@ -14,7 +14,7 @@ The iOS version of BugShaker was written by [Dan Trenz](https://github.com/dtren
 
 ## Screenshots
 
-TODO
+<img src="/assets/nexus6dialog.png" width=420 /> <img src="/assets/nexus6compose.png" width=420 />
 
 # Getting Started
 
