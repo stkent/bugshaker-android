@@ -33,7 +33,7 @@ import java.io.OutputStream;
 
 final class ScreenshotProvider {
 
-    private static final String AUTHORITY = "com.github.stkent.bugshaker.fileprovider";
+    private static final String AUTHORITY_SUFFIX = ".fileprovider";
     private static final String SCREENSHOTS_DIRECTORY_NAME = "bug-reports";
     private static final String SCREENSHOT_FILE_NAME = "latest-screenshot.jpg";
     private static final int JPEG_COMPRESSION_QUALITY = 90;
@@ -68,7 +68,7 @@ final class ScreenshotProvider {
 
         final Uri result = FileProvider.getUriForFile(
                 applicationContext,
-                AUTHORITY,
+                applicationContext.getPackageName() + AUTHORITY_SUFFIX,
                 screenshotFile);
 
         Logger.d("URI for screenshot file successfully created: " + result);
