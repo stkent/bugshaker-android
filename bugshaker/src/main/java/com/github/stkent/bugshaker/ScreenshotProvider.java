@@ -31,7 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public final class ScreenshotProvider {
+final class ScreenshotProvider {
 
     private static final String AUTHORITY = "com.github.stkent.bugshaker.fileprovider";
     private static final String SCREENSHOTS_DIRECTORY_NAME = "bug-reports";
@@ -41,12 +41,12 @@ public final class ScreenshotProvider {
     @NonNull
     private final Context applicationContext;
 
-    public ScreenshotProvider(@NonNull final Context applicationContext) {
+    ScreenshotProvider(@NonNull final Context applicationContext) {
         this.applicationContext = applicationContext;
     }
 
     @NonNull
-    public Uri getScreenshotUri(@NonNull final Activity activity) throws IOException {
+    Uri getScreenshotUri(@NonNull final Activity activity) throws IOException {
         final File screenshotFile = getScreenshotFile();
         final Bitmap screenshotBitmap = getBitmapFromRootView(activity);
 

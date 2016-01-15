@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public final class FeedbackEmailIntentProvider {
+final class FeedbackEmailIntentProvider {
 
     @NonNull
     private final Context applicationContext;
@@ -37,7 +37,7 @@ public final class FeedbackEmailIntentProvider {
     @NonNull
     private final GenericEmailIntentProvider genericEmailIntentProvider;
 
-    public FeedbackEmailIntentProvider(
+    FeedbackEmailIntentProvider(
             @NonNull final Context applicationContext,
             @NonNull final GenericEmailIntentProvider genericEmailIntentProvider) {
 
@@ -46,7 +46,7 @@ public final class FeedbackEmailIntentProvider {
     }
 
     @NonNull
-    public Intent getFeedbackEmailIntent(
+    Intent getFeedbackEmailIntent(
             @NonNull final String[] emailAddresses,
             @NonNull final String emailSubjectLine) {
 
@@ -54,7 +54,7 @@ public final class FeedbackEmailIntentProvider {
     }
 
     @NonNull
-    public Intent getFeedbackEmailIntent(
+    Intent getFeedbackEmailIntent(
             @NonNull final String[] emailAddresses,
             @NonNull final String emailSubjectLine,
             @NonNull final Uri screenshotUri) {
@@ -67,7 +67,7 @@ public final class FeedbackEmailIntentProvider {
     }
 
     @NonNull
-    private Intent getBaseFeedbackEmailIntent(
+    Intent getBaseFeedbackEmailIntent(
             @NonNull final String[] emailAddresses,
             @NonNull final String emailSubjectLine) {
 

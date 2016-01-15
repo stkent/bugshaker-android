@@ -20,10 +20,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-public final class GenericEmailIntentProvider {
+final class GenericEmailIntentProvider {
 
     @NonNull
-    public Intent getBasicEmailIntent(
+    Intent getBasicEmailIntent(
             @NonNull final String[] emailAddresses,
             @NonNull final String emailSubjectLine,
             @NonNull final String emailBody) {

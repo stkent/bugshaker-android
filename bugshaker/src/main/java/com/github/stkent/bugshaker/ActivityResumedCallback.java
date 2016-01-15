@@ -20,7 +20,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-public abstract class ActivityResumedCallback implements Application.ActivityLifecycleCallbacks {
+abstract class ActivityResumedCallback implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public final void onActivityCreated(final Activity activity, final Bundle savedInstanceState) {
