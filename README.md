@@ -1,4 +1,4 @@
-![image](/assets/BugShaker_banner.png?raw=true "BugShaker")-
+![The BugShaker logo](/assets/BugShaker_banner.png?raw=true "BugShaker")
 
 Send Android bug reports via email. Shake to summon!
 
