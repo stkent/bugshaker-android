@@ -1,4 +1,4 @@
-![The BugShaker logo](/assets/BugShaker_banner.png?raw=true "BugShaker")
+<img src="/assets/BugShaker_banner.png?raw=true" title="BugShaker" alt="The BugShaker logo" width="50%" />
 
 Send Android bug reports via email. Shake to summon!
 
