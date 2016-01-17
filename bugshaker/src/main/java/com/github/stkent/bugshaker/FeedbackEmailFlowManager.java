@@ -114,14 +114,12 @@ final class FeedbackEmailFlowManager {
     }
 
     void onActivityResumed(@NonNull final Activity activity) {
+        dismissDialog();
         activityReferenceManager.setActivity(activity);
     }
 
     void onActivityStopped() {
-        if (bugShakerAlertDialog != null) {
-            bugShakerAlertDialog.dismiss();
-            bugShakerAlertDialog = null;
-        }
+        dismissDialog();
     }
 
     void startFlowIfNeeded(
@@ -158,6 +156,13 @@ final class FeedbackEmailFlowManager {
                 .setNegativeButton("Cancel", null)
                 .setCancelable(false)
                 .show();
+    }
+
+    private void dismissDialog() {
+        if (bugShakerAlertDialog != null) {
+            bugShakerAlertDialog.dismiss();
+            bugShakerAlertDialog = null;
+        }
     }
 
     private boolean shouldAttemptToCaptureScreenshot(@NonNull final Activity activity) {
