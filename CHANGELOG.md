@@ -1,5 +1,12 @@
 # Change Log
 
+## v0.8.3
+
+_2016-01-16_
+
+- Dismiss dialog whenever an `Activity` resumes (fixes dialog showing inappropriately when returning to a backgrounded application)
+- Add the string 'bugshaker' as a component of the provider authority for the provider that exposes app screenshots to mail applications (preemptive fix; make it much less likely that embedding applications will accidentally define a provider authority that conflicts with the BugShaker library provider authority).
+
 ## v0.8.2
 
 _2016-01-15_
