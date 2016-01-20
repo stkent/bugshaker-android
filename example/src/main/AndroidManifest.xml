@@ -29,6 +29,10 @@
             android:name=".MapViewActivity"
             android:launchMode="singleTop" />
 
+        <activity
+            android:name=".MapFragmentActivity"
+            android:launchMode="singleTop" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCT0Me0Yy9EyZRYye77e0y7QjtlBMENyTo" />

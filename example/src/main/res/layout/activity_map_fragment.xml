@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 
     Copyright 2016 Stuart Kent
@@ -16,14 +17,10 @@
     under the License.
 
 -->
-<resources>
 
-    <string name="app_name">BugShaker</string>
-    <string name="unsecured_activity_description">BugShaker example activity:\nunsecured</string>
-    <string name="secured_activity_description">BugShaker example activity:\nsecured</string>
-    <string name="unsecured_activity_title">Unsecured Activity</string>
-    <string name="secured_activity_title">Secured Activity</string>
-    <string name="map_view_activity_title">MapView Activity</string>
-    <string name="map_fragment_activity_title">MapFragment Activity</string>
-
-</resources>
+<fragment
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    class="com.google.android.gms.maps.MapFragment" />

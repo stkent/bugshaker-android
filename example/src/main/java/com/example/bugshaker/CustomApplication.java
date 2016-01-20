@@ -18,6 +18,7 @@ package com.example.bugshaker;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.github.stkent.bugshaker.BugShaker;
 
 public final class CustomApplication extends Application {
@@ -31,6 +32,14 @@ public final class CustomApplication extends Application {
                  .setEmailSubjectLine("Custom Subject Line")
                  .setLoggingEnabled(BuildConfig.DEBUG)
                  .start();
+
+        if (BuildConfig.DEBUG) {
+            initializeStethoForViewHierarchyInspection();
+        }
+    }
+
+    private void initializeStethoForViewHierarchyInspection() {
+        Stetho.initializeWithDefaults(this);
     }
 
 }
