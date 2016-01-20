@@ -91,36 +91,38 @@ gnag {
 
 install {
     repositories.mavenInstaller {
-        pom.project {
-            groupId bugShakerGroupId
-            artifactId bugShakerArtifactId
-            version bugShakerVersion
-            packaging 'aar'
+        pom {
+            project {
+                groupId bugShakerGroupId
+                artifactId bugShakerArtifactId
+                version bugShakerVersion
+                packaging 'aar'
 
-            // This does not seem to delegate to project.name as I expected it would.
-            name bugShakerArtifactId
-            description bugShakerDescription
-            inceptionYear '2016'
-            url bugShakerWebsiteUrl
-
-            licenses {
-                license {
-                    name 'The Apache Software License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                }
-            }
-
-            developers {
-                developer {
-                    id 'stkent'
-                    name 'Stuart Kent'
-                    email 'skent.dev@gmail.com'
-                }
-            }
-
-            scm {
-                connection bugShakerVcsUrl
+                // This does not seem to delegate to project.name as I expected it would.
+                name bugShakerArtifactId
+                description bugShakerDescription
+                inceptionYear '2016'
                 url bugShakerWebsiteUrl
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'stkent'
+                        name 'Stuart Kent'
+                        email 'skent.dev@gmail.com'
+                    }
+                }
+
+                scm {
+                    connection bugShakerVcsUrl
+                    url bugShakerWebsiteUrl
+                }
             }
         }
     }
