@@ -31,7 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-final class BasicScreenshotProvider {
+final class BasicScreenshotProvider implements ScreenshotProvider {
 
     private static final String AUTHORITY_SUFFIX = ".bugshaker.fileprovider";
     private static final String SCREENSHOTS_DIRECTORY_NAME = "bug-reports";
@@ -46,7 +46,8 @@ final class BasicScreenshotProvider {
     }
 
     @NonNull
-    Uri getScreenshotUri(@NonNull final Activity activity) throws IOException {
+    @Override
+    public Uri getScreenshotUri(@NonNull final Activity activity) throws IOException {
         final File screenshotFile = getScreenshotFile();
         final Bitmap screenshotBitmap = getBitmapFromRootView(activity);
 

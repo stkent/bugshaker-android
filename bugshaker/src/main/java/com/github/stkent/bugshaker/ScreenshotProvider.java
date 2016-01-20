@@ -14,22 +14,16 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.example.bugshaker;
+package com.github.stkent.bugshaker;
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.SurfaceView;
+import android.app.Activity;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 
-public class SurfaceViewActivity extends BaseActivity {
+import java.io.IOException;
 
-    @Override
-    protected void onCreate(@Nullable final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_surface_view);
+interface ScreenshotProvider {
 
-        final SurfaceView surfaceView = (SurfaceView) findViewById(R.id.surface_view);
-        surfaceView.setBackgroundColor(Color.RED);
-    }
+    Uri getScreenshotUri(@NonNull final Activity activity) throws IOException;
 
 }
