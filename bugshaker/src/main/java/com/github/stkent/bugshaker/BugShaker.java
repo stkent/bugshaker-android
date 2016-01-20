@@ -90,7 +90,7 @@ public final class BugShaker implements ShakeDetector.Listener {
                 new Toaster(applicationContext),
                 new ActivityReferenceManager(),
                 new FeedbackEmailIntentProvider(applicationContext, genericEmailIntentProvider),
-                new ScreenshotProvider(applicationContext));
+                new BasicScreenshotProvider(applicationContext));
     }
 
     /**

@@ -52,7 +52,7 @@ final class FeedbackEmailFlowManager {
     private final FeedbackEmailIntentProvider feedbackEmailIntentProvider;
 
     @NonNull
-    private final ScreenshotProvider screenshotProvider;
+    private final BasicScreenshotProvider basicScreenshotProvider;
 
     @Nullable
     private AlertDialog bugShakerAlertDialog;
@@ -103,14 +103,14 @@ final class FeedbackEmailFlowManager {
             @NonNull final Toaster toaster,
             @NonNull final ActivityReferenceManager activityReferenceManager,
             @NonNull final FeedbackEmailIntentProvider feedbackEmailIntentProvider,
-            @NonNull final ScreenshotProvider screenshotProvider) {
+            @NonNull final BasicScreenshotProvider basicScreenshotProvider) {
 
         this.applicationContext = applicationContext;
         this.environmentCapabilitiesProvider = environmentCapabilitiesProvider;
         this.toaster = toaster;
         this.activityReferenceManager = activityReferenceManager;
         this.feedbackEmailIntentProvider = feedbackEmailIntentProvider;
-        this.screenshotProvider = screenshotProvider;
+        this.basicScreenshotProvider = basicScreenshotProvider;
     }
 
     void onActivityResumed(@NonNull final Activity activity) {
@@ -187,7 +187,7 @@ final class FeedbackEmailFlowManager {
     }
 
     private void sendEmailWithScreenshot(@NonNull final Activity activity) throws IOException {
-        final Uri screenshotUri = screenshotProvider.getScreenshotUri(activity);
+        final Uri screenshotUri = basicScreenshotProvider.getScreenshotUri(activity);
 
         final Intent feedbackEmailIntent = feedbackEmailIntentProvider
                 .getFeedbackEmailIntent(emailAddresses, emailSubjectLine, screenshotUri);
