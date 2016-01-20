@@ -37,15 +37,15 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
     private static final String SCREENSHOT_FILE_NAME = "latest-screenshot.jpg";
     private static final int JPEG_COMPRESSION_QUALITY = 90;
 
-    protected abstract Bitmap getScreenshotBitmap(
-            @NonNull final Activity activity) throws IllegalArgumentException;
-
     @NonNull
     private final Context applicationContext;
 
     BaseScreenshotProvider(@NonNull final Context applicationContext) {
         this.applicationContext = applicationContext;
     }
+
+    protected abstract Bitmap getScreenshotBitmap(
+            @NonNull final Activity activity) throws IllegalArgumentException;
 
     @NonNull
     @Override
