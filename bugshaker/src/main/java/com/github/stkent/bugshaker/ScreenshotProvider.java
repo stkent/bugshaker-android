@@ -20,10 +20,8 @@ import android.app.Activity;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import java.io.IOException;
-
 interface ScreenshotProvider {
 
-    Uri getScreenshotUri(@NonNull final Activity activity) throws IOException;
+    Uri getScreenshotUri(@NonNull final Activity activity) throws Exception;
 
 }

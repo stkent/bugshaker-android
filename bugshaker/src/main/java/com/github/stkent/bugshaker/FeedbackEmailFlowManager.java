@@ -28,7 +28,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -73,7 +72,7 @@ final class FeedbackEmailFlowManager {
                 if (environmentCapabilitiesProvider.canSendEmailsWithAttachments()) {
                     try {
                         sendEmailWithScreenshot(activity);
-                    } catch (final IOException exception) {
+                    } catch (final Exception exception) {
                         final String errorString = "Screenshot capture failed";
 
                         toaster.toast(errorString);
@@ -186,7 +185,7 @@ final class FeedbackEmailFlowManager {
         return result;
     }
 
-    private void sendEmailWithScreenshot(@NonNull final Activity activity) throws IOException {
+    private void sendEmailWithScreenshot(@NonNull final Activity activity) throws Exception {
         final Uri screenshotUri = screenshotProvider.getScreenshotUri(activity);
 
         final Intent feedbackEmailIntent = feedbackEmailIntentProvider

@@ -28,7 +28,9 @@ public class MapScreenshotProvider extends BaseScreenshotProvider {
     }
 
     @Override
-    protected Bitmap getScreenshotBitmap(@NonNull final Activity activity) {
+    protected Bitmap getScreenshotBitmap(
+            @NonNull final Activity activity) throws IllegalArgumentException {
+
         /*
           TODO: search the view hierarchy for maps; use snapshot method to get a bitmap
           representing the map; intelligently position and merge it with the result of

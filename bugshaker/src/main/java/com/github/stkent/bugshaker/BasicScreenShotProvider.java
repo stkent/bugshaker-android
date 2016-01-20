@@ -28,7 +28,9 @@ class BasicScreenShotProvider extends BaseScreenshotProvider {
     }
 
     @Override
-    protected Bitmap getScreenshotBitmap(@NonNull final Activity activity) {
+    protected Bitmap getScreenshotBitmap(
+            @NonNull final Activity activity) throws IllegalArgumentException {
+
         return createBitmapOfNonMapViews(activity);
     }
 

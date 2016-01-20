@@ -28,7 +28,6 @@ import android.view.View;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 
 abstract class BaseScreenshotProvider implements ScreenshotProvider {
@@ -38,7 +37,8 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
     private static final String SCREENSHOT_FILE_NAME = "latest-screenshot.jpg";
     private static final int JPEG_COMPRESSION_QUALITY = 90;
 
-    protected abstract Bitmap getScreenshotBitmap(@NonNull final Activity activity);
+    protected abstract Bitmap getScreenshotBitmap(
+            @NonNull final Activity activity) throws IllegalArgumentException;
 
     @NonNull
     private final Context applicationContext;
@@ -49,7 +49,7 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
 
     @NonNull
     @Override
-    public final Uri getScreenshotUri(@NonNull final Activity activity) throws IOException {
+    public final Uri getScreenshotUri(@NonNull final Activity activity) throws Exception {
         final File screenshotFile = getScreenshotFile();
         final Bitmap screenshotBitmap = getScreenshotBitmap(activity);
 
@@ -79,7 +79,9 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
         return result;
     }
 
-    protected final Bitmap createBitmapOfNonMapViews(@NonNull final Activity activity) {
+    protected final Bitmap createBitmapOfNonMapViews(
+            @NonNull final Activity activity) throws IllegalArgumentException {
+
         final View view = activity.getWindow().getDecorView().getRootView();
 
         Bitmap screenshotBitmap
