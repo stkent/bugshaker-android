@@ -92,6 +92,21 @@ gnag {
 install {
     repositories.mavenInstaller {
         pom {
+            // See comment by Endre Stølsvik on https://issues.gradle.org/browse/GRADLE-1749.
+            withXml {
+                def depMap = configurations.compile.dependencies.collectEntries { [it.name, it] }
+                asNode().dependencies.dependency.findAll {
+                    def dep = depMap.get(it.artifactId.text())
+                    return dep?.hasProperty('optional') && dep.optional
+                }.each {
+                    if (it.optional) {
+                        it.optional.value = 'true'
+                    } else {
+                        it.appendNode('optional', 'true')
+                    }
+                }
+            }
+
             project {
                 groupId bugShakerGroupId
                 artifactId bugShakerArtifactId
