@@ -38,6 +38,8 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
     private static final String SCREENSHOT_FILE_NAME = "latest-screenshot.jpg";
     private static final int JPEG_COMPRESSION_QUALITY = 90;
 
+    protected abstract Bitmap getScreenshotBitmap(@NonNull final Activity activity);
+
     @NonNull
     private final Context applicationContext;
 
@@ -47,9 +49,9 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
 
     @NonNull
     @Override
-    public Uri getScreenshotUri(@NonNull final Activity activity) throws IOException {
+    public final Uri getScreenshotUri(@NonNull final Activity activity) throws IOException {
         final File screenshotFile = getScreenshotFile();
-        final Bitmap screenshotBitmap = getBitmapFromRootView(activity);
+        final Bitmap screenshotBitmap = getScreenshotBitmap(activity);
 
         OutputStream fileOutputStream = null;
 
@@ -77,7 +79,7 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
         return result;
     }
 
-    private Bitmap getBitmapFromRootView(@NonNull final Activity activity) {
+    protected final Bitmap getBitmapFromRootView(@NonNull final Activity activity) {
         final View view = activity.getWindow().getDecorView().getRootView();
 
         Bitmap screenshotBitmap

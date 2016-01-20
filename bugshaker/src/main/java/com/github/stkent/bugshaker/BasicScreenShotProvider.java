@@ -16,13 +16,20 @@
  */
 package com.github.stkent.bugshaker;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 class BasicScreenShotProvider extends BaseScreenshotProvider {
 
     BasicScreenShotProvider(@NonNull final Context applicationContext) {
         super(applicationContext);
+    }
+
+    @Override
+    protected Bitmap getScreenshotBitmap(@NonNull final Activity activity) {
+        return getBitmapFromRootView(activity);
     }
 
 }
