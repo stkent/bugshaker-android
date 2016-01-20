@@ -90,7 +90,7 @@ public final class BugShaker implements ShakeDetector.Listener {
                 new Toaster(applicationContext),
                 new ActivityReferenceManager(),
                 new FeedbackEmailIntentProvider(applicationContext, genericEmailIntentProvider),
-                new BasicScreenShotProvider(applicationContext));
+                getScreenshotProvider());
     }
 
     /**
@@ -177,6 +177,24 @@ public final class BugShaker implements ShakeDetector.Listener {
                 emailAddresses,
                 emailSubjectLine,
                 ignoreFlagSecure);
+    }
+
+    /**
+     * @return a MapScreenshotProvider if the embedding application utilizes the Google Maps Android
+     *         API, and a BasicScreenshotProvider otherwise
+     */
+    private ScreenshotProvider getScreenshotProvider() {
+        // See http://stackoverflow.com/a/3466596/2911458
+        try {
+            Class.forName(
+                    "com.google.android.gms.maps.GoogleMap",
+                    false,
+                    ClassLoader.getSystemClassLoader());
+
+            return new MapScreenshotProvider(applicationContext);
+        } catch (final ClassNotFoundException e) {
+            return new BasicScreenShotProvider(applicationContext);
+        }
     }
 
 }
