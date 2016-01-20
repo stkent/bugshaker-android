@@ -41,4 +41,9 @@
         android:title="@string/map_fragment_activity_title"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/surface_view_activity_menu_entry"
+        android:title="@string/surface_view_activity_title"
+        app:showAsAction="never" />
+
 </menu>
