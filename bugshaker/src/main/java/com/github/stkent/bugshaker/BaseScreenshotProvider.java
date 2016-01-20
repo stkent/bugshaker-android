@@ -31,7 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-final class BasicScreenshotProvider implements ScreenshotProvider {
+abstract class BaseScreenshotProvider implements ScreenshotProvider {
 
     private static final String AUTHORITY_SUFFIX = ".bugshaker.fileprovider";
     private static final String SCREENSHOTS_DIRECTORY_NAME = "bug-reports";
@@ -41,7 +41,7 @@ final class BasicScreenshotProvider implements ScreenshotProvider {
     @NonNull
     private final Context applicationContext;
 
-    BasicScreenshotProvider(@NonNull final Context applicationContext) {
+    BaseScreenshotProvider(@NonNull final Context applicationContext) {
         this.applicationContext = applicationContext;
     }
 
