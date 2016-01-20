@@ -82,7 +82,7 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
     protected final Bitmap createBitmapOfNonMapViews(
             @NonNull final Activity activity) throws IllegalArgumentException {
 
-        final View view = activity.getWindow().getDecorView().getRootView();
+        final View view = getRootView(activity);
 
         Bitmap screenshotBitmap
                 = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
@@ -91,6 +91,11 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
         view.draw(canvas);
 
         return screenshotBitmap;
+    }
+
+    @NonNull
+    protected View getRootView(@NonNull final Activity activity) {
+        return activity.getWindow().getDecorView().getRootView();
     }
 
     private File getScreenshotFile() {
