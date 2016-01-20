@@ -29,7 +29,7 @@ class BasicScreenShotProvider extends BaseScreenshotProvider {
 
     @Override
     protected Bitmap getScreenshotBitmap(@NonNull final Activity activity) {
-        return getBitmapFromRootView(activity);
+        return createBitmapOfNonMapViews(activity);
     }
 
 }

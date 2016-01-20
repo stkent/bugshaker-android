@@ -79,7 +79,7 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
         return result;
     }
 
-    protected final Bitmap getBitmapFromRootView(@NonNull final Activity activity) {
+    protected final Bitmap createBitmapOfNonMapViews(@NonNull final Activity activity) {
         final View view = activity.getWindow().getDecorView().getRootView();
 
         Bitmap screenshotBitmap

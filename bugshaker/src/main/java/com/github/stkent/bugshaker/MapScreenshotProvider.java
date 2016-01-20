@@ -32,9 +32,9 @@ public class MapScreenshotProvider extends BaseScreenshotProvider {
         /*
           TODO: search the view hierarchy for maps; use snapshot method to get a bitmap
           representing the map; intelligently position and merge it with the result of
-          getBitmapFromRootView...
+          createBitmapOfNonMapViews...
          */
-        return getBitmapFromRootView(activity);
+        return createBitmapOfNonMapViews(activity);
     }
 
 }
