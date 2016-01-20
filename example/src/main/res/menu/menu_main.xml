@@ -31,4 +31,9 @@
         android:title="@string/secured_activity_title"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/map_view_activity_menu_entry"
+        android:title="@string/map_view_activity_title"
+        app:showAsAction="never" />
+
 </menu>
