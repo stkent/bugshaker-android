@@ -22,7 +22,7 @@ apply plugin: 'gnag-plugin'
 // Shared project metadata
 
 ext {
-    bugShakerVersion = "0.8.3"
+    bugShakerVersion = "0.9.0"
     bugShakerWebsiteUrl = 'https://github.com/stkent/bugshaker-android'
     bugShakerVcsUrl = 'https://github.com/stkent/bugshaker-android.git'
     bugShakerGroupId = 'com.github.stkent'
