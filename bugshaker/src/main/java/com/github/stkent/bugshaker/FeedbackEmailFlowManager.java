@@ -71,7 +71,7 @@ final class FeedbackEmailFlowManager {
             if (shouldAttemptToCaptureScreenshot(activity)) {
                 if (environmentCapabilitiesProvider.canSendEmailsWithAttachments()) {
                     try {
-                        sendEmailWithScreenshot(activity);
+                        trySendingEmailWithScreenshot(activity);
                     } catch (final Exception exception) {
                         final String errorString = "Screenshot capture failed";
 
@@ -185,7 +185,7 @@ final class FeedbackEmailFlowManager {
         return result;
     }
 
-    private void sendEmailWithScreenshot(@NonNull final Activity activity) {
+    private void trySendingEmailWithScreenshot(@NonNull final Activity activity) {
         screenshotProvider.getScreenshotUri(activity, new ScreenshotUriCallback() {
             @Override
             public void onSuccess(@NonNull final Uri uri) {
