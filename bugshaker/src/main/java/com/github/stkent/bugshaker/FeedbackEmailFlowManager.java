@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -60,7 +61,7 @@ final class FeedbackEmailFlowManager {
     private String emailSubjectLine;
     private boolean ignoreFlagSecure;
 
-    private final DialogInterface.OnClickListener reportBugClickListener = new DialogInterface.OnClickListener() {
+    private final OnClickListener reportBugClickListener = new OnClickListener() {
         @Override
         public void onClick(final DialogInterface dialog, final int which) {
             final Activity activity = activityReferenceManager.getValidatedActivity();
