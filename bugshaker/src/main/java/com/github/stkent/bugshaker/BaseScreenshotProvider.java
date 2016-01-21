@@ -27,7 +27,6 @@ import android.view.View;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -84,6 +83,7 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
                     fileOutputStream.close();
                 } catch (final IOException e) {
                     // We did our best...
+                    Logger.printStackTrace(e);
                 }
             }
         }
