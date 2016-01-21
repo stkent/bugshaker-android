@@ -185,26 +185,34 @@ final class FeedbackEmailFlowManager {
         return result;
     }
 
-    private void sendEmailWithScreenshot(@NonNull final Activity activity) throws Exception {
-        final Uri screenshotUri = screenshotProvider.getScreenshotUri(activity);
+    private void sendEmailWithScreenshot(@NonNull final Activity activity) {
+        screenshotProvider.getScreenshotUri(activity, new ScreenshotUriCallback() {
+            @Override
+            public void onSuccess(@NonNull final Uri uri) {
+                final Intent feedbackEmailIntent = feedbackEmailIntentProvider
+                        .getFeedbackEmailIntent(emailAddresses, emailSubjectLine, uri);
 
-        final Intent feedbackEmailIntent = feedbackEmailIntentProvider
-                .getFeedbackEmailIntent(emailAddresses, emailSubjectLine, screenshotUri);
+                final List<ResolveInfo> resolveInfoList = applicationContext.getPackageManager()
+                        .queryIntentActivities(feedbackEmailIntent, PackageManager.MATCH_DEFAULT_ONLY);
 
-        final List<ResolveInfo> resolveInfoList = applicationContext.getPackageManager()
-                .queryIntentActivities(feedbackEmailIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                for (final ResolveInfo receivingApplicationInfo: resolveInfoList) {
+                    // FIXME: revoke these permissions at some point!
+                    applicationContext.grantUriPermission(
+                            receivingApplicationInfo.activityInfo.packageName,
+                            (Uri) feedbackEmailIntent.getParcelableExtra(Intent.EXTRA_STREAM),
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
 
-        for (final ResolveInfo receivingApplicationInfo: resolveInfoList) {
-            // FIXME: revoke these permissions at some point!
-            applicationContext.grantUriPermission(
-                    receivingApplicationInfo.activityInfo.packageName,
-                    (Uri) feedbackEmailIntent.getParcelableExtra(Intent.EXTRA_STREAM),
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
+                activity.startActivity(feedbackEmailIntent);
 
-        activity.startActivity(feedbackEmailIntent);
+                Logger.d("Sending email with screenshot.");
+            }
 
-        Logger.d("Sending email with screenshot.");
+            @Override
+            public void onFailure() {
+
+            }
+        });
     }
 
     private void sendEmailWithNoScreenshot(@NonNull final Activity activity) {

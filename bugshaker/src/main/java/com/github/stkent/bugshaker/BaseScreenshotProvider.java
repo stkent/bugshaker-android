@@ -27,7 +27,9 @@ import android.view.View;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 abstract class BaseScreenshotProvider implements ScreenshotProvider {
@@ -47,9 +49,11 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
     protected abstract Bitmap getScreenshotBitmap(
             @NonNull final Activity activity) throws IllegalArgumentException;
 
-    @NonNull
     @Override
-    public final Uri getScreenshotUri(@NonNull final Activity activity) throws Exception {
+    public final void getScreenshotUri(
+            @NonNull final Activity activity,
+            @NonNull final ScreenshotUriCallback callback) {
+
         final File screenshotFile = getScreenshotFile();
         final Bitmap screenshotBitmap = getScreenshotBitmap(activity);
 
@@ -61,22 +65,28 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
                     Bitmap.CompressFormat.JPEG, JPEG_COMPRESSION_QUALITY, fileOutputStream);
 
             fileOutputStream.flush();
+
+            Logger.d("Screenshot successfully saved to file: " + screenshotFile.getAbsolutePath());
+
+            final Uri result = FileProvider.getUriForFile(
+                    applicationContext,
+                    applicationContext.getPackageName() + AUTHORITY_SUFFIX,
+                    screenshotFile);
+
+            Logger.d("URI for screenshot file successfully created: " + result);
+
+            callback.onSuccess(result);
+        } catch (final IOException e) {
+            callback.onFailure();
         } finally {
             if (fileOutputStream != null) {
-                fileOutputStream.close();
+                try {
+                    fileOutputStream.close();
+                } catch (final IOException e) {
+                    // We did our best...
+                }
             }
         }
-
-        Logger.d("Screenshot successfully saved to file: " + screenshotFile.getAbsolutePath());
-
-        final Uri result = FileProvider.getUriForFile(
-                applicationContext,
-                applicationContext.getPackageName() + AUTHORITY_SUFFIX,
-                screenshotFile);
-
-        Logger.d("URI for screenshot file successfully created: " + result);
-
-        return result;
     }
 
     protected final Bitmap createBitmapOfNonMapViews(

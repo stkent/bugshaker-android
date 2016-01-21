@@ -16,13 +16,12 @@
  */
 package com.github.stkent.bugshaker;
 
-import android.app.Activity;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
-interface ScreenshotProvider {
+interface ScreenshotUriCallback {
 
-    void getScreenshotUri(
-            @NonNull final Activity activity,
-            @NonNull final ScreenshotUriCallback callback);
+    void onSuccess(@NonNull final Uri uri);
+    void onFailure();
 
 }
