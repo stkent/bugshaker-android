@@ -70,20 +70,23 @@ final class FeedbackEmailFlowManager {
 
             if (shouldAttemptToCaptureScreenshot(activity)) {
                 if (environmentCapabilitiesProvider.canSendEmailsWithAttachments()) {
-                    try {
-                        trySendingEmailWithScreenshot(activity);
-                    } catch (final Exception exception) {
-                        final String errorString = "Screenshot capture failed";
+                    screenshotProvider.getScreenshotUri(activity, new ScreenshotUriCallback() {
+                        @Override
+                        public void onSuccess(@NonNull final Uri screenshotUri) {
+                            sendEmailWithScreenshot(activity, screenshotUri);
+                        }
 
-                        toaster.toast(errorString);
+                        @Override
+                        public void onFailure() {
+                            final String errorString = "Screenshot capture failed";
+                            toaster.toast(errorString);
+                            Logger.e(errorString);
 
-                        Logger.e(errorString);
-                        Logger.printStackTrace(exception);
-
-                        sendEmailWithNoScreenshot(activity);
-                    }
+                            sendEmailWithoutScreenshot(activity);
+                        }
+                    });
                 } else {
-                    sendEmailWithNoScreenshot(activity);
+                    sendEmailWithoutScreenshot(activity);
                 }
             } else {
                 final String warningString = "Window is secured; no screenshot taken";
@@ -91,7 +94,7 @@ final class FeedbackEmailFlowManager {
                 toaster.toast(warningString);
                 Logger.d(warningString);
 
-                sendEmailWithNoScreenshot(activity);
+                sendEmailWithoutScreenshot(activity);
             }
         }
     };
@@ -185,37 +188,30 @@ final class FeedbackEmailFlowManager {
         return result;
     }
 
-    private void trySendingEmailWithScreenshot(@NonNull final Activity activity) {
-        screenshotProvider.getScreenshotUri(activity, new ScreenshotUriCallback() {
-            @Override
-            public void onSuccess(@NonNull final Uri uri) {
-                final Intent feedbackEmailIntent = feedbackEmailIntentProvider
-                        .getFeedbackEmailIntent(emailAddresses, emailSubjectLine, uri);
+    private void sendEmailWithScreenshot(
+            @NonNull final Activity activity,
+            @NonNull final Uri screenshotUri) {
 
-                final List<ResolveInfo> resolveInfoList = applicationContext.getPackageManager()
-                        .queryIntentActivities(feedbackEmailIntent, PackageManager.MATCH_DEFAULT_ONLY);
+        final Intent feedbackEmailIntent = feedbackEmailIntentProvider
+                .getFeedbackEmailIntent(emailAddresses, emailSubjectLine, screenshotUri);
 
-                for (final ResolveInfo receivingApplicationInfo: resolveInfoList) {
-                    // FIXME: revoke these permissions at some point!
-                    applicationContext.grantUriPermission(
-                            receivingApplicationInfo.activityInfo.packageName,
-                            (Uri) feedbackEmailIntent.getParcelableExtra(Intent.EXTRA_STREAM),
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
+        final List<ResolveInfo> resolveInfoList = applicationContext.getPackageManager()
+                .queryIntentActivities(feedbackEmailIntent, PackageManager.MATCH_DEFAULT_ONLY);
 
-                activity.startActivity(feedbackEmailIntent);
+        for (final ResolveInfo receivingApplicationInfo: resolveInfoList) {
+            // FIXME: revoke these permissions at some point!
+            applicationContext.grantUriPermission(
+                    receivingApplicationInfo.activityInfo.packageName,
+                    screenshotUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
 
-                Logger.d("Sending email with screenshot.");
-            }
+        activity.startActivity(feedbackEmailIntent);
 
-            @Override
-            public void onFailure() {
-
-            }
-        });
+        Logger.d("Sending email with screenshot.");
     }
 
-    private void sendEmailWithNoScreenshot(@NonNull final Activity activity) {
+    private void sendEmailWithoutScreenshot(@NonNull final Activity activity) {
         final Intent feedbackEmailIntent = feedbackEmailIntentProvider
                 .getFeedbackEmailIntent(emailAddresses, emailSubjectLine);
 

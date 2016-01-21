@@ -21,7 +21,7 @@ import android.support.annotation.NonNull;
 
 interface ScreenshotUriCallback {
 
-    void onSuccess(@NonNull final Uri uri);
+    void onSuccess(@NonNull final Uri screenshotUri);
     void onFailure();
 
 }
