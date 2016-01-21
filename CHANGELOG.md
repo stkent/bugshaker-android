@@ -1,5 +1,13 @@
 # Change Log
 
+## v0.9.0
+
+_2016-01-21_
+
+- Update gnag version.
+- Add dependency version checking plugin to help identify available dependency updates for future releases.
+- Add assets for example application.
+
 ## v0.8.3
 
 _2016-01-16_
