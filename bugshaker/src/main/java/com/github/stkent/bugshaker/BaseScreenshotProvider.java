@@ -45,7 +45,7 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
         this.applicationContext = applicationContext;
     }
 
-    protected abstract Bitmap getScreenshotBitmap(
+    abstract Bitmap getScreenshotBitmap(
             @NonNull final Activity activity) throws InvalidActivitySizeException;
 
     @Override

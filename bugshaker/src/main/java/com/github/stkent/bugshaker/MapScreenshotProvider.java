@@ -21,14 +21,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-public class MapScreenshotProvider extends BaseScreenshotProvider {
+final class MapScreenshotProvider extends BaseScreenshotProvider {
 
     MapScreenshotProvider(@NonNull final Context applicationContext) {
         super(applicationContext);
     }
 
     @Override
-    protected Bitmap getScreenshotBitmap(
+    Bitmap getScreenshotBitmap(
             @NonNull final Activity activity) throws InvalidActivitySizeException {
 
         /*

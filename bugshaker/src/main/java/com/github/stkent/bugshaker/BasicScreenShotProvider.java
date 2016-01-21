@@ -21,7 +21,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-class BasicScreenShotProvider extends BaseScreenshotProvider {
+final class BasicScreenShotProvider extends BaseScreenshotProvider {
 
     BasicScreenShotProvider(@NonNull final Context applicationContext) {
         super(applicationContext);

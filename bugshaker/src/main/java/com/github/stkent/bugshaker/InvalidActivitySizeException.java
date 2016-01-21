@@ -20,7 +20,7 @@ package com.github.stkent.bugshaker;
  * Exception thrown to indicate that we attempted to capture a screenshot of an Activity
  * whose width and/or height is 0.
  */
-class InvalidActivitySizeException extends Exception {
+final class InvalidActivitySizeException extends Exception {
 
     InvalidActivitySizeException(final Throwable throwable) {
         super(throwable);
