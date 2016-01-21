@@ -16,22 +16,14 @@
  */
 package com.github.stkent.bugshaker;
 
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
+/**
+ * Exception thrown to indicate that we attempted to capture a screenshot of an Activity
+ * whose width and/or height is 0.
+ */
+class InvalidActivitySizeException extends Exception {
 
-class BasicScreenShotProvider extends BaseScreenshotProvider {
-
-    BasicScreenShotProvider(@NonNull final Context applicationContext) {
-        super(applicationContext);
-    }
-
-    @Override
-    protected Bitmap getScreenshotBitmap(
-            @NonNull final Activity activity) throws InvalidActivitySizeException {
-
-        return createBitmapOfNonMapViews(activity);
+    InvalidActivitySizeException(final Throwable throwable) {
+        super(throwable);
     }
 
 }

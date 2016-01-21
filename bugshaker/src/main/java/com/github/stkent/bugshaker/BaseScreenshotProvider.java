@@ -46,19 +46,20 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
     }
 
     protected abstract Bitmap getScreenshotBitmap(
-            @NonNull final Activity activity) throws IllegalArgumentException;
+            @NonNull final Activity activity) throws InvalidActivitySizeException;
 
     @Override
     public final void getScreenshotUri(
             @NonNull final Activity activity,
             @NonNull final ScreenshotUriCallback callback) {
 
-        final File screenshotFile = getScreenshotFile();
-        final Bitmap screenshotBitmap = getScreenshotBitmap(activity);
-
         OutputStream fileOutputStream = null;
 
         try {
+            final Bitmap screenshotBitmap = getScreenshotBitmap(activity);
+
+            final File screenshotFile = getScreenshotFile();
+
             fileOutputStream = new BufferedOutputStream(new FileOutputStream(screenshotFile));
             screenshotBitmap.compress(
                     Bitmap.CompressFormat.JPEG, JPEG_COMPRESSION_QUALITY, fileOutputStream);
@@ -75,7 +76,7 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
             Logger.d("URI for screenshot file successfully created: " + result);
 
             callback.onSuccess(result);
-        } catch (final IOException e) {
+        } catch (final IOException | InvalidActivitySizeException e) {
             callback.onFailure();
         } finally {
             if (fileOutputStream != null) {
@@ -90,17 +91,21 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
     }
 
     protected final Bitmap createBitmapOfNonMapViews(
-            @NonNull final Activity activity) throws IllegalArgumentException {
+            @NonNull final Activity activity) throws InvalidActivitySizeException {
 
         final View view = getRootView(activity);
 
-        Bitmap screenshotBitmap
-                = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        try {
+            final Bitmap screenshotBitmap = Bitmap.createBitmap(
+                    view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
 
-        final Canvas canvas = new Canvas(screenshotBitmap);
-        view.draw(canvas);
+            final Canvas canvas = new Canvas(screenshotBitmap);
+            view.draw(canvas);
 
-        return screenshotBitmap;
+            return screenshotBitmap;
+        } catch (final IllegalArgumentException e) {
+            throw new InvalidActivitySizeException(e);
+        }
     }
 
     @NonNull

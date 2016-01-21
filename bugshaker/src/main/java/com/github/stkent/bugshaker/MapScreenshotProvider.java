@@ -29,7 +29,7 @@ public class MapScreenshotProvider extends BaseScreenshotProvider {
 
     @Override
     protected Bitmap getScreenshotBitmap(
-            @NonNull final Activity activity) throws IllegalArgumentException {
+            @NonNull final Activity activity) throws InvalidActivitySizeException {
 
         /*
           TODO: search the view hierarchy for maps; use snapshot method to get a bitmap
