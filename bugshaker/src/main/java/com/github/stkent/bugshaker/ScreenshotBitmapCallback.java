@@ -16,27 +16,12 @@
  */
 package com.github.stkent.bugshaker;
 
-import android.app.Activity;
-import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-final class BasicScreenShotProvider extends BaseScreenshotProvider {
+interface ScreenshotBitmapCallback {
 
-    BasicScreenShotProvider(@NonNull final Context applicationContext) {
-        super(applicationContext);
-    }
-
-    @Override
-    protected void getScreenshotBitmap(
-            @NonNull final Activity activity,
-            @NonNull final ScreenshotBitmapCallback callback) {
-
-        try {
-            callback.onSuccess(createBitmapOfNonMapViews(activity));
-        } catch (final InvalidActivitySizeException e) {
-            Logger.printStackTrace(e);
-            callback.onFailure();
-        }
-    }
+    void onSuccess(@NonNull final Bitmap screenshotBitmap);
+    void onFailure();
 
 }

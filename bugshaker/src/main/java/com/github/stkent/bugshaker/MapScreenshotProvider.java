@@ -18,7 +18,6 @@ package com.github.stkent.bugshaker;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 final class MapScreenshotProvider extends BaseScreenshotProvider {
@@ -28,15 +27,16 @@ final class MapScreenshotProvider extends BaseScreenshotProvider {
     }
 
     @Override
-    Bitmap getScreenshotBitmap(
-            @NonNull final Activity activity) throws InvalidActivitySizeException {
+    protected void getScreenshotBitmap(
+            @NonNull final Activity activity,
+            @NonNull final ScreenshotBitmapCallback callback) {
 
-        /*
-          TODO: search the view hierarchy for maps; use snapshot method to get a bitmap
-          representing the map; intelligently position and merge it with the result of
-          createBitmapOfNonMapViews...
-         */
-        return createBitmapOfNonMapViews(activity);
+        try {
+            callback.onSuccess(createBitmapOfNonMapViews(activity));
+        } catch (final InvalidActivitySizeException e) {
+            Logger.printStackTrace(e);
+            callback.onFailure();
+        }
     }
 
 }

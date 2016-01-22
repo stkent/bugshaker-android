@@ -45,49 +45,59 @@ abstract class BaseScreenshotProvider implements ScreenshotProvider {
         this.applicationContext = applicationContext;
     }
 
-    abstract Bitmap getScreenshotBitmap(
-            @NonNull final Activity activity) throws InvalidActivitySizeException;
+    abstract void getScreenshotBitmap(
+            @NonNull final Activity activity,
+            @NonNull final ScreenshotBitmapCallback callback);
 
     @Override
     public final void getScreenshotUri(
             @NonNull final Activity activity,
             @NonNull final ScreenshotUriCallback callback) {
 
-        OutputStream fileOutputStream = null;
+        getScreenshotBitmap(activity, new ScreenshotBitmapCallback() {
+            @Override
+            public void onSuccess(@NonNull final Bitmap screenshotBitmap) {
+                OutputStream fileOutputStream = null;
 
-        try {
-            final Bitmap screenshotBitmap = getScreenshotBitmap(activity);
-
-            final File screenshotFile = getScreenshotFile();
-
-            fileOutputStream = new BufferedOutputStream(new FileOutputStream(screenshotFile));
-            screenshotBitmap.compress(
-                    Bitmap.CompressFormat.JPEG, JPEG_COMPRESSION_QUALITY, fileOutputStream);
-
-            fileOutputStream.flush();
-
-            Logger.d("Screenshot successfully saved to file: " + screenshotFile.getAbsolutePath());
-
-            final Uri result = FileProvider.getUriForFile(
-                    applicationContext,
-                    applicationContext.getPackageName() + AUTHORITY_SUFFIX,
-                    screenshotFile);
-
-            Logger.d("URI for screenshot file successfully created: " + result);
-
-            callback.onSuccess(result);
-        } catch (final IOException | InvalidActivitySizeException e) {
-            callback.onFailure();
-        } finally {
-            if (fileOutputStream != null) {
                 try {
-                    fileOutputStream.close();
+                    final File screenshotFile = getScreenshotFile();
+
+                    fileOutputStream = new BufferedOutputStream(new FileOutputStream(screenshotFile));
+                    screenshotBitmap.compress(
+                            Bitmap.CompressFormat.JPEG, JPEG_COMPRESSION_QUALITY, fileOutputStream);
+
+                    fileOutputStream.flush();
+
+                    Logger.d("Screenshot successfully saved to file: " + screenshotFile.getAbsolutePath());
+
+                    final Uri result = FileProvider.getUriForFile(
+                            applicationContext,
+                            applicationContext.getPackageName() + AUTHORITY_SUFFIX,
+                            screenshotFile);
+
+                    Logger.d("URI for screenshot file successfully created: " + result);
+
+                    callback.onSuccess(result);
                 } catch (final IOException e) {
-                    // We did our best...
                     Logger.printStackTrace(e);
+                    callback.onFailure();
+                } finally {
+                    if (fileOutputStream != null) {
+                        try {
+                            fileOutputStream.close();
+                        } catch (final IOException e) {
+                            // We did our best...
+                            Logger.printStackTrace(e);
+                        }
+                    }
                 }
             }
-        }
+
+            @Override
+            public void onFailure() {
+                callback.onFailure();
+            }
+        });
     }
 
     protected final Bitmap createBitmapOfNonMapViews(
