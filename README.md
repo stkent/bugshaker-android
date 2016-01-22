@@ -16,6 +16,10 @@ The iOS version of BugShaker was written by [Dan Trenz](https://github.com/dtren
 
 <img src="/assets/dialog_screenshot.png" width=420 /> <img src="/assets/compose_screenshot.png" width=420 />
 
+## Play Store Demo App
+
+https://play.google.com/store/apps/details?id=com.github.stkent.bugshaker
+
 # Getting Started
 
 (1) Specify BugShaker-Android as a dependency in your build.gradle file:
