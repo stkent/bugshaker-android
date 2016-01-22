@@ -9,7 +9,27 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
+    }
+
+    signingConfigs {
+        release {
+            String releasePropFileName =
+                    "${System.properties['user.home']}/.bugshaker/bugshaker.properties"
+
+            String releaseKeyStoreFileName =
+                    "${System.properties['user.home']}/.bugshaker/bugshaker.jks"
+
+            if (file(releasePropFileName).exists() && file(releaseKeyStoreFileName).exists()) {
+                Properties releaseProps = new Properties()
+                releaseProps.load(new FileInputStream(releasePropFileName))
+
+                storeFile file(releaseKeyStoreFileName)
+                storePassword releaseProps.pass
+                keyAlias releaseProps.alias
+                keyPassword releaseProps.pass
+            }
+        }
     }
 }
 
