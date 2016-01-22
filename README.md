@@ -1,4 +1,4 @@
-<img src="/assets/BugShaker_banner.png?raw=true" title="BugShaker" alt="The BugShaker logo" width="50%" />
+<img src="/assets/repo_banner.png?raw=true" title="BugShaker" alt="The BugShaker logo" width="50%" />
 
 Send Android bug reports via email. Shake to summon!
 
@@ -14,7 +14,7 @@ The iOS version of BugShaker was written by [Dan Trenz](https://github.com/dtren
 
 ## Screenshots
 
-<img src="/assets/nexus6dialog.png" width=420 /> <img src="/assets/nexus6compose.png" width=420 />
+<img src="/assets/dialog_screenshot.png" width=420 /> <img src="/assets/compose_screenshot.png" width=420 />
 
 # Getting Started
 
