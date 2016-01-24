@@ -1,5 +1,13 @@
 # Change Log
 
+## v1.0.0
+
+_2016-01-22_
+
+v0.9.0 has been stable in testing; promoting to 1.0.0!
+
+- Add final assets for example application.
+
 ## v0.9.0
 
 _2016-01-21_
