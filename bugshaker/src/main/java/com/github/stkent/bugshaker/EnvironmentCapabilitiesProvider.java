@@ -28,6 +28,11 @@ import java.util.List;
 
 final class EnvironmentCapabilitiesProvider {
 
+    private static final String[] DUMMY_EMAIL_ADDRESSES = new String[] {"someone@example.com"};
+    private static final String DUMMY_EMAIL_SUBJECT_LINE = "Any Subject Line";
+    private static final String DUMMY_EMAIL_BODY = "Any Body";
+    private static final Uri DUMMY_EMAIL_URI = Uri.EMPTY;
+
     @NonNull
     private final PackageManager packageManager;
 
@@ -72,23 +77,20 @@ final class EnvironmentCapabilitiesProvider {
 
     @NonNull
     private List<ResolveInfo> getEmailAppList() {
+        final Intent queryIntent = genericEmailIntentProvider.getEmailIntent(
+                DUMMY_EMAIL_ADDRESSES, DUMMY_EMAIL_SUBJECT_LINE, DUMMY_EMAIL_BODY);
+
         return packageManager.queryIntentActivities(
-                getBasicPlaceholderEmailIntent(), PackageManager.MATCH_DEFAULT_ONLY);
+                queryIntent, PackageManager.MATCH_DEFAULT_ONLY);
     }
 
     @NonNull
     private List<ResolveInfo> getEmailWithAttachmentAppList() {
-        final Intent placeholderIntent = getBasicPlaceholderEmailIntent();
-        placeholderIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, new ArrayList<Uri>());
+        final Intent queryIntent = genericEmailIntentProvider.getEmailWithAttachmentIntent(
+                DUMMY_EMAIL_ADDRESSES, DUMMY_EMAIL_SUBJECT_LINE, DUMMY_EMAIL_BODY, DUMMY_EMAIL_URI);
 
         return packageManager.queryIntentActivities(
-                placeholderIntent, PackageManager.MATCH_DEFAULT_ONLY);
-    }
-
-    @NonNull
-    private Intent getBasicPlaceholderEmailIntent() {
-        return genericEmailIntentProvider.getBasicEmailIntent(
-                new String[] {"someone@example.com"}, "Any Subject", "Any Body");
+                queryIntent, PackageManager.MATCH_DEFAULT_ONLY);
     }
 
     private void logEmailAppNames(
