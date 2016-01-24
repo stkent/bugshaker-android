@@ -50,7 +50,10 @@ final class FeedbackEmailIntentProvider {
             @NonNull final String[] emailAddresses,
             @NonNull final String emailSubjectLine) {
 
-        return getBaseFeedbackEmailIntent(emailAddresses, emailSubjectLine);
+        final String appInfo = getApplicationInfoString();
+
+        return genericEmailIntentProvider.getEmailIntent(
+                emailAddresses, emailSubjectLine, appInfo);
     }
 
     @NonNull
@@ -59,22 +62,10 @@ final class FeedbackEmailIntentProvider {
             @NonNull final String emailSubjectLine,
             @NonNull final Uri screenshotUri) {
 
-        final Intent emailIntent = getBaseFeedbackEmailIntent(emailAddresses, emailSubjectLine);
-
-        emailIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
-
-        return emailIntent;
-    }
-
-    @NonNull
-    Intent getBaseFeedbackEmailIntent(
-            @NonNull final String[] emailAddresses,
-            @NonNull final String emailSubjectLine) {
-
         final String appInfo = getApplicationInfoString();
 
-        return genericEmailIntentProvider
-                .getBasicEmailIntent(emailAddresses, emailSubjectLine, appInfo);
+        return genericEmailIntentProvider.getEmailWithAttachmentIntent(
+                emailAddresses, emailSubjectLine, appInfo, screenshotUri);
     }
 
     @NonNull

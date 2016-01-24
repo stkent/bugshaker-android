@@ -23,7 +23,7 @@ import android.support.annotation.NonNull;
 final class GenericEmailIntentProvider {
 
     @NonNull
-    Intent getBasicEmailIntent(
+    Intent getEmailIntent(
             @NonNull final String[] emailAddresses,
             @NonNull final String emailSubjectLine,
             @NonNull final String emailBody) {
@@ -33,6 +33,20 @@ final class GenericEmailIntentProvider {
         result.putExtra(Intent.EXTRA_EMAIL, emailAddresses);
         result.putExtra(Intent.EXTRA_SUBJECT, emailSubjectLine);
         result.putExtra(Intent.EXTRA_TEXT, emailBody);
+        return result;
+    }
+
+    @NonNull
+    Intent getEmailWithAttachmentIntent(
+        @NonNull final String[] emailAddresses,
+        @NonNull final String emailSubjectLine,
+        @NonNull final String emailBody,
+        @NonNull final Uri attachmentUri) {
+
+        final Intent result = getEmailIntent(emailAddresses, emailSubjectLine, emailBody);
+
+        result.putExtra(Intent.EXTRA_STREAM, attachmentUri);
+
         return result;
     }
 
