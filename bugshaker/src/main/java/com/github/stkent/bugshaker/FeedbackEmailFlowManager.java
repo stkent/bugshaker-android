@@ -127,7 +127,7 @@ final class FeedbackEmailFlowManager {
 
     void startFlowIfNeeded(
             @NonNull final String[] emailAddresses,
-            @NonNull final String emailSubjectLine,
+            @Nullable final String emailSubjectLine,
             final boolean ignoreFlagSecure) {
 
         if (isFeedbackFlowStarted()) {
