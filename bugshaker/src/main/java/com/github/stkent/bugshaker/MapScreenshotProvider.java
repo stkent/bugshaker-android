@@ -18,7 +18,17 @@ package com.github.stkent.bugshaker;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 final class MapScreenshotProvider extends BaseScreenshotProvider {
 
@@ -31,12 +41,48 @@ final class MapScreenshotProvider extends BaseScreenshotProvider {
             @NonNull final Activity activity,
             @NonNull final ScreenshotBitmapCallback callback) {
 
-        try {
-            callback.onSuccess(createBitmapOfNonMapViews(activity));
-        } catch (final InvalidActivitySizeException e) {
-            Logger.printStackTrace(e);
-            callback.onFailure();
+        final View view = getRootView(activity);
+        final List<MapView> mapViews = locateMapViewsInHierarchy(view);
+
+        if (mapViews.isEmpty()) {
+            try {
+                callback.onSuccess(createBitmapOfNonMapViews(activity));
+            } catch (final InvalidActivitySizeException e) {
+                Logger.printStackTrace(e);
+                callback.onFailure();
+            }
+        } else {
+            mapViews.get(0).getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(final GoogleMap googleMap) {
+                    googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                        @Override
+                        public void onSnapshotReady(final Bitmap bitmap) {
+                            callback.onSuccess(bitmap);
+                        }
+                    });
+                }
+            });
         }
+    }
+
+    @NonNull
+    private List<MapView> locateMapViewsInHierarchy(@NonNull final View view) {
+        final List<MapView> result = new ArrayList<>();
+
+        if (view instanceof MapView && view.getVisibility() == View.VISIBLE) {
+            // Yes, MapView is a ViewGroup, but I never want to see anyone nesting a MapView
+            // inside another MapView...
+            result.add((MapView) view);
+        } else if (view instanceof ViewGroup) {
+            final ViewGroup viewGroup = (ViewGroup) view;
+
+            for (int childIndex = 0; childIndex < viewGroup.getChildCount(); childIndex++) {
+                result.addAll(locateMapViewsInHierarchy(viewGroup.getChildAt(childIndex)));
+            }
+        }
+
+        return result;
     }
 
 }
