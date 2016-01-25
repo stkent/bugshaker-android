@@ -187,7 +187,7 @@ public final class BugShaker implements ShakeDetector.Listener {
             Class.forName(
                     "com.google.android.gms.maps.GoogleMap",
                     false,
-                    ClassLoader.getSystemClassLoader());
+                    BugShaker.class.getClassLoader());
 
             return new MapScreenshotProvider(applicationContext);
         } catch (final ClassNotFoundException e) {
