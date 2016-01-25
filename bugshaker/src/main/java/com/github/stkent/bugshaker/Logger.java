@@ -45,9 +45,9 @@ final class Logger {
         }
     }
 
-    static void printStackTrace(@NonNull final Exception exception) {
+    static void printStackTrace(@NonNull final Throwable throwable) {
         if (loggingEnabled) {
-            Log.e(TAG, "Logging caught exception", exception);
+            Log.e(TAG, "Logging caught exception", throwable);
         }
     }
 

@@ -32,6 +32,10 @@ import android.view.WindowManager;
 import java.util.Arrays;
 import java.util.List;
 
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 final class FeedbackEmailFlowManager {
 
     private static final int FLAG_SECURE_VALUE = 0x00002000;
@@ -71,21 +75,29 @@ final class FeedbackEmailFlowManager {
 
             if (shouldAttemptToCaptureScreenshot(activity)) {
                 if (environmentCapabilitiesProvider.canSendEmailsWithAttachments()) {
-                    screenshotProvider.getScreenshotUri(activity, new ScreenshotUriCallback() {
-                        @Override
-                        public void onSuccess(@NonNull final Uri screenshotUri) {
-                            sendEmailWithScreenshot(activity, screenshotUri);
-                        }
+                    screenshotProvider.getScreenshotUri(activity)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.io())
+                            .subscribe(new Subscriber<Uri>() {
+                                @Override
+                                public void onCompleted() {
+                                    // This method intentionally left blank.
+                                }
 
-                        @Override
-                        public void onFailure() {
-                            final String errorString = "Screenshot capture failed";
-                            toaster.toast(errorString);
-                            Logger.e(errorString);
+                                @Override
+                                public void onError(final Throwable e) {
+                                    final String errorString = "Screenshot capture failed";
+                                    toaster.toast(errorString);
+                                    Logger.e(errorString);
 
-                            sendEmailWithoutScreenshot(activity);
-                        }
-                    });
+                                    sendEmailWithoutScreenshot(activity);
+                                }
+
+                                @Override
+                                public void onNext(final Uri uri) {
+                                    sendEmailWithScreenshot(activity, uri);
+                                }
+                            });
                 } else {
                     sendEmailWithoutScreenshot(activity);
                 }
@@ -169,7 +181,7 @@ final class FeedbackEmailFlowManager {
     }
 
     private boolean shouldAttemptToCaptureScreenshot(@NonNull final Activity activity) {
-        final int windowFlags = activity.getWindow().getAttributes().flags;
+        final int windowFlags = ActivityUtils.getWindow(activity).getAttributes().flags;
 
         final boolean isWindowSecured =
                 (windowFlags & WindowManager.LayoutParams.FLAG_SECURE) == FLAG_SECURE_VALUE;

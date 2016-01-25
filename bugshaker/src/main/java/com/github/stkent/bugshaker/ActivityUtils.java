@@ -16,12 +16,23 @@
  */
 package com.github.stkent.bugshaker;
 
-import android.net.Uri;
+import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.view.View;
+import android.view.Window;
 
-interface ScreenshotUriCallback {
+final class ActivityUtils {
 
-    void onSuccess(@NonNull final Uri screenshotUri);
-    void onFailure();
+    static Window getWindow(@NonNull final Activity activity) {
+        return activity.getWindow();
+    }
+
+    static View getRootView(@NonNull final Activity activity) {
+        return getWindow(activity).getDecorView().getRootView();
+    }
+
+    private ActivityUtils() {
+
+    }
 
 }

@@ -19,9 +19,27 @@ package com.github.stkent.bugshaker;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-interface ScreenshotBitmapCallback {
+final class LocatedBitmap {
 
-    void onSuccess(@NonNull final Bitmap screenshotBitmap);
-    void onFailure();
+    @NonNull
+    private final Bitmap bitmap;
+
+    @NonNull
+    private final int[] location;
+
+    LocatedBitmap(@NonNull final Bitmap bitmap, @NonNull final int[] location) {
+        this.bitmap = bitmap;
+        this.location = location;
+    }
+
+    @NonNull
+    Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    @NonNull
+    int[] getLocation() {
+        return location;
+    }
 
 }

@@ -17,12 +17,13 @@
 package com.github.stkent.bugshaker;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+
+import rx.Observable;
 
 interface ScreenshotProvider {
 
-    void getScreenshotUri(
-            @NonNull final Activity activity,
-            @NonNull final ScreenshotUriCallback callback);
+    Observable<Uri> getScreenshotUri(@NonNull final Activity activity);
 
 }

@@ -19,51 +19,88 @@ package com.github.stkent.bugshaker;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
+import rx.functions.Func1;
+import rx.functions.Func2;
+
 final class MapScreenshotProvider extends BaseScreenshotProvider {
+
+    private static final Func2<Bitmap, List<LocatedBitmap>, Bitmap> BITMAP_COMBINING_FUNCTION
+            = new Func2<Bitmap, List<LocatedBitmap>, Bitmap>() {
+                @Override
+                public Bitmap call(
+                        final Bitmap baseLocatedBitmap,
+                        final List<LocatedBitmap> overlayLocatedBitmaps) {
+
+                    for (final LocatedBitmap locatedBitmap : overlayLocatedBitmaps) {
+                        final Canvas canvas = new Canvas(baseLocatedBitmap);
+                        final int[] overlayLocation = locatedBitmap.getLocation();
+
+                        canvas.drawBitmap(
+                                locatedBitmap.getBitmap(),
+                                overlayLocation[0],
+                                overlayLocation[1],
+                                MAP_PAINT);
+                    }
+
+                    return baseLocatedBitmap;
+                }
+    };
+
+    private static final Paint MAP_PAINT = new Paint();
+
+    static {
+        MAP_PAINT.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
+    }
 
     MapScreenshotProvider(@NonNull final Context applicationContext) {
         super(applicationContext);
     }
 
+    @NonNull
     @Override
-    protected void getScreenshotBitmap(
-            @NonNull final Activity activity,
-            @NonNull final ScreenshotBitmapCallback callback) {
+    protected Observable<Bitmap> getScreenshotBitmap(@NonNull final Activity activity) {
+        final Observable<Bitmap> nonMapViewsBitmapObservable = getNonMapViewsBitmap(activity);
 
-        final View view = getRootView(activity);
-        final List<MapView> mapViews = locateMapViewsInHierarchy(view);
+        final View rootView = ActivityUtils.getRootView(activity);
+        final List<MapView> mapViews = locateMapViewsInHierarchy(rootView);
 
         if (mapViews.isEmpty()) {
-            try {
-                callback.onSuccess(createBitmapOfNonMapViews(activity));
-            } catch (final InvalidActivitySizeException e) {
-                Logger.printStackTrace(e);
-                callback.onFailure();
-            }
+            return nonMapViewsBitmapObservable;
         } else {
-            mapViews.get(0).getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(final GoogleMap googleMap) {
-                    googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-                        @Override
-                        public void onSnapshotReady(final Bitmap bitmap) {
-                            callback.onSuccess(bitmap);
-                        }
-                    });
-                }
-            });
+            final Observable<List<LocatedBitmap>> mapViewBitmapsObservable
+                    = getMapViewBitmapsObservable(mapViews);
+
+            return Observable
+                    .zip(nonMapViewsBitmapObservable, mapViewBitmapsObservable, BITMAP_COMBINING_FUNCTION);
+
         }
+    }
+
+    @NonNull
+    private Observable<List<LocatedBitmap>> getMapViewBitmapsObservable(@NonNull final List<MapView> mapViews) {
+        return Observable
+                .from(mapViews)
+                .concatMap(new Func1<MapView, Observable<LocatedBitmap>>() {
+                    @Override
+                    public Observable<LocatedBitmap> call(@NonNull final MapView mapView) {
+                        return MapBitmapObservable.create(mapView);
+                    }
+                })
+                .toList();
     }
 
     @NonNull
