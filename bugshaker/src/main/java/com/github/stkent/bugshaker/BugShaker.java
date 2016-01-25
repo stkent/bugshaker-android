@@ -189,8 +189,12 @@ public final class BugShaker implements ShakeDetector.Listener {
                     false,
                     BugShaker.class.getClassLoader());
 
+            Logger.d("Detected that embedding app includes Google Maps as a dependency.");
+
             return new MapScreenshotProvider(applicationContext);
         } catch (final ClassNotFoundException e) {
+            Logger.d("Detected that embedding app does not include Google Maps as a dependency.");
+
             return new BasicScreenShotProvider(applicationContext);
         }
     }
