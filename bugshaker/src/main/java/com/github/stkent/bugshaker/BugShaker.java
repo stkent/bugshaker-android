@@ -32,8 +32,6 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 public final class BugShaker implements ShakeDetector.Listener {
 
-    private static final String DEFAULT_SUBJECT_LINE = "Android App Feedback";
-
     private static BugShaker sharedInstance;
 
     private final Application application;
@@ -43,7 +41,7 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     private boolean isConfigured = false;
     private String[] emailAddresses;
-    private String emailSubjectLine = DEFAULT_SUBJECT_LINE;
+    private String emailSubjectLine;
     private boolean ignoreFlagSecure = false;
 
     private final SimpleActivityLifecycleCallback simpleActivityLifecycleCallback
