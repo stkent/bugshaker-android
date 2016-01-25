@@ -23,6 +23,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,6 +31,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 final class FeedbackEmailIntentProvider {
+
+    private static final String DEFAULT_EMAIL_SUBJECT_LINE_SUFFIX = " Android App Feedback";
 
     @NonNull
     private final Context applicationContext;
@@ -48,24 +51,33 @@ final class FeedbackEmailIntentProvider {
     @NonNull
     Intent getFeedbackEmailIntent(
             @NonNull final String[] emailAddresses,
-            @NonNull final String emailSubjectLine) {
+            @Nullable final String userProvidedEmailSubjectLine) {
 
         final String appInfo = getApplicationInfoString();
+        final String emailSubjectLine = getEmailSubjectLine(userProvidedEmailSubjectLine);
 
-        return genericEmailIntentProvider.getEmailIntent(
-                emailAddresses, emailSubjectLine, appInfo);
+        return genericEmailIntentProvider
+                .getEmailIntent(emailAddresses, emailSubjectLine, appInfo);
     }
 
     @NonNull
     Intent getFeedbackEmailIntent(
             @NonNull final String[] emailAddresses,
-            @NonNull final String emailSubjectLine,
+            @Nullable final String userProvidedEmailSubjectLine,
             @NonNull final Uri screenshotUri) {
 
         final String appInfo = getApplicationInfoString();
+        final String emailSubjectLine = getEmailSubjectLine(userProvidedEmailSubjectLine);
 
-        return genericEmailIntentProvider.getEmailWithAttachmentIntent(
-                emailAddresses, emailSubjectLine, appInfo, screenshotUri);
+        return genericEmailIntentProvider
+                .getEmailWithAttachmentIntent(
+                        emailAddresses, emailSubjectLine, appInfo, screenshotUri);
+    }
+
+    @NonNull
+    private CharSequence getApplicationName() {
+        return applicationContext.getApplicationInfo()
+                .loadLabel(applicationContext.getPackageManager());
     }
 
     @NonNull
@@ -80,6 +92,15 @@ final class FeedbackEmailIntentProvider {
                 + "\n"
                 + "---------------------"
                 + "\n\n\n";
+    }
+
+    @NonNull
+    private String getEmailSubjectLine(@Nullable final String userProvidedEmailSubjectLine) {
+        if (userProvidedEmailSubjectLine != null) {
+            return userProvidedEmailSubjectLine;
+        }
+
+        return getApplicationName() + DEFAULT_EMAIL_SUBJECT_LINE_SUFFIX;
     }
 
     @NonNull
