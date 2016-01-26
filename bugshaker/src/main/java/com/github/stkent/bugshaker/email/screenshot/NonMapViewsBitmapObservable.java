@@ -36,6 +36,12 @@ import rx.Subscriber;
 
 final class NonMapViewsBitmapObservable {
 
+    private static final Paint VIEW_PAINT = new Paint();
+
+    static {
+        VIEW_PAINT.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+    }
+
     @NonNull
     static Observable<Bitmap> create(@NonNull final Activity activity) {
         return Observable.create(new Observable.OnSubscribe<Bitmap>() {
@@ -88,12 +94,6 @@ final class NonMapViewsBitmapObservable {
         screen.getSize(screenSize);
 
         return Bitmap.createBitmap(screenSize.x, screenSize.y, Bitmap.Config.ARGB_8888);
-    }
-
-    private static final Paint VIEW_PAINT = new Paint();
-
-    static {
-        VIEW_PAINT.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
     }
 
     private NonMapViewsBitmapObservable() {

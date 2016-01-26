@@ -49,7 +49,7 @@ final class MapBitmapObservable {
 
                                     subscriber.onCompleted();
                                 } else {
-                                    subscriber.onError(new NullPointerException());
+                                    subscriber.onError(new MapSnapshotFailedException());
                                 }
                             }
                         });
