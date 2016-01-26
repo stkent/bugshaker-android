@@ -14,16 +14,16 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.screenshots;
 
-/**
- * Exception thrown to indicate that we attempted to capture a screenshot of an Activity
- * whose width and/or height is 0.
- */
-final class InvalidActivitySizeException extends Exception {
+import android.app.Activity;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 
-    InvalidActivitySizeException(final Throwable throwable) {
-        super(throwable);
-    }
+import rx.Observable;
+
+public interface ScreenshotProvider {
+
+    Observable<Uri> getScreenshotUri(@NonNull final Activity activity);
 
 }

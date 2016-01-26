@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.screenshots;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,6 +27,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.stkent.bugshaker.ActivityUtils;
 import com.google.android.gms.maps.MapView;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ import rx.Observable;
 import rx.functions.Func1;
 import rx.functions.Func2;
 
-final class MapScreenshotProvider extends BaseScreenshotProvider {
+public final class MapScreenshotProvider extends BaseScreenshotProvider {
 
     private static final Func2<Bitmap, List<LocatedBitmap>, Bitmap> BITMAP_COMBINING_FUNCTION
             = new Func2<Bitmap, List<LocatedBitmap>, Bitmap>() {
@@ -66,7 +67,7 @@ final class MapScreenshotProvider extends BaseScreenshotProvider {
         MAP_PAINT.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
     }
 
-    MapScreenshotProvider(@NonNull final Context applicationContext) {
+    public MapScreenshotProvider(@NonNull final Context applicationContext) {
         super(applicationContext);
     }
 

@@ -14,32 +14,16 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.screenshots;
 
-import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
+/**
+ * Exception thrown to indicate that we attempted to capture a screenshot of an Activity
+ * whose width and/or height is 0.
+ */
+final class InvalidActivitySizeException extends Exception {
 
-final class LocatedBitmap {
-
-    @NonNull
-    private final Bitmap bitmap;
-
-    @NonNull
-    private final int[] location;
-
-    LocatedBitmap(@NonNull final Bitmap bitmap, @NonNull final int[] location) {
-        this.bitmap = bitmap;
-        this.location = location;
-    }
-
-    @NonNull
-    Bitmap getBitmap() {
-        return bitmap;
-    }
-
-    @NonNull
-    int[] getLocation() {
-        return location;
+    InvalidActivitySizeException(final Throwable throwable) {
+        super(throwable);
     }
 
 }

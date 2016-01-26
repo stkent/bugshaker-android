@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.screenshots;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -27,6 +27,9 @@ import android.support.annotation.NonNull;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
+
+import com.github.stkent.bugshaker.ActivityUtils;
+import com.github.stkent.bugshaker.Logger;
 
 import rx.Observable;
 import rx.Subscriber;

@@ -22,6 +22,9 @@ import android.content.Context;
 import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 
+import com.github.stkent.bugshaker.screenshots.BasicScreenShotProvider;
+import com.github.stkent.bugshaker.screenshots.MapScreenshotProvider;
+import com.github.stkent.bugshaker.screenshots.ScreenshotProvider;
 import com.squareup.seismic.ShakeDetector;
 
 import static android.content.Context.SENSOR_SERVICE;

@@ -19,7 +19,7 @@ package com.github.stkent.bugshaker;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-final class Logger {
+public final class Logger {
 
     private static final String TAG = "BugShaker-Library";
 
@@ -33,19 +33,19 @@ final class Logger {
         Logger.loggingEnabled = loggingEnabled;
     }
 
-    static void d(@NonNull final CharSequence message) {
+    public static void d(@NonNull final CharSequence message) {
         if (loggingEnabled) {
             Log.d(TAG, message.toString());
         }
     }
 
-    static void e(@NonNull final CharSequence message) {
+    public static void e(@NonNull final CharSequence message) {
         if (loggingEnabled) {
             Log.e(TAG, message.toString());
         }
     }
 
-    static void printStackTrace(@NonNull final Throwable throwable) {
+    public static void printStackTrace(@NonNull final Throwable throwable) {
         if (loggingEnabled) {
             Log.e(TAG, "Logging caught exception", throwable);
         }

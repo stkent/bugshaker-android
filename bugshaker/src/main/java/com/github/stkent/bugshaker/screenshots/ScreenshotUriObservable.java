@@ -14,13 +14,15 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.screenshots;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+
+import com.github.stkent.bugshaker.Logger;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

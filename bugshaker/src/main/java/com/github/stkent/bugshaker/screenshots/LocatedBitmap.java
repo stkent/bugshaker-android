@@ -14,16 +14,32 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.screenshots;
 
-import android.app.Activity;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-import rx.Observable;
+final class LocatedBitmap {
 
-interface ScreenshotProvider {
+    @NonNull
+    private final Bitmap bitmap;
 
-    Observable<Uri> getScreenshotUri(@NonNull final Activity activity);
+    @NonNull
+    private final int[] location;
+
+    LocatedBitmap(@NonNull final Bitmap bitmap, @NonNull final int[] location) {
+        this.bitmap = bitmap;
+        this.location = location;
+    }
+
+    @NonNull
+    Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    @NonNull
+    int[] getLocation() {
+        return location;
+    }
 
 }

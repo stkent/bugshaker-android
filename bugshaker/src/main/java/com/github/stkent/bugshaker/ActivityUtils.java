@@ -21,13 +21,13 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
 
-final class ActivityUtils {
+public final class ActivityUtils {
 
-    static Window getWindow(@NonNull final Activity activity) {
+    public static Window getWindow(@NonNull final Activity activity) {
         return activity.getWindow();
     }
 
-    static View getRootView(@NonNull final Activity activity) {
+    public static View getRootView(@NonNull final Activity activity) {
         return getWindow(activity).getDecorView().getRootView();
     }
 
