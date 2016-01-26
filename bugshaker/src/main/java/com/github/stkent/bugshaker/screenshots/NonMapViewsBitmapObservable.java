@@ -28,8 +28,8 @@ import android.view.Display;
 import android.view.View;
 import android.view.Window;
 
-import com.github.stkent.bugshaker.ActivityUtils;
-import com.github.stkent.bugshaker.Logger;
+import com.github.stkent.bugshaker.utilities.ActivityUtils;
+import com.github.stkent.bugshaker.utilities.Logger;
 
 import rx.Observable;
 import rx.Subscriber;

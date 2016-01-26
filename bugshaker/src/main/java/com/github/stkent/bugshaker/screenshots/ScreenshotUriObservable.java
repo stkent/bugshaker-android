@@ -22,7 +22,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 
-import com.github.stkent.bugshaker.Logger;
+import com.github.stkent.bugshaker.utilities.Logger;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

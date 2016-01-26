@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.utilities;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -29,7 +29,7 @@ public final class Logger {
 
     }
 
-    static void setLoggingEnabled(final boolean loggingEnabled) {
+    public static void setLoggingEnabled(final boolean loggingEnabled) {
         Logger.loggingEnabled = loggingEnabled;
     }
 

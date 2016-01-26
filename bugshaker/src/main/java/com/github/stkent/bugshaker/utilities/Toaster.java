@@ -14,25 +14,27 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.utilities;
 
-import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
-import android.view.View;
-import android.view.Window;
+import android.widget.Toast;
 
-public final class ActivityUtils {
+public final class Toaster {
 
-    public static Window getWindow(@NonNull final Activity activity) {
-        return activity.getWindow();
+    @NonNull
+    private final Context applicationContext;
+
+    public Toaster(@NonNull final Context applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
-    public static View getRootView(@NonNull final Activity activity) {
-        return getWindow(activity).getDecorView().getRootView();
-    }
-
-    private ActivityUtils() {
-
+    public void toast(@NonNull final String message) {
+        Toast.makeText(
+                applicationContext,
+                message,
+                Toast.LENGTH_LONG)
+                .show();
     }
 
 }

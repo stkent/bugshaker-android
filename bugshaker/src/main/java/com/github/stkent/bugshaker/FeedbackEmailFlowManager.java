@@ -30,6 +30,9 @@ import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.github.stkent.bugshaker.screenshots.ScreenshotProvider;
+import com.github.stkent.bugshaker.utilities.ActivityUtils;
+import com.github.stkent.bugshaker.utilities.Logger;
+import com.github.stkent.bugshaker.utilities.Toaster;
 
 import java.util.Arrays;
 import java.util.List;
