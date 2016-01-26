@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.screenshots;
+package com.github.stkent.bugshaker.email.screenshot.maps;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,6 +27,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.stkent.bugshaker.email.screenshot.BaseScreenshotProvider;
 import com.github.stkent.bugshaker.utilities.ActivityUtils;
 import com.google.android.gms.maps.MapView;
 
@@ -73,7 +74,7 @@ public final class MapScreenshotProvider extends BaseScreenshotProvider {
 
     @NonNull
     @Override
-    protected Observable<Bitmap> getScreenshotBitmap(@NonNull final Activity activity) {
+    public Observable<Bitmap> getScreenshotBitmap(@NonNull final Activity activity) {
         final Observable<Bitmap> nonMapViewsBitmapObservable = getNonMapViewsBitmap(activity);
 
         final View rootView = ActivityUtils.getRootView(activity);

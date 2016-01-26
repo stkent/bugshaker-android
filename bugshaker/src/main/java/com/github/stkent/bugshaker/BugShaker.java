@@ -22,9 +22,13 @@ import android.content.Context;
 import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 
-import com.github.stkent.bugshaker.screenshots.BasicScreenShotProvider;
-import com.github.stkent.bugshaker.screenshots.MapScreenshotProvider;
-import com.github.stkent.bugshaker.screenshots.ScreenshotProvider;
+import com.github.stkent.bugshaker.email.EmailCapabilitiesProvider;
+import com.github.stkent.bugshaker.email.FeedbackEmailFlowManager;
+import com.github.stkent.bugshaker.email.FeedbackEmailIntentProvider;
+import com.github.stkent.bugshaker.email.GenericEmailIntentProvider;
+import com.github.stkent.bugshaker.email.screenshot.BasicScreenShotProvider;
+import com.github.stkent.bugshaker.email.screenshot.maps.MapScreenshotProvider;
+import com.github.stkent.bugshaker.email.screenshot.ScreenshotProvider;
 import com.github.stkent.bugshaker.utilities.Logger;
 import com.github.stkent.bugshaker.utilities.Toaster;
 import com.squareup.seismic.ShakeDetector;
@@ -41,7 +45,7 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     private final Application application;
     private final Context applicationContext;
-    private final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider;
+    private final EmailCapabilitiesProvider emailCapabilitiesProvider;
     private final FeedbackEmailFlowManager feedbackEmailFlowManager;
 
     private boolean isConfigured = false;
@@ -84,12 +88,11 @@ public final class BugShaker implements ShakeDetector.Listener {
         final GenericEmailIntentProvider genericEmailIntentProvider
                 = new GenericEmailIntentProvider();
 
-        this.environmentCapabilitiesProvider = new EnvironmentCapabilitiesProvider(
+        this.emailCapabilitiesProvider = new EmailCapabilitiesProvider(
                 applicationContext.getPackageManager(), genericEmailIntentProvider);
 
         this.feedbackEmailFlowManager = new FeedbackEmailFlowManager(
-                applicationContext,
-                environmentCapabilitiesProvider,
+                applicationContext, emailCapabilitiesProvider,
                 new Toaster(applicationContext),
                 new ActivityReferenceManager(),
                 new FeedbackEmailIntentProvider(applicationContext, genericEmailIntentProvider),
@@ -153,7 +156,7 @@ public final class BugShaker implements ShakeDetector.Listener {
                     "You MUST call setEmailAddresses before calling start.");
         }
 
-        if (environmentCapabilitiesProvider.canSendEmails()) {
+        if (emailCapabilitiesProvider.canSendEmails()) {
             application.registerActivityLifecycleCallbacks(simpleActivityLifecycleCallback);
 
             final SensorManager sensorManager

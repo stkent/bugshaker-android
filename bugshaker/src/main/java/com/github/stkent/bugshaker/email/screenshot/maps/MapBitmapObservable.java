@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.screenshots;
+package com.github.stkent.bugshaker.email.screenshot.maps;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;

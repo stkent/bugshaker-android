@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.screenshots;
+package com.github.stkent.bugshaker.email.screenshot;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,17 +25,17 @@ import android.support.annotation.NonNull;
 import rx.Observable;
 import rx.functions.Func1;
 
-abstract class BaseScreenshotProvider implements ScreenshotProvider {
+public abstract class BaseScreenshotProvider implements ScreenshotProvider {
 
     @NonNull
     private final Context applicationContext;
 
-    BaseScreenshotProvider(@NonNull final Context applicationContext) {
+    public BaseScreenshotProvider(@NonNull final Context applicationContext) {
         this.applicationContext = applicationContext;
     }
 
     @NonNull
-    abstract Observable<Bitmap> getScreenshotBitmap(@NonNull final Activity activity);
+    public abstract Observable<Bitmap> getScreenshotBitmap(@NonNull final Activity activity);
 
     @NonNull
     @Override

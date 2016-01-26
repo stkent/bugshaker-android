@@ -14,13 +14,13 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.email;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-final class GenericEmailIntentProvider {
+public final class GenericEmailIntentProvider {
 
     @NonNull
     Intent getEmailIntent(

@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.email;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,7 +29,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
-import com.github.stkent.bugshaker.screenshots.ScreenshotProvider;
+import com.github.stkent.bugshaker.ActivityReferenceManager;
+import com.github.stkent.bugshaker.email.screenshot.ScreenshotProvider;
 import com.github.stkent.bugshaker.utilities.ActivityUtils;
 import com.github.stkent.bugshaker.utilities.Logger;
 import com.github.stkent.bugshaker.utilities.Toaster;
@@ -41,7 +42,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-final class FeedbackEmailFlowManager {
+public final class FeedbackEmailFlowManager {
 
     private static final int FLAG_SECURE_VALUE = 0x00002000;
 
@@ -55,7 +56,7 @@ final class FeedbackEmailFlowManager {
     private final ActivityReferenceManager activityReferenceManager;
 
     @NonNull
-    private final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider;
+    private final EmailCapabilitiesProvider emailCapabilitiesProvider;
 
     @NonNull
     private final FeedbackEmailIntentProvider feedbackEmailIntentProvider;
@@ -79,7 +80,7 @@ final class FeedbackEmailFlowManager {
             }
 
             if (shouldAttemptToCaptureScreenshot(activity)) {
-                if (environmentCapabilitiesProvider.canSendEmailsWithAttachments()) {
+                if (emailCapabilitiesProvider.canSendEmailsWithAttachments()) {
                     screenshotProvider.getScreenshotUri(activity)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(Schedulers.io())
@@ -117,32 +118,32 @@ final class FeedbackEmailFlowManager {
         }
     };
 
-    FeedbackEmailFlowManager(
+    public FeedbackEmailFlowManager(
             @NonNull final Context applicationContext,
-            @NonNull final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider,
+            @NonNull final EmailCapabilitiesProvider emailCapabilitiesProvider,
             @NonNull final Toaster toaster,
             @NonNull final ActivityReferenceManager activityReferenceManager,
             @NonNull final FeedbackEmailIntentProvider feedbackEmailIntentProvider,
             @NonNull final ScreenshotProvider screenshotProvider) {
 
         this.applicationContext = applicationContext;
-        this.environmentCapabilitiesProvider = environmentCapabilitiesProvider;
+        this.emailCapabilitiesProvider = emailCapabilitiesProvider;
         this.toaster = toaster;
         this.activityReferenceManager = activityReferenceManager;
         this.feedbackEmailIntentProvider = feedbackEmailIntentProvider;
         this.screenshotProvider = screenshotProvider;
     }
 
-    void onActivityResumed(@NonNull final Activity activity) {
+    public void onActivityResumed(@NonNull final Activity activity) {
         dismissDialog();
         activityReferenceManager.setActivity(activity);
     }
 
-    void onActivityStopped() {
+    public void onActivityStopped() {
         dismissDialog();
     }
 
-    void startFlowIfNeeded(
+    public void startFlowIfNeeded(
             @NonNull final String[] emailAddresses,
             @Nullable final String emailSubjectLine,
             final boolean ignoreFlagSecure) {
