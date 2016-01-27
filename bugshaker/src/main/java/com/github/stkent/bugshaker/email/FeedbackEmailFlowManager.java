@@ -81,6 +81,7 @@ public final class FeedbackEmailFlowManager {
             if (shouldAttemptToCaptureScreenshot(activity)) {
                 if (emailCapabilitiesProvider.canSendEmailsWithAttachments()) {
                     screenshotProvider.getScreenshotUri(activity)
+                            .single()
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<Uri>() {
