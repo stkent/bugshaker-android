@@ -14,12 +14,13 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.email;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -28,11 +29,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
-import java.io.IOException;
+import com.github.stkent.bugshaker.ActivityReferenceManager;
+import com.github.stkent.bugshaker.email.screenshot.ScreenshotProvider;
+import com.github.stkent.bugshaker.utilities.ActivityUtils;
+import com.github.stkent.bugshaker.utilities.Logger;
+import com.github.stkent.bugshaker.utilities.Toaster;
+
 import java.util.Arrays;
 import java.util.List;
 
-final class FeedbackEmailFlowManager {
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+
+public final class FeedbackEmailFlowManager {
 
     private static final int FLAG_SECURE_VALUE = 0x00002000;
 
@@ -46,7 +55,7 @@ final class FeedbackEmailFlowManager {
     private final ActivityReferenceManager activityReferenceManager;
 
     @NonNull
-    private final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider;
+    private final EmailCapabilitiesProvider emailCapabilitiesProvider;
 
     @NonNull
     private final FeedbackEmailIntentProvider feedbackEmailIntentProvider;
@@ -61,7 +70,7 @@ final class FeedbackEmailFlowManager {
     private String emailSubjectLine;
     private boolean ignoreFlagSecure;
 
-    private final DialogInterface.OnClickListener reportBugClickListener = new DialogInterface.OnClickListener() {
+    private final OnClickListener reportBugClickListener = new OnClickListener() {
         @Override
         public void onClick(final DialogInterface dialog, final int which) {
             final Activity activity = activityReferenceManager.getValidatedActivity();
@@ -70,21 +79,32 @@ final class FeedbackEmailFlowManager {
             }
 
             if (shouldAttemptToCaptureScreenshot(activity)) {
-                if (environmentCapabilitiesProvider.canSendEmailsWithAttachments()) {
-                    try {
-                        sendEmailWithScreenshot(activity);
-                    } catch (final IOException exception) {
-                        final String errorString = "Screenshot capture failed";
+                if (emailCapabilitiesProvider.canSendEmailsWithAttachments()) {
+                    screenshotProvider.getScreenshotUri(activity)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Subscriber<Uri>() {
+                                @Override
+                                public void onCompleted() {
+                                    // This method intentionally left blank.
+                                }
 
-                        toaster.toast(errorString);
+                                @Override
+                                public void onError(final Throwable e) {
+                                    final String errorString = "Screenshot capture failed";
+                                    toaster.toast(errorString);
+                                    Logger.e(errorString);
 
-                        Logger.e(errorString);
-                        Logger.printStackTrace(exception);
+                                    sendEmailWithoutScreenshot(activity);
+                                }
 
-                        sendEmailWithNoScreenshot(activity);
-                    }
+                                @Override
+                                public void onNext(final Uri uri) {
+                                    sendEmailWithScreenshot(activity, uri);
+                                }
+                            });
                 } else {
-                    sendEmailWithNoScreenshot(activity);
+                    sendEmailWithoutScreenshot(activity);
                 }
             } else {
                 final String warningString = "Window is secured; no screenshot taken";
@@ -92,37 +112,37 @@ final class FeedbackEmailFlowManager {
                 toaster.toast(warningString);
                 Logger.d(warningString);
 
-                sendEmailWithNoScreenshot(activity);
+                sendEmailWithoutScreenshot(activity);
             }
         }
     };
 
-    FeedbackEmailFlowManager(
+    public FeedbackEmailFlowManager(
             @NonNull final Context applicationContext,
-            @NonNull final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider,
+            @NonNull final EmailCapabilitiesProvider emailCapabilitiesProvider,
             @NonNull final Toaster toaster,
             @NonNull final ActivityReferenceManager activityReferenceManager,
             @NonNull final FeedbackEmailIntentProvider feedbackEmailIntentProvider,
             @NonNull final ScreenshotProvider screenshotProvider) {
 
         this.applicationContext = applicationContext;
-        this.environmentCapabilitiesProvider = environmentCapabilitiesProvider;
+        this.emailCapabilitiesProvider = emailCapabilitiesProvider;
         this.toaster = toaster;
         this.activityReferenceManager = activityReferenceManager;
         this.feedbackEmailIntentProvider = feedbackEmailIntentProvider;
         this.screenshotProvider = screenshotProvider;
     }
 
-    void onActivityResumed(@NonNull final Activity activity) {
+    public void onActivityResumed(@NonNull final Activity activity) {
         dismissDialog();
         activityReferenceManager.setActivity(activity);
     }
 
-    void onActivityStopped() {
+    public void onActivityStopped() {
         dismissDialog();
     }
 
-    void startFlowIfNeeded(
+    public void startFlowIfNeeded(
             @NonNull final String[] emailAddresses,
             @Nullable final String emailSubjectLine,
             final boolean ignoreFlagSecure) {
@@ -166,7 +186,7 @@ final class FeedbackEmailFlowManager {
     }
 
     private boolean shouldAttemptToCaptureScreenshot(@NonNull final Activity activity) {
-        final int windowFlags = activity.getWindow().getAttributes().flags;
+        final int windowFlags = ActivityUtils.getWindow(activity).getAttributes().flags;
 
         final boolean isWindowSecured =
                 (windowFlags & WindowManager.LayoutParams.FLAG_SECURE) == FLAG_SECURE_VALUE;
@@ -186,8 +206,9 @@ final class FeedbackEmailFlowManager {
         return result;
     }
 
-    private void sendEmailWithScreenshot(@NonNull final Activity activity) throws IOException {
-        final Uri screenshotUri = screenshotProvider.getScreenshotUri(activity);
+    private void sendEmailWithScreenshot(
+            @NonNull final Activity activity,
+            @NonNull final Uri screenshotUri) {
 
         final Intent feedbackEmailIntent = feedbackEmailIntentProvider
                 .getFeedbackEmailIntent(emailAddresses, emailSubjectLine, screenshotUri);
@@ -199,7 +220,7 @@ final class FeedbackEmailFlowManager {
             // FIXME: revoke these permissions at some point!
             applicationContext.grantUriPermission(
                     receivingApplicationInfo.activityInfo.packageName,
-                    (Uri) feedbackEmailIntent.getParcelableExtra(Intent.EXTRA_STREAM),
+                    screenshotUri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
 
@@ -208,7 +229,7 @@ final class FeedbackEmailFlowManager {
         Logger.d("Sending email with screenshot.");
     }
 
-    private void sendEmailWithNoScreenshot(@NonNull final Activity activity) {
+    private void sendEmailWithoutScreenshot(@NonNull final Activity activity) {
         final Intent feedbackEmailIntent = feedbackEmailIntentProvider
                 .getFeedbackEmailIntent(emailAddresses, emailSubjectLine);
 

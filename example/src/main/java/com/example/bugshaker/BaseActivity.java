@@ -39,6 +39,15 @@ abstract class BaseActivity extends AppCompatActivity {
             case R.id.unsecured_activity_menu_entry:
                 startActivity(new Intent(this, UnsecuredActivity.class));
                 return true;
+            case R.id.map_view_activity_menu_entry:
+                startActivity(new Intent(this, MapViewActivity.class));
+                return true;
+            case R.id.map_fragment_activity_menu_entry:
+                startActivity(new Intent(this, MapFragmentActivity.class));
+                return true;
+            case R.id.surface_view_activity_menu_entry:
+                startActivity(new Intent(this, SurfaceViewActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -22,6 +22,15 @@ import android.content.Context;
 import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 
+import com.github.stkent.bugshaker.email.EmailCapabilitiesProvider;
+import com.github.stkent.bugshaker.email.FeedbackEmailFlowManager;
+import com.github.stkent.bugshaker.email.FeedbackEmailIntentProvider;
+import com.github.stkent.bugshaker.email.GenericEmailIntentProvider;
+import com.github.stkent.bugshaker.email.screenshot.BasicScreenShotProvider;
+import com.github.stkent.bugshaker.email.screenshot.maps.MapScreenshotProvider;
+import com.github.stkent.bugshaker.email.screenshot.ScreenshotProvider;
+import com.github.stkent.bugshaker.utilities.Logger;
+import com.github.stkent.bugshaker.utilities.Toaster;
 import com.squareup.seismic.ShakeDetector;
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -36,7 +45,7 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     private final Application application;
     private final Context applicationContext;
-    private final EnvironmentCapabilitiesProvider environmentCapabilitiesProvider;
+    private final EmailCapabilitiesProvider emailCapabilitiesProvider;
     private final FeedbackEmailFlowManager feedbackEmailFlowManager;
 
     private boolean isConfigured = false;
@@ -79,16 +88,15 @@ public final class BugShaker implements ShakeDetector.Listener {
         final GenericEmailIntentProvider genericEmailIntentProvider
                 = new GenericEmailIntentProvider();
 
-        this.environmentCapabilitiesProvider = new EnvironmentCapabilitiesProvider(
+        this.emailCapabilitiesProvider = new EmailCapabilitiesProvider(
                 applicationContext.getPackageManager(), genericEmailIntentProvider);
 
         this.feedbackEmailFlowManager = new FeedbackEmailFlowManager(
-                applicationContext,
-                environmentCapabilitiesProvider,
+                applicationContext, emailCapabilitiesProvider,
                 new Toaster(applicationContext),
                 new ActivityReferenceManager(),
                 new FeedbackEmailIntentProvider(applicationContext, genericEmailIntentProvider),
-                new ScreenshotProvider(applicationContext));
+                getScreenshotProvider());
     }
 
     /**
@@ -148,7 +156,7 @@ public final class BugShaker implements ShakeDetector.Listener {
                     "You MUST call setEmailAddresses before calling start.");
         }
 
-        if (environmentCapabilitiesProvider.canSendEmails()) {
+        if (emailCapabilitiesProvider.canSendEmails()) {
             application.registerActivityLifecycleCallbacks(simpleActivityLifecycleCallback);
 
             final SensorManager sensorManager
@@ -175,6 +183,28 @@ public final class BugShaker implements ShakeDetector.Listener {
                 emailAddresses,
                 emailSubjectLine,
                 ignoreFlagSecure);
+    }
+
+    /**
+     * @return a MapScreenshotProvider if the embedding application utilizes the Google Maps Android
+     *         API, and a BasicScreenshotProvider otherwise
+     */
+    private ScreenshotProvider getScreenshotProvider() {
+        // See http://stackoverflow.com/a/3466596/2911458
+        try {
+            Class.forName(
+                    "com.google.android.gms.maps.GoogleMap",
+                    false,
+                    BugShaker.class.getClassLoader());
+
+            Logger.d("Detected that embedding app includes Google Maps as a dependency.");
+
+            return new MapScreenshotProvider(applicationContext);
+        } catch (final ClassNotFoundException e) {
+            Logger.d("Detected that embedding app does not include Google Maps as a dependency.");
+
+            return new BasicScreenShotProvider(applicationContext);
+        }
     }
 
 }

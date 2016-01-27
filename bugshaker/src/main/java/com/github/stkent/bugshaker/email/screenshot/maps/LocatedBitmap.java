@@ -14,27 +14,32 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.email.screenshot.maps;
 
-import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
-final class Toaster {
+final class LocatedBitmap {
 
     @NonNull
-    private final Context applicationContext;
+    private final Bitmap bitmap;
 
-    Toaster(@NonNull final Context applicationContext) {
-        this.applicationContext = applicationContext;
+    @NonNull
+    private final int[] location;
+
+    LocatedBitmap(@NonNull final Bitmap bitmap, @NonNull final int[] location) {
+        this.bitmap = bitmap;
+        this.location = location;
     }
 
-    void toast(@NonNull final String message) {
-        Toast.makeText(
-                applicationContext,
-                message,
-                Toast.LENGTH_LONG)
-                .show();
+    @NonNull
+    Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    @NonNull
+    int[] getLocation() {
+        return location;
     }
 
 }

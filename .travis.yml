@@ -13,6 +13,7 @@ android:
 
     # Additional components
     - extra-android-m2repository
+    - extra-google-m2repository
 
 branches:
   only:

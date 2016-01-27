@@ -16,29 +16,20 @@
  */
 package com.example.bugshaker;
 
-import android.app.Application;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.SurfaceView;
 
-import com.facebook.stetho.Stetho;
-import com.github.stkent.bugshaker.BugShaker;
-
-public final class CustomApplication extends Application {
+public class SurfaceViewActivity extends BaseActivity {
 
     @Override
-    public void onCreate() {
-        super.onCreate();
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_surface_view);
 
-        BugShaker.get(this)
-                 .setEmailAddresses("someone@example.com")
-                 .setLoggingEnabled(BuildConfig.DEBUG)
-                 .start();
-
-        if (BuildConfig.DEBUG) {
-            initializeStethoForViewHierarchyInspection();
-        }
-    }
-
-    private void initializeStethoForViewHierarchyInspection() {
-        Stetho.initializeWithDefaults(this);
+        final SurfaceView surfaceView = (SurfaceView) findViewById(R.id.surface_view);
+        surfaceView.setBackgroundColor(Color.RED);
     }
 
 }

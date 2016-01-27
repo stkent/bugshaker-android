@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.email;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-final class FeedbackEmailIntentProvider {
+public final class FeedbackEmailIntentProvider {
 
     private static final String DEFAULT_EMAIL_SUBJECT_LINE_SUFFIX = " Android App Feedback";
 
@@ -40,7 +40,7 @@ final class FeedbackEmailIntentProvider {
     @NonNull
     private final GenericEmailIntentProvider genericEmailIntentProvider;
 
-    FeedbackEmailIntentProvider(
+    public FeedbackEmailIntentProvider(
             @NonNull final Context applicationContext,
             @NonNull final GenericEmailIntentProvider genericEmailIntentProvider) {
 

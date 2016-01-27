@@ -16,29 +16,14 @@
  */
 package com.example.bugshaker;
 
-import android.app.Application;
+import android.os.Bundle;
 
-import com.facebook.stetho.Stetho;
-import com.github.stkent.bugshaker.BugShaker;
-
-public final class CustomApplication extends Application {
+public class MapFragmentActivity extends BaseActivity {
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-
-        BugShaker.get(this)
-                 .setEmailAddresses("someone@example.com")
-                 .setLoggingEnabled(BuildConfig.DEBUG)
-                 .start();
-
-        if (BuildConfig.DEBUG) {
-            initializeStethoForViewHierarchyInspection();
-        }
-    }
-
-    private void initializeStethoForViewHierarchyInspection() {
-        Stetho.initializeWithDefaults(this);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_map_fragment);
     }
 
 }

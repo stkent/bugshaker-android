@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.email;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,10 +23,12 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.github.stkent.bugshaker.utilities.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
-final class EnvironmentCapabilitiesProvider {
+public final class EmailCapabilitiesProvider {
 
     private static final String[] DUMMY_EMAIL_ADDRESSES = new String[] {"someone@example.com"};
     private static final String DUMMY_EMAIL_SUBJECT_LINE = "Any Subject Line";
@@ -39,7 +41,7 @@ final class EnvironmentCapabilitiesProvider {
     @NonNull
     private final GenericEmailIntentProvider genericEmailIntentProvider;
 
-    EnvironmentCapabilitiesProvider(
+    public EmailCapabilitiesProvider(
             @NonNull final PackageManager packageManager,
             @NonNull final GenericEmailIntentProvider genericEmailIntentProvider) {
 
@@ -47,7 +49,7 @@ final class EnvironmentCapabilitiesProvider {
         this.genericEmailIntentProvider = genericEmailIntentProvider;
     }
 
-    boolean canSendEmails() {
+    public boolean canSendEmails() {
         Logger.d("Checking for email apps...");
 
         final List<ResolveInfo> emailAppInfoList = getEmailAppList();

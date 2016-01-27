@@ -67,6 +67,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.squareup:seismic:1.0.2'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava:1.1.0'
+
+    compile('com.google.android.gms:play-services-maps:8.4.0') { ext.optional = true }
 }
 
 check {
@@ -91,36 +95,53 @@ gnag {
 
 install {
     repositories.mavenInstaller {
-        pom.project {
-            groupId bugShakerGroupId
-            artifactId bugShakerArtifactId
-            version bugShakerVersion
-            packaging 'aar'
-
-            // This does not seem to delegate to project.name as I expected it would.
-            name bugShakerArtifactId
-            description bugShakerDescription
-            inceptionYear '2016'
-            url bugShakerWebsiteUrl
-
-            licenses {
-                license {
-                    name 'The Apache Software License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+        pom {
+            // See comment by Endre Stølsvik on https://issues.gradle.org/browse/GRADLE-1749.
+            withXml {
+                def depMap = configurations.compile.dependencies.collectEntries { [it.name, it] }
+                asNode().dependencies.dependency.findAll {
+                    def dep = depMap.get(it.artifactId.text())
+                    return dep?.hasProperty('optional') && dep.optional
+                }.each {
+                    if (it.optional) {
+                        it.optional.value = 'true'
+                    } else {
+                        it.appendNode('optional', 'true')
+                    }
                 }
             }
 
-            developers {
-                developer {
-                    id 'stkent'
-                    name 'Stuart Kent'
-                    email 'skent.dev@gmail.com'
-                }
-            }
+            project {
+                groupId bugShakerGroupId
+                artifactId bugShakerArtifactId
+                version bugShakerVersion
+                packaging 'aar'
 
-            scm {
-                connection bugShakerVcsUrl
+                // This does not seem to delegate to project.name as I expected it would.
+                name bugShakerArtifactId
+                description bugShakerDescription
+                inceptionYear '2016'
                 url bugShakerWebsiteUrl
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'stkent'
+                        name 'Stuart Kent'
+                        email 'skent.dev@gmail.com'
+                    }
+                }
+
+                scm {
+                    connection bugShakerVcsUrl
+                    url bugShakerWebsiteUrl
+                }
             }
         }
     }

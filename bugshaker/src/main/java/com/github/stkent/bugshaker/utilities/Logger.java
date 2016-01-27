@@ -14,12 +14,12 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker;
+package com.github.stkent.bugshaker.utilities;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-final class Logger {
+public final class Logger {
 
     private static final String TAG = "BugShaker-Library";
 
@@ -29,25 +29,25 @@ final class Logger {
 
     }
 
-    static void setLoggingEnabled(final boolean loggingEnabled) {
+    public static void setLoggingEnabled(final boolean loggingEnabled) {
         Logger.loggingEnabled = loggingEnabled;
     }
 
-    static void d(@NonNull final CharSequence message) {
+    public static void d(@NonNull final CharSequence message) {
         if (loggingEnabled) {
             Log.d(TAG, message.toString());
         }
     }
 
-    static void e(@NonNull final CharSequence message) {
+    public static void e(@NonNull final CharSequence message) {
         if (loggingEnabled) {
             Log.e(TAG, message.toString());
         }
     }
 
-    static void printStackTrace(@NonNull final Exception exception) {
+    public static void printStackTrace(@NonNull final Throwable throwable) {
         if (loggingEnabled) {
-            Log.e(TAG, "Logging caught exception", exception);
+            Log.e(TAG, "Logging caught exception", throwable);
         }
     }
 
