@@ -96,6 +96,8 @@ public final class FeedbackEmailFlowManager {
                                     toaster.toast(errorString);
                                     Logger.e(errorString);
 
+                                    Logger.printStackTrace(e);
+
                                     sendEmailWithoutScreenshot(activity);
                                 }
 
