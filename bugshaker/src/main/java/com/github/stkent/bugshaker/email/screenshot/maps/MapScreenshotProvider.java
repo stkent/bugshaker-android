@@ -88,7 +88,6 @@ public final class MapScreenshotProvider extends BaseScreenshotProvider {
 
             return Observable
                     .zip(nonMapViewsBitmapObservable, mapViewBitmapsObservable, BITMAP_COMBINING_FUNCTION);
-
         }
     }
 

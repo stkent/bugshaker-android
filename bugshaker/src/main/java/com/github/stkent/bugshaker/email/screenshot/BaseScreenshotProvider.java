@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 
 import rx.Observable;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public abstract class BaseScreenshotProvider implements ScreenshotProvider {
 
@@ -41,6 +42,7 @@ public abstract class BaseScreenshotProvider implements ScreenshotProvider {
     @Override
     public final Observable<Uri> getScreenshotUri(@NonNull final Activity activity) {
         return getScreenshotBitmap(activity)
+                .observeOn(Schedulers.io())
                 .flatMap(new Func1<Bitmap, Observable<Uri>>() {
                     @Override
                     public Observable<Uri> call(final Bitmap bitmap) {

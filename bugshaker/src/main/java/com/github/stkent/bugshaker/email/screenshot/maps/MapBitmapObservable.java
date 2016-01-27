@@ -26,15 +26,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 import rx.Observable;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 
 final class MapBitmapObservable {
 
+    // NOTE: this method should only ever be called on the main thread.
     static Observable<LocatedBitmap> create(@NonNull final MapView mapView) {
         final int[] locationOnScreen = new int[] {0, 0};
         mapView.getLocationOnScreen(locationOnScreen);
 
-        final Observable<LocatedBitmap> result = Observable.create(new Observable.OnSubscribe<LocatedBitmap>() {
+        return Observable.create(new Observable.OnSubscribe<LocatedBitmap>() {
             @Override
             public void call(final Subscriber<? super LocatedBitmap> subscriber) {
                 mapView.getMapAsync(new OnMapReadyCallback() {
@@ -57,9 +57,6 @@ final class MapBitmapObservable {
                 });
             }
         });
-
-        // Required, since MapView.onMapReady _must_ be called from the main thread.
-        return result.subscribeOn(AndroidSchedulers.mainThread());
     }
 
     private MapBitmapObservable() {

@@ -40,7 +40,6 @@ import java.util.List;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public final class FeedbackEmailFlowManager {
 
@@ -83,7 +82,7 @@ public final class FeedbackEmailFlowManager {
                 if (emailCapabilitiesProvider.canSendEmailsWithAttachments()) {
                     screenshotProvider.getScreenshotUri(activity)
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribeOn(Schedulers.io())
+                            .subscribeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<Uri>() {
                                 @Override
                                 public void onCompleted() {
