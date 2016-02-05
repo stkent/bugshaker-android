@@ -74,15 +74,14 @@ final class ScreenshotUriObservable {
                     subscriber.onNext(result);
                     subscriber.onCompleted();
                 } catch (final IOException e) {
-                    Logger.printStackTrace(e);
                     subscriber.onError(e);
                 } finally {
                     if (fileOutputStream != null) {
                         try {
                             fileOutputStream.close();
-                        } catch (final IOException e) {
+                        } catch (final IOException ignored) {
                             // We did our best...
-                            Logger.printStackTrace(e);
+                            Logger.e("Failed to close OutputStream.");
                         }
                     }
                 }

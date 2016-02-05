@@ -22,12 +22,12 @@ apply plugin: 'gnag-plugin'
 // Shared project metadata
 
 ext {
-    bugShakerVersion = "1.0.0"
+    bugShakerVersion = '1.0.0'
     bugShakerWebsiteUrl = 'https://github.com/stkent/bugshaker-android'
     bugShakerVcsUrl = 'https://github.com/stkent/bugshaker-android.git'
     bugShakerGroupId = 'com.github.stkent'
     bugShakerArtifactId = 'bugshaker'
-    bugShakerDescription = "Send Android bug reports via email. Shake to summon!"
+    bugShakerDescription = 'Send Android bug reports via email. Shake to summon!'
 }
 
 configurations {
@@ -45,7 +45,7 @@ group = bugShakerGroupId
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '23.0.2'
 
     defaultConfig {
         minSdkVersion 16
@@ -199,6 +199,9 @@ task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += configurations.javadocDeps
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    options {
+        title = "BugShaker v${bugShakerVersion} Documentation"
+    }
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {

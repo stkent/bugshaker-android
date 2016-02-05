@@ -81,6 +81,7 @@ public final class FeedbackEmailFlowManager {
             if (shouldAttemptToCaptureScreenshot(activity)) {
                 if (emailCapabilitiesProvider.canSendEmailsWithAttachments()) {
                     screenshotProvider.getScreenshotUri(activity)
+                            .single()
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<Uri>() {
@@ -94,6 +95,8 @@ public final class FeedbackEmailFlowManager {
                                     final String errorString = "Screenshot capture failed";
                                     toaster.toast(errorString);
                                     Logger.e(errorString);
+
+                                    Logger.printStackTrace(e);
 
                                     sendEmailWithoutScreenshot(activity);
                                 }

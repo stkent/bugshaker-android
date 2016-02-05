@@ -29,7 +29,6 @@ import android.view.View;
 import android.view.Window;
 
 import com.github.stkent.bugshaker.utilities.ActivityUtils;
-import com.github.stkent.bugshaker.utilities.Logger;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -57,8 +56,6 @@ final class NonMapViewsBitmapObservable {
                     subscriber.onCompleted();
                 } catch (final IllegalArgumentException e) {
                     final Exception exception = new InvalidActivitySizeException(e);
-
-                    Logger.printStackTrace(exception);
                     subscriber.onError(exception);
                 }
             }
