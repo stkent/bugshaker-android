@@ -24,7 +24,8 @@ apply plugin: 'gnag-plugin'
 ext {
     bugShakerVersion = '1.1.0'
     bugShakerWebsiteUrl = 'https://github.com/stkent/bugshaker-android'
-    bugShakerVcsUrl = 'https://github.com/stkent/bugshaker-android.git'
+    bugShakerGitHubRepoName = 'stkent/bugshaker-android'
+    bugShakerVcsUrl = "https://github.com/${bugShakerGitHubRepoName}.git"
     bugShakerGroupId = 'com.github.stkent'
     bugShakerArtifactId = 'bugshaker'
     bugShakerDescription = 'Send Android bug reports via email. Shake to summon!'
@@ -179,12 +180,15 @@ bintray {
         repo = 'android-libraries'
         name = bugShakerArtifactId
         desc = bugShakerDescription
-        licenses = ['Apache-2.0']
-        vcsUrl = bugShakerVcsUrl
         websiteUrl = bugShakerWebsiteUrl
-        issueTrackerUrl = 'https://github.com/stkent/bugshaker-android/issues'
         labels = ['android', 'bug reporting', 'screenshot', 'email']
+        licenses = ['Apache-2.0']
         publicDownloadNumbers = true
+
+        vcsUrl = bugShakerVcsUrl
+        githubRepo = bugShakerGitHubRepoName
+        githubReleaseNotesFile = 'CHANGELOG.md'
+        issueTrackerUrl = "https://github.com/${bugShakerGitHubRepoName}/issues"
 
         version {
             name = bugShakerVersion
