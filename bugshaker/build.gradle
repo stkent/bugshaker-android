@@ -54,6 +54,12 @@ android {
         versionName bugShakerVersion
     }
 
+    buildTypes {
+        release {
+            consumerProguardFiles 'proguard/rxjava.pro', 'proguard/bugshaker.pro'
+        }
+    }
+
     lintOptions {
         abortOnError true
     }
