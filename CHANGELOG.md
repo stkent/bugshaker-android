@@ -1,5 +1,13 @@
 # Change Log
 
+## v1.1.0
+
+_2016-02-08_
+
+- Update default feedback email subject line to include embedding application name.
+- Include `MapView` representations in screenshots.
+- Provide ProGuard configuration that will be used automatically by embedding applications if they themselves enable ProGuard.
+
 ## v1.0.0
 
 _2016-01-22_
