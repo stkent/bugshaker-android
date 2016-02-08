@@ -11,6 +11,18 @@ android {
         versionCode 1
         versionName "1.0.0"
     }
+
+    buildTypes {
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+        }
+    }
 }
 
 dependencies {
