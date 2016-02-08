@@ -14,6 +14,10 @@
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
 
+# FIXME: remove this when Android Gradle plugin is fixed.
+# See https://github.com/artem-zinnatullin/RxJavaProGuardRules/pull/23#issuecomment-181529232
+# https://github.com/artem-zinnatullin/RxJavaProGuardRules/issues/22
+# https://code.google.com/p/android/issues/detail?id=200518
 -keepclassmembers class rx.schedulers.CachedThreadScheduler$EventLoopWorker {
     volatile int once;
 }
