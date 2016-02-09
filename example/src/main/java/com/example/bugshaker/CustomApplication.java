@@ -18,7 +18,11 @@ package com.example.bugshaker;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.github.stkent.bugshaker.BugShaker;
+
+import io.fabric.sdk.android.Fabric;
 
 public final class CustomApplication extends Application {
 
@@ -26,6 +30,14 @@ public final class CustomApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        // Enable Crashlytics for release builds only.
+        final Crashlytics crashlyticsKit = new Crashlytics.Builder()
+                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                .build();
+
+        Fabric.with(this, crashlyticsKit);
+
+        // Perform BugShaker library initialization.
         BugShaker.get(this)
                  .setEmailAddresses("someone@example.com")
                  .setLoggingEnabled(BuildConfig.DEBUG)
