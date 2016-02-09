@@ -14,7 +14,7 @@ The iOS version of BugShaker was written by [Dan Trenz](https://github.com/dtren
 
 ## Screenshots
 
-<img src="/assets/dialog_screenshot.png" width=420 /> <img src="/assets/compose_screenshot.png" width=420 />
+<img src="/assets/dialog_screenshot_1.1.0.png" width=420 /> <img src="/assets/compose_screenshot_1.1.0.png" width=420 />
 
 ## Play Store Demo App
 
