@@ -2,7 +2,7 @@
 
 ## v1.1.0
 
-_2016-02-08_
+_2016-02-09_
 
 - Update default feedback email subject line to include embedding application name.
 - Include `MapView` representations in screenshots.
