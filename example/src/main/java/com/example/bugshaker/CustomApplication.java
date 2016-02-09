@@ -30,7 +30,7 @@ public final class CustomApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // Enable Crashlytics for release builds only.
+        // Enabled Crashlytics for release builds only.
         final Crashlytics crashlyticsKit = new Crashlytics.Builder()
                 .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
                 .build();
