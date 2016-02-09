@@ -49,7 +49,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="${fabricApiKey}" />
+            android:value="placeholder" />
 
     </application>
 

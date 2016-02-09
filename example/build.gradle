@@ -19,16 +19,12 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
-    def placeholderFabricApiKey = "any-string"
-
     defaultConfig {
         applicationId "com.github.stkent.bugshaker"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 2
         versionName "1.1.0"
-
-        manifestPlaceholders = [fabricApiKey:placeholderFabricApiKey]
     }
 
     signingConfigs {
@@ -52,19 +48,14 @@ android {
         debug {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt')
-
             ext.enableCrashlytics = false
         }
 
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt')
-
-            ext.enableCrashlytics = true
-            def personalFabricApiKey = System.getenv("PERSONAL_FABRIC_API_KEY") ?: placeholderFabricApiKey
-            manifestPlaceholders = [fabricApiKey:personalFabricApiKey]
-
             signingConfig signingConfigs.release
+            ext.enableCrashlytics = true
         }
     }
 }
