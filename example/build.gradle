@@ -12,6 +12,21 @@ android {
         versionName "1.1.0"
     }
 
+    signingConfigs {
+        release {
+            String releaseKeyStoreFileName = System.properties['user.home'] + "/.bugshaker/bugshaker.jks"
+            String releasePropFileName = System.properties['user.home'] + "/.bugshaker/bugshaker.properties"
+
+            Properties releaseProps = new Properties()
+            releaseProps.load(new FileInputStream(releasePropFileName))
+
+            storeFile file(releaseKeyStoreFileName)
+            storePassword releaseProps.pass
+            keyAlias releaseProps.alias
+            keyPassword releaseProps.pass
+        }
+    }
+
     buildTypes {
         debug {
             minifyEnabled true
@@ -21,6 +36,8 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt')
+
+            signingConfig signingConfigs.release
         }
     }
 }
