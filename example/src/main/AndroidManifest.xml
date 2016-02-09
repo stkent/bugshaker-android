@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.bugshaker">
-
-    <!--Crashlytics-->
-    <uses-permission android:name="android.permission.INTERNET" />
+<manifest package="com.example.bugshaker"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:name="com.example.bugshaker.CustomApplication"
@@ -13,8 +8,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        android:theme="@style/AppTheme">
 
         <activity
             android:name=".UnsecuredActivity"
@@ -46,10 +40,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCT0Me0Yy9EyZRYye77e0y7QjtlBMENyTo" />
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="placeholder" />
 
     </application>
 
