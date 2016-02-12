@@ -44,7 +44,7 @@ public class CustomApplication extends Application {
                  .setEmailSubjectLine("Custom Subject Line") // optional
                  .setLoggingEnabled(BuildConfig.DEBUG)       // optional
                  .setIgnoreFlagSecure(true)                  // optional
-                 .assemble()								 // required
+                 .assemble()                                 // required
                  .start();                                   // required
     }
 
