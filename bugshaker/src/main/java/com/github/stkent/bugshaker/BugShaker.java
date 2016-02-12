@@ -102,7 +102,7 @@ public final class BugShaker implements ShakeDetector.Listener {
      */
     public BugShaker setEmailAddresses(@NonNull final String... emailAddresses) {
         if (assembled || startAttempted) {
-            throw new RuntimeException(
+            throw new IllegalStateException(
                     "Configuration must be complete before calling assemble or start");
         }
 
@@ -120,7 +120,7 @@ public final class BugShaker implements ShakeDetector.Listener {
      */
     public BugShaker setEmailSubjectLine(@NonNull final String emailSubjectLine) {
         if (assembled || startAttempted) {
-            throw new RuntimeException(RECONFIGURATION_EXCEPTION_MESSAGE);
+            throw new IllegalStateException(RECONFIGURATION_EXCEPTION_MESSAGE);
         }
 
         this.emailSubjectLine = emailSubjectLine;
@@ -136,7 +136,7 @@ public final class BugShaker implements ShakeDetector.Listener {
      */
     public BugShaker setLoggingEnabled(final boolean loggingEnabled) {
         if (assembled || startAttempted) {
-            throw new RuntimeException(RECONFIGURATION_EXCEPTION_MESSAGE);
+            throw new IllegalStateException(RECONFIGURATION_EXCEPTION_MESSAGE);
         }
 
         this.loggingEnabled = loggingEnabled;
@@ -155,7 +155,7 @@ public final class BugShaker implements ShakeDetector.Listener {
      */
     public BugShaker setIgnoreFlagSecure(final boolean ignoreFlagSecure) {
         if (assembled || startAttempted) {
-            throw new RuntimeException(RECONFIGURATION_EXCEPTION_MESSAGE);
+            throw new IllegalStateException(RECONFIGURATION_EXCEPTION_MESSAGE);
         }
 
         this.ignoreFlagSecure = ignoreFlagSecure;
@@ -165,20 +165,20 @@ public final class BugShaker implements ShakeDetector.Listener {
     /**
      * (Required) Assembles dependencies based on provided configuration information. This method
      * CANNOT be called more than once. This method CANNOT be called after calling
-     * code>start</code>.
+     * <code>start</code>.
      *
      * @return the current <code>BugShaker</code> instance (to allow for method chaining)
      */
     public BugShaker assemble() {
         if (assembled) {
-            logger.d("You have already assembled this BugShaker instance. Calling assemble again " +
-                    "is a no-op.");
+            logger.d("You have already assembled this BugShaker instance. Calling assemble again "
+                    + "is a no-op.");
 
             return this;
         }
 
         if (startAttempted) {
-            throw new RuntimeException("You can only call assemble before calling start.");
+            throw new IllegalStateException("You can only call assemble before calling start.");
         }
 
         logger = new Logger(loggingEnabled);
@@ -208,12 +208,12 @@ public final class BugShaker implements ShakeDetector.Listener {
      */
     public void start() {
         if (!assembled) {
-            throw new RuntimeException("You MUST call assemble before calling start.");
+            throw new IllegalStateException("You MUST call assemble before calling start.");
         }
 
         if (startAttempted) {
-            logger.d("You have already attempted to start this BugShaker instance. Calling start " +
-                    "again is a no-op.");
+            logger.d("You have already attempted to start this BugShaker instance. Calling start "
+                    + "again is a no-op.");
 
             return;
         }

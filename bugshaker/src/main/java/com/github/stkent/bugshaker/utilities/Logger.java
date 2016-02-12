@@ -23,7 +23,7 @@ public final class Logger {
 
     private static final String TAG = "BugShaker-Library";
 
-    private boolean loggingEnabled = false;
+    private final boolean loggingEnabled;
 
     public Logger(final boolean loggingEnabled) {
         this.loggingEnabled = loggingEnabled;
