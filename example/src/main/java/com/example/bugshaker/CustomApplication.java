@@ -29,6 +29,7 @@ public final class CustomApplication extends Application {
         BugShaker.get(this)
                  .setEmailAddresses("someone@example.com")
                  .setLoggingEnabled(BuildConfig.DEBUG)
+                 .assemble()
                  .start();
     }
 

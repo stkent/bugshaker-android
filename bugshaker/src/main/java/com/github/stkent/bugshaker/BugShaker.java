@@ -18,7 +18,6 @@ package com.github.stkent.bugshaker;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 
@@ -27,8 +26,8 @@ import com.github.stkent.bugshaker.email.FeedbackEmailFlowManager;
 import com.github.stkent.bugshaker.email.FeedbackEmailIntentProvider;
 import com.github.stkent.bugshaker.email.GenericEmailIntentProvider;
 import com.github.stkent.bugshaker.email.screenshot.BasicScreenShotProvider;
-import com.github.stkent.bugshaker.email.screenshot.maps.MapScreenshotProvider;
 import com.github.stkent.bugshaker.email.screenshot.ScreenshotProvider;
+import com.github.stkent.bugshaker.email.screenshot.maps.MapScreenshotProvider;
 import com.github.stkent.bugshaker.utilities.Logger;
 import com.github.stkent.bugshaker.utilities.Toaster;
 import com.squareup.seismic.ShakeDetector;
@@ -41,17 +40,25 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 public final class BugShaker implements ShakeDetector.Listener {
 
+    private static final String RECONFIGURATION_EXCEPTION_MESSAGE =
+            "Configuration must be completed before calling assemble or start";
+
     private static BugShaker sharedInstance;
 
     private final Application application;
-    private final Context applicationContext;
-    private final EmailCapabilitiesProvider emailCapabilitiesProvider;
-    private final FeedbackEmailFlowManager feedbackEmailFlowManager;
+    private EmailCapabilitiesProvider emailCapabilitiesProvider;
+    private FeedbackEmailFlowManager feedbackEmailFlowManager;
+    private Logger logger;
 
-    private boolean isConfigured = false;
+    // Instance configuration:
     private String[] emailAddresses;
     private String emailSubjectLine;
     private boolean ignoreFlagSecure = false;
+    private boolean loggingEnabled   = false;
+
+    // Instance configuration state:
+    private boolean assembled      = false;
+    private boolean startAttempted = false;
 
     private final SimpleActivityLifecycleCallback simpleActivityLifecycleCallback
             = new SimpleActivityLifecycleCallback() {
@@ -83,101 +90,158 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     private BugShaker(@NonNull final Application application) {
         this.application = application;
-        this.applicationContext = application.getApplicationContext();
-
-        final GenericEmailIntentProvider genericEmailIntentProvider
-                = new GenericEmailIntentProvider();
-
-        this.emailCapabilitiesProvider = new EmailCapabilitiesProvider(
-                applicationContext.getPackageManager(), genericEmailIntentProvider);
-
-        this.feedbackEmailFlowManager = new FeedbackEmailFlowManager(
-                applicationContext, emailCapabilitiesProvider,
-                new Toaster(applicationContext),
-                new ActivityReferenceManager(),
-                new FeedbackEmailIntentProvider(applicationContext, genericEmailIntentProvider),
-                getScreenshotProvider());
     }
 
     /**
-     * Defines one or more email addresses to send bug reports to. This method MUST be called before
-     * calling <code>start</code>.
+     * (Required) Defines one or more email addresses to send bug reports to. This method MUST be
+     * called before calling <code>assemble</code>. This method CANNOT be called after calling
+     * <code>assemble</code> or <code>start</code>.
      *
      * @param emailAddresses one or more email addresses
      * @return the current <code>BugShaker</code> instance (to allow for method chaining)
      */
     public BugShaker setEmailAddresses(@NonNull final String... emailAddresses) {
-        this.emailAddresses   = emailAddresses;
-        this.isConfigured     = true;
+        if (assembled || startAttempted) {
+            throw new RuntimeException(
+                    "Configuration must be complete before calling assemble or start");
+        }
+
+        this.emailAddresses = emailAddresses;
         return this;
     }
 
     /**
-     * (Optionally) defines a custom subject line to use for all bug reports. By default, reports
-     * will use the string defined in <code>DEFAULT_SUBJECT_LINE</code>.
+     * (Optional) Defines a custom subject line to use for all bug reports. By default, reports will
+     * use the string defined in <code>DEFAULT_SUBJECT_LINE</code>. This method CANNOT be called
+     * after calling <code>assemble</code> or <code>start</code>.
      *
      * @param emailSubjectLine a custom email subject line
      * @return the current <code>BugShaker</code> instance (to allow for method chaining)
      */
     public BugShaker setEmailSubjectLine(@NonNull final String emailSubjectLine) {
+        if (assembled || startAttempted) {
+            throw new RuntimeException(RECONFIGURATION_EXCEPTION_MESSAGE);
+        }
+
         this.emailSubjectLine = emailSubjectLine;
         return this;
     }
 
     /**
-     * (Optionally) enables debug and error log messages. Logging is disabled by default.
+     * (Optional) Enables debug and error log messages. Logging is disabled by default. This method
+     * CANNOT be called after calling <code>assemble</code> or <code>start</code>.
      *
-     * @param enabled true if logging should be enabled; false otherwise
+     * @param loggingEnabled true if logging should be enabled; false otherwise
      * @return the current <code>BugShaker</code> instance (to allow for method chaining)
      */
-    public BugShaker setLoggingEnabled(final boolean enabled) {
-        Logger.setLoggingEnabled(enabled);
+    public BugShaker setLoggingEnabled(final boolean loggingEnabled) {
+        if (assembled || startAttempted) {
+            throw new RuntimeException(RECONFIGURATION_EXCEPTION_MESSAGE);
+        }
+
+        this.loggingEnabled = loggingEnabled;
         return this;
     }
 
     /**
+     * (Optional) Choose whether to ignore the <code>FLAG_SECURE</code> <code>Window</code> flag
+     * when capturing screenshots. This method CANNOT be called after calling <code>assemble</code>
+     * or <code>start</code>.
+     *
      * @param ignoreFlagSecure true if screenshots should be allowed even when
      *                         <code>FLAG_SECURE</code> is set on the current <code>Window</code>;
      *                         false otherwise
      * @return the current <code>BugShaker</code> instance (to allow for method chaining)
      */
     public BugShaker setIgnoreFlagSecure(final boolean ignoreFlagSecure) {
+        if (assembled || startAttempted) {
+            throw new RuntimeException(RECONFIGURATION_EXCEPTION_MESSAGE);
+        }
+
         this.ignoreFlagSecure = ignoreFlagSecure;
         return this;
     }
 
     /**
-     * Start listening for shakes. You MUST call <code>setEmailAddresses</code> before calling this
-     * method.
+     * (Required) Assembles dependencies based on provided configuration information. This method
+     * CANNOT be called more than once. This method CANNOT be called after calling
+     * code>start</code>.
+     *
+     * @return the current <code>BugShaker</code> instance (to allow for method chaining)
+     */
+    public BugShaker assemble() {
+        if (assembled) {
+            logger.d("You have already assembled this BugShaker instance. Calling assemble again " +
+                    "is a no-op.");
+
+            return this;
+        }
+
+        if (startAttempted) {
+            throw new RuntimeException("You can only call assemble before calling start.");
+        }
+
+        logger = new Logger(loggingEnabled);
+
+        final GenericEmailIntentProvider genericEmailIntentProvider
+                = new GenericEmailIntentProvider();
+
+        emailCapabilitiesProvider = new EmailCapabilitiesProvider(
+                application.getPackageManager(), genericEmailIntentProvider, logger);
+
+        feedbackEmailFlowManager = new FeedbackEmailFlowManager(
+                application,
+                emailCapabilitiesProvider,
+                new Toaster(application),
+                new ActivityReferenceManager(),
+                new FeedbackEmailIntentProvider(application, genericEmailIntentProvider),
+                getScreenshotProvider(),
+                logger);
+
+        assembled = true;
+        return this;
+    }
+
+    /**
+     * (Required) Start listening for device shaking. You MUST call <code>assemble</code> before
+     * calling this method.
      */
     public void start() {
-        if (!isConfigured) {
-            throw new IllegalStateException(
-                    "You MUST call setEmailAddresses before calling start.");
+        if (!assembled) {
+            throw new RuntimeException("You MUST call assemble before calling start.");
+        }
+
+        if (startAttempted) {
+            logger.d("You have already attempted to start this BugShaker instance. Calling start " +
+                    "again is a no-op.");
+
+            return;
         }
 
         if (emailCapabilitiesProvider.canSendEmails()) {
             application.registerActivityLifecycleCallbacks(simpleActivityLifecycleCallback);
 
             final SensorManager sensorManager
-                    = (SensorManager) applicationContext.getSystemService(SENSOR_SERVICE);
+                    = (SensorManager) application.getSystemService(SENSOR_SERVICE);
             final ShakeDetector shakeDetector = new ShakeDetector(this);
 
             final boolean didStart = shakeDetector.start(sensorManager);
 
             if (didStart) {
-                Logger.d("Shake detection successfully started!");
+                logger.d("Shake detection successfully started!");
             } else {
-                Logger.e("Error starting shake detection: hardware does not support detection.");
+                logger.e("Error starting shake detection: hardware does not support detection.");
             }
         } else {
-            Logger.e("Error starting shake detection: device cannot send emails.");
+            logger.e("Error starting shake detection: device cannot send emails.");
         }
+
+        startAttempted = true;
     }
 
     @Override
     public void hearShake() {
-        Logger.d("Shake detected!");
+        logger.d("Shake detected!");
 
         feedbackEmailFlowManager.startFlowIfNeeded(
                 emailAddresses,
@@ -197,13 +261,13 @@ public final class BugShaker implements ShakeDetector.Listener {
                     false,
                     BugShaker.class.getClassLoader());
 
-            Logger.d("Detected that embedding app includes Google Maps as a dependency.");
+            logger.d("Detected that embedding app includes Google Maps as a dependency.");
 
-            return new MapScreenshotProvider(applicationContext);
+            return new MapScreenshotProvider(application, logger);
         } catch (final ClassNotFoundException e) {
-            Logger.d("Detected that embedding app does not include Google Maps as a dependency.");
+            logger.d("Detected that embedding app does not include Google Maps as a dependency.");
 
-            return new BasicScreenShotProvider(applicationContext);
+            return new BasicScreenShotProvider(application, logger);
         }
     }
 

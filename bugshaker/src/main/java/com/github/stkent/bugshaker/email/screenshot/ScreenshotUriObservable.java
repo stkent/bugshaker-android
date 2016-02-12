@@ -35,6 +35,7 @@ import rx.Subscriber;
 
 final class ScreenshotUriObservable {
 
+    @SuppressWarnings("SpellCheckingInspection")
     private static final String AUTHORITY_SUFFIX = ".bugshaker.fileprovider";
     private static final String SCREENSHOTS_DIRECTORY_NAME = "bug-reports";
     private static final String SCREENSHOT_FILE_NAME = "latest-screenshot.jpg";
@@ -42,7 +43,8 @@ final class ScreenshotUriObservable {
 
     static Observable<Uri> create(
             @NonNull final Context applicationContext,
-            @NonNull final Bitmap bitmap) {
+            @NonNull final Bitmap bitmap,
+            @NonNull final Logger logger) {
 
         return Observable.create(new Observable.OnSubscribe<Uri>() {
             @Override
@@ -62,14 +64,14 @@ final class ScreenshotUriObservable {
 
                     fileOutputStream.flush();
 
-                    Logger.d("Screenshot saved to " + screenshotFile.getAbsolutePath());
+                    logger.d("Screenshot saved to " + screenshotFile.getAbsolutePath());
 
                     final Uri result = FileProvider.getUriForFile(
                             applicationContext,
                             applicationContext.getPackageName() + AUTHORITY_SUFFIX,
                             screenshotFile);
 
-                    Logger.d("Screenshot Uri created: " + result);
+                    logger.d("Screenshot Uri created: " + result);
 
                     subscriber.onNext(result);
                     subscriber.onCompleted();
@@ -81,7 +83,7 @@ final class ScreenshotUriObservable {
                             fileOutputStream.close();
                         } catch (final IOException ignored) {
                             // We did our best...
-                            Logger.e("Failed to close OutputStream.");
+                            logger.e("Failed to close OutputStream.");
                         }
                     }
                 }
