@@ -41,21 +41,26 @@ public final class EmailCapabilitiesProvider {
     @NonNull
     private final GenericEmailIntentProvider genericEmailIntentProvider;
 
+    @NonNull
+    private final Logger logger;
+
     public EmailCapabilitiesProvider(
             @NonNull final PackageManager packageManager,
-            @NonNull final GenericEmailIntentProvider genericEmailIntentProvider) {
+            @NonNull final GenericEmailIntentProvider genericEmailIntentProvider,
+            @NonNull final Logger logger) {
 
         this.packageManager = packageManager;
         this.genericEmailIntentProvider = genericEmailIntentProvider;
+        this.logger = logger;
     }
 
     public boolean canSendEmails() {
-        Logger.d("Checking for email apps...");
+        logger.d("Checking for email apps...");
 
         final List<ResolveInfo> emailAppInfoList = getEmailAppList();
 
         if (emailAppInfoList.isEmpty()) {
-            Logger.d("No email apps found.");
+            logger.d("No email apps found.");
             return false;
         }
 
@@ -64,12 +69,12 @@ public final class EmailCapabilitiesProvider {
     }
 
     boolean canSendEmailsWithAttachments() {
-        Logger.d("Checking for email apps that can send attachments...");
+        logger.d("Checking for email apps that can send attachments...");
 
         final List<ResolveInfo> emailAppInfoList = getEmailWithAttachmentAppList();
 
         if (emailAppInfoList.isEmpty()) {
-            Logger.d("No email apps can send attachments.");
+            logger.d("No email apps can send attachments.");
             return false;
         }
 
@@ -105,7 +110,7 @@ public final class EmailCapabilitiesProvider {
         }
 
         final String emailAppInfoString = TextUtils.join(", ", emailAppNames);
-        Logger.d(prefix + emailAppInfoString);
+        logger.d(prefix + emailAppInfoString);
     }
 
 }

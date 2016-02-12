@@ -63,6 +63,9 @@ public final class FeedbackEmailFlowManager {
     @NonNull
     private final ScreenshotProvider screenshotProvider;
 
+    @NonNull
+    private final Logger logger;
+
     @Nullable
     private AlertDialog bugShakerAlertDialog;
 
@@ -94,9 +97,9 @@ public final class FeedbackEmailFlowManager {
                                 public void onError(final Throwable e) {
                                     final String errorString = "Screenshot capture failed";
                                     toaster.toast(errorString);
-                                    Logger.e(errorString);
+                                    logger.e(errorString);
 
-                                    Logger.printStackTrace(e);
+                                    logger.printStackTrace(e);
 
                                     sendEmailWithoutScreenshot(activity);
                                 }
@@ -113,7 +116,7 @@ public final class FeedbackEmailFlowManager {
                 final String warningString = "Window is secured; no screenshot taken";
 
                 toaster.toast(warningString);
-                Logger.d(warningString);
+                logger.d(warningString);
 
                 sendEmailWithoutScreenshot(activity);
             }
@@ -126,7 +129,8 @@ public final class FeedbackEmailFlowManager {
             @NonNull final Toaster toaster,
             @NonNull final ActivityReferenceManager activityReferenceManager,
             @NonNull final FeedbackEmailIntentProvider feedbackEmailIntentProvider,
-            @NonNull final ScreenshotProvider screenshotProvider) {
+            @NonNull final ScreenshotProvider screenshotProvider,
+            @NonNull final Logger logger) {
 
         this.applicationContext = applicationContext;
         this.emailCapabilitiesProvider = emailCapabilitiesProvider;
@@ -134,6 +138,7 @@ public final class FeedbackEmailFlowManager {
         this.activityReferenceManager = activityReferenceManager;
         this.feedbackEmailIntentProvider = feedbackEmailIntentProvider;
         this.screenshotProvider = screenshotProvider;
+        this.logger = logger;
     }
 
     public void onActivityResumed(@NonNull final Activity activity) {
@@ -151,7 +156,7 @@ public final class FeedbackEmailFlowManager {
             final boolean ignoreFlagSecure) {
 
         if (isFeedbackFlowStarted()) {
-            Logger.d("Feedback flow already started; ignoring shake.");
+            logger.d("Feedback flow already started; ignoring shake.");
             return;
         }
 
@@ -197,12 +202,12 @@ public final class FeedbackEmailFlowManager {
         final boolean result = ignoreFlagSecure || !isWindowSecured;
 
         if (!isWindowSecured) {
-            Logger.d("Window is not secured; should attempt to capture screenshot.");
+            logger.d("Window is not secured; should attempt to capture screenshot.");
         } else {
             if (ignoreFlagSecure) {
-                Logger.d("Window is secured, but we're ignoring that.");
+                logger.d("Window is secured, but we're ignoring that.");
             } else {
-                Logger.d("Window is secured, and we're respecting that.");
+                logger.d("Window is secured, and we're respecting that.");
             }
         }
 
@@ -229,7 +234,7 @@ public final class FeedbackEmailFlowManager {
 
         activity.startActivity(feedbackEmailIntent);
 
-        Logger.d("Sending email with screenshot.");
+        logger.d("Sending email with screenshot.");
     }
 
     private void sendEmailWithoutScreenshot(@NonNull final Activity activity) {
@@ -238,7 +243,7 @@ public final class FeedbackEmailFlowManager {
 
         activity.startActivity(feedbackEmailIntent);
 
-        Logger.d("Sending email with no screenshot.");
+        logger.d("Sending email with no screenshot.");
     }
 
 }
