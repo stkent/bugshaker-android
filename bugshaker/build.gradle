@@ -28,7 +28,7 @@ ext {
     bugShakerVcsUrl = "https://github.com/${bugShakerGitHubRepoName}.git"
     bugShakerGroupId = 'com.github.stkent'
     bugShakerArtifactId = 'bugshaker'
-    bugShakerDescription = 'Send Android bug reports via email. Shake to summon!'
+    bugShakerDescription = 'Easy bug report emails. Shake to summon!'
 }
 
 configurations {
