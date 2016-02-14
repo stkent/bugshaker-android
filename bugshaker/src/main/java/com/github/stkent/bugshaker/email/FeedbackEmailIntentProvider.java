@@ -25,6 +25,8 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.github.stkent.bugshaker.utilities.StringUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -82,16 +84,16 @@ public final class FeedbackEmailIntentProvider {
 
     @NonNull
     private String getApplicationInfoString() {
-        return    "Device: " + getDeviceName()
+        return    "My Device: " + getDeviceName()
                 + "\n"
                 + "App Version: " + getVersionDisplayString()
                 + "\n"
-                + "Android OS Version: " + getAndroidOsVersionDisplayString()
+                + "Android Version: " + getAndroidOsVersionDisplayString()
                 + "\n"
-                + "Date: " + getCurrentUtcTimeStringForDate(new Date())
+                + "Time Stamp: " + getCurrentUtcTimeStringForDate(new Date())
                 + "\n"
                 + "---------------------"
-                + "\n\n\n";
+                + "\n\n";
     }
 
     @NonNull
@@ -116,7 +118,7 @@ public final class FeedbackEmailIntentProvider {
             deviceName = manufacturer + " " + model;
         }
 
-        return deviceName;
+        return StringUtils.capitalizeFully(deviceName);
     }
 
     @NonNull
@@ -143,7 +145,8 @@ public final class FeedbackEmailIntentProvider {
     @NonNull
     private String getCurrentUtcTimeStringForDate(final Date date) {
         final SimpleDateFormat simpleDateFormat
-                = new SimpleDateFormat("MMM d, yyyy - h:mm:ss a (z)", Locale.getDefault());
+                = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss XXX", Locale.getDefault());
+
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         return simpleDateFormat.format(date);
