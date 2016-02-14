@@ -25,6 +25,8 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.github.stkent.bugshaker.utilities.StringUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -116,7 +118,7 @@ public final class FeedbackEmailIntentProvider {
             deviceName = manufacturer + " " + model;
         }
 
-        return deviceName;
+        return StringUtils.capitalizeFully(deviceName);
     }
 
     @NonNull
