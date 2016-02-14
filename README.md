@@ -6,16 +6,13 @@ Shake to send a bug report!
 
 # Introduction
 
-BugShaker-Android allows your testers and/or users to easily submit bug reports by shaking their device.
-When a shake is detected, the current screen state is captured and the user is
-prompted to submit a bug report via email with this screenshot attached.
+BugShaker allows your QA team and/or end users to easily submit bug reports by shaking their device. When [a shake is detected]((https://github.com/square/seismic)), the current screen state is captured and the user is prompted to submit a bug report via email with this screenshot attached.
 
-This library is similar to [Telescope](https://github.com/mattprecious/telescope), but aims to be even easier to integrate into your app. In particular:
+This library is similar to [Telescope](https://github.com/mattprecious/telescope), but aims to be even easier to integrate into your apps and workflows:
 
 - developers are not required to add extra depth to their view hierarchies;
-- the embedding application does not need to request any extra permissions.
-
-The iOS version of BugShaker was written by [Dan Trenz](https://github.com/dtrenz) and is available [here](https://github.com/detroit-labs/BugShaker). This Android version builds on Square's shake-detection library, [seismic](https://github.com/square/seismic).
+- the embedding application does not need to request any extra permissions;
+- there's an [**iOS version**](https://github.com/detroit-labs/BugShaker) of this library, based on the same shake-to-summon mechanism.
 
 ## Screenshots
 
