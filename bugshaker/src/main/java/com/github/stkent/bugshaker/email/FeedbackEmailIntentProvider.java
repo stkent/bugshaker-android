@@ -82,16 +82,16 @@ public final class FeedbackEmailIntentProvider {
 
     @NonNull
     private String getApplicationInfoString() {
-        return    "Device: " + getDeviceName()
+        return    "My Device: " + getDeviceName()
                 + "\n"
                 + "App Version: " + getVersionDisplayString()
                 + "\n"
-                + "Android OS Version: " + getAndroidOsVersionDisplayString()
+                + "Android Version: " + getAndroidOsVersionDisplayString()
                 + "\n"
                 + "Date: " + getCurrentUtcTimeStringForDate(new Date())
                 + "\n"
                 + "---------------------"
-                + "\n\n\n";
+                + "\n\n";
     }
 
     @NonNull
@@ -143,7 +143,7 @@ public final class FeedbackEmailIntentProvider {
     @NonNull
     private String getCurrentUtcTimeStringForDate(final Date date) {
         final SimpleDateFormat simpleDateFormat
-                = new SimpleDateFormat("MMM d, yyyy - h:mm:ss a (z)", Locale.getDefault());
+                = new SimpleDateFormat("h:mm:ss a, MMM d, yyyy (z)", Locale.getDefault());
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         return simpleDateFormat.format(date);
