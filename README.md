@@ -10,7 +10,10 @@ BugShaker-Android allows your testers and/or users to easily submit bug reports 
 When a shake is detected, the current screen state is captured and the user is
 prompted to submit a bug report via email with this screenshot attached.
 
-This library is similar to [Telescope](https://github.com/mattprecious/telescope), but aims to be even easier to integrate into your apps. In particular, BugShaker does not require developers to add extra depth to their view hierarchies, and does not force the embedding application to request any permissions.
+This library is similar to [Telescope](https://github.com/mattprecious/telescope), but aims to be even easier to integrate into your app. In particular:
+
+- developers are not required to add extra depth to their view hierarchies;
+- the embedding application does not need to request any extra permissions.
 
 The iOS version of BugShaker was written by [Dan Trenz](https://github.com/dtrenz) and is available [here](https://github.com/detroit-labs/BugShaker). This Android version builds on Square's shake-detection library, [seismic](https://github.com/square/seismic).
 
