@@ -145,7 +145,7 @@ public final class FeedbackEmailIntentProvider {
     @NonNull
     private String getCurrentUtcTimeStringForDate(final Date date) {
         final SimpleDateFormat simpleDateFormat
-                = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss XXX", Locale.getDefault());
+                = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss z", Locale.getDefault());
 
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
