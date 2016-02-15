@@ -1,4 +1,4 @@
-<img src="/assets/repo_banner.png?raw=true" title="BugShaker" alt="The BugShaker logo" width="50%" />
+<img src="https://raw.githubusercontent.com/stkent/bugshaker-android/master/assets/repo_banner.png?raw=true" title="BugShaker" alt="The BugShaker logo" width="50%" />
 
 Shake to send a bug report!
 
