@@ -32,7 +32,7 @@ dependencies {
 }
 ```
 
-(2) Configure the shared `BugShaker` instance in your custom [`Application`](http://developer.android.com/reference/android/app/Application.html) class, and call `start()` to begin listening for shakes:
+(2) Configure the shared `BugShaker` instance in your custom [`Application`](http://developer.android.com/reference/android/app/Application.html) class, then call `assemble` and `start` to begin listening for shakes:
 
 ```java
 public class CustomApplication extends Application {
@@ -44,6 +44,7 @@ public class CustomApplication extends Application {
         BugShaker.get(this)
                  .setEmailAddresses("someone@example.com")   // required
                  .setEmailSubjectLine("Custom Subject Line") // optional
+                 .setAlertDialogType(AlertDialogType.NATIVE) // optional
                  .setLoggingEnabled(BuildConfig.DEBUG)       // optional
                  .setIgnoreFlagSecure(true)                  // optional
                  .assemble()                                 // required

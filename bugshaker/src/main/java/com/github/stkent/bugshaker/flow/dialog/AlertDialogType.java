@@ -14,25 +14,10 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.example.bugshaker;
+package com.github.stkent.bugshaker.flow.dialog;
 
-import android.app.Application;
+public enum AlertDialogType {
 
-import com.github.stkent.bugshaker.BugShaker;
-import com.github.stkent.bugshaker.flow.dialog.AlertDialogType;
-
-public final class CustomApplication extends Application {
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        BugShaker.get(this)
-                 .setEmailAddresses("someone@example.com")
-                 .setLoggingEnabled(BuildConfig.DEBUG)
-                 .setAlertDialogType(AlertDialogType.APP_COMPAT)
-                 .assemble()
-                 .start();
-    }
+    NATIVE, APP_COMPAT
 
 }

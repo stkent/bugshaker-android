@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.email.screenshot;
+package com.github.stkent.bugshaker.flow.email.screenshot;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -24,6 +24,7 @@ import rx.Observable;
 
 public interface ScreenshotProvider {
 
+    @NonNull
     Observable<Uri> getScreenshotUri(@NonNull final Activity activity);
 
 }

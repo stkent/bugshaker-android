@@ -21,13 +21,17 @@ import android.app.Application;
 import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 
-import com.github.stkent.bugshaker.email.EmailCapabilitiesProvider;
-import com.github.stkent.bugshaker.email.FeedbackEmailFlowManager;
-import com.github.stkent.bugshaker.email.FeedbackEmailIntentProvider;
-import com.github.stkent.bugshaker.email.GenericEmailIntentProvider;
-import com.github.stkent.bugshaker.email.screenshot.BasicScreenShotProvider;
-import com.github.stkent.bugshaker.email.screenshot.ScreenshotProvider;
-import com.github.stkent.bugshaker.email.screenshot.maps.MapScreenshotProvider;
+import com.github.stkent.bugshaker.flow.dialog.AlertDialogType;
+import com.github.stkent.bugshaker.flow.dialog.AppCompatDialogProvider;
+import com.github.stkent.bugshaker.flow.dialog.DialogProvider;
+import com.github.stkent.bugshaker.flow.dialog.NativeDialogProvider;
+import com.github.stkent.bugshaker.flow.email.EmailCapabilitiesProvider;
+import com.github.stkent.bugshaker.flow.email.FeedbackEmailFlowManager;
+import com.github.stkent.bugshaker.flow.email.FeedbackEmailIntentProvider;
+import com.github.stkent.bugshaker.flow.email.GenericEmailIntentProvider;
+import com.github.stkent.bugshaker.flow.email.screenshot.BasicScreenShotProvider;
+import com.github.stkent.bugshaker.flow.email.screenshot.ScreenshotProvider;
+import com.github.stkent.bugshaker.flow.email.screenshot.maps.MapScreenshotProvider;
 import com.github.stkent.bugshaker.utilities.Logger;
 import com.github.stkent.bugshaker.utilities.Toaster;
 import com.squareup.seismic.ShakeDetector;
@@ -53,8 +57,9 @@ public final class BugShaker implements ShakeDetector.Listener {
     // Instance configuration:
     private String[] emailAddresses;
     private String emailSubjectLine;
-    private boolean ignoreFlagSecure = false;
-    private boolean loggingEnabled   = false;
+    private AlertDialogType alertDialogType = AlertDialogType.NATIVE;
+    private boolean ignoreFlagSecure        = false;
+    private boolean loggingEnabled          = false;
 
     // Instance configuration state:
     private boolean assembled      = false;
@@ -128,6 +133,23 @@ public final class BugShaker implements ShakeDetector.Listener {
     }
 
     /**
+     * (Optional) Defines a dialog type (native/material) to present when a shake is detected.
+     * Native dialogs are used by default. This method CANNOT be called after calling
+     * <code>assemble</code> or <code>start</code>.
+     *
+     * @param alertDialogType the dialog type to present
+     * @return the current <code>BugShaker</code> instance (to allow for method chaining)
+     */
+    public BugShaker setAlertDialogType(@NonNull final AlertDialogType alertDialogType) {
+        if (assembled || startAttempted) {
+            throw new IllegalStateException(RECONFIGURATION_EXCEPTION_MESSAGE);
+        }
+
+        this.alertDialogType = alertDialogType;
+        return this;
+    }
+
+    /**
      * (Optional) Enables debug and error log messages. Logging is disabled by default. This method
      * CANNOT be called after calling <code>assemble</code> or <code>start</code>.
      *
@@ -196,6 +218,7 @@ public final class BugShaker implements ShakeDetector.Listener {
                 new ActivityReferenceManager(),
                 new FeedbackEmailIntentProvider(application, genericEmailIntentProvider),
                 getScreenshotProvider(),
+                getAlertDialogProvider(),
                 logger);
 
         assembled = true;
@@ -254,7 +277,6 @@ public final class BugShaker implements ShakeDetector.Listener {
      *         API, and a BasicScreenshotProvider otherwise
      */
     private ScreenshotProvider getScreenshotProvider() {
-        // See http://stackoverflow.com/a/3466596/2911458
         try {
             Class.forName(
                     "com.google.android.gms.maps.GoogleMap",
@@ -268,6 +290,30 @@ public final class BugShaker implements ShakeDetector.Listener {
             logger.d("Detected that embedding app does not include Google Maps as a dependency.");
 
             return new BasicScreenShotProvider(application, logger);
+        }
+    }
+
+    private DialogProvider getAlertDialogProvider() {
+        if (alertDialogType == AlertDialogType.APP_COMPAT) {
+            try {
+                Class.forName(
+                        "android.support.v7.app.AlertDialog",
+                        false,
+                        BugShaker.class.getClassLoader());
+
+                logger.d("Using AppCompat dialogs as requested.");
+
+                return new AppCompatDialogProvider();
+            } catch (final ClassNotFoundException e) {
+                logger.e("AppCompat dialogs requested, but class not found.");
+                logger.e("Falling back to native dialogs.");
+
+                return new NativeDialogProvider();
+            }
+        } else {
+            logger.d("Using native dialogs as requested.");
+
+            return new NativeDialogProvider();
         }
     }
 
