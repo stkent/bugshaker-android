@@ -32,7 +32,7 @@ dependencies {
 }
 ```
 
-(2) Configure the shared `BugShaker` instance in your custom `Application` class, and call `start()` to begin listening for shakes:
+(2) Configure the shared `BugShaker` instance in your custom `Application` class, then call `assemble` and `start` to begin listening for shakes:
 
 ```java
 public class CustomApplication extends Application {
