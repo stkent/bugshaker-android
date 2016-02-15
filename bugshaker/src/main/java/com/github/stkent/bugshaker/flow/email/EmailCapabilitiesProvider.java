@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.email;
+package com.github.stkent.bugshaker.flow.email;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;

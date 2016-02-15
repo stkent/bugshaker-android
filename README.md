@@ -44,6 +44,7 @@ public class CustomApplication extends Application {
         BugShaker.get(this)
                  .setEmailAddresses("someone@example.com")   // required
                  .setEmailSubjectLine("Custom Subject Line") // optional
+                 .setAlertDialogType(AlertDialogType.NATIVE) // optional
                  .setLoggingEnabled(BuildConfig.DEBUG)       // optional
                  .setIgnoreFlagSecure(true)                  // optional
                  .assemble()                                 // required

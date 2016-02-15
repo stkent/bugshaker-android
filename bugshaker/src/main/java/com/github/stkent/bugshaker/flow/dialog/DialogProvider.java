@@ -14,32 +14,24 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.email.screenshot.maps;
+package com.github.stkent.bugshaker.flow.dialog;
 
-import android.graphics.Bitmap;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 
-final class LocatedBitmap {
+public interface DialogProvider {
+
+    String  ALERT_DIALOG_TITLE           = "Shake detected!";
+    String  ALERT_DIALOG_MESSAGE         = "Would you like to report a bug?";
+    String  ALERT_DIALOG_POSITIVE_BUTTON = "Report";
+    String  ALERT_DIALOG_NEGATIVE_BUTTON = "Cancel";
+    boolean ALERT_DIALOG_CANCELABLE      = false;
 
     @NonNull
-    private final Bitmap bitmap;
-
-    @NonNull
-    private final int[] location;
-
-    LocatedBitmap(@NonNull final Bitmap bitmap, @NonNull final int[] location) {
-        this.bitmap = bitmap;
-        this.location = location;
-    }
-
-    @NonNull
-    Bitmap getBitmap() {
-        return bitmap;
-    }
-
-    @NonNull
-    int[] getLocation() {
-        return location;
-    }
+    Dialog getAlertDialog(
+            @NonNull final Activity activity,
+            @NonNull final DialogInterface.OnClickListener reportBugClickListener);
 
 }

@@ -14,30 +14,32 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.email.screenshot;
+package com.github.stkent.bugshaker.flow.email.screenshot.maps;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-import com.github.stkent.bugshaker.utilities.Logger;
+final class LocatedBitmap {
 
-import rx.Observable;
+    @NonNull
+    private final Bitmap bitmap;
 
-public final class BasicScreenShotProvider extends BaseScreenshotProvider {
+    @NonNull
+    private final int[] location;
 
-    public BasicScreenShotProvider(
-            @NonNull final Context applicationContext,
-            @NonNull final Logger logger) {
-
-        super(applicationContext, logger);
+    LocatedBitmap(@NonNull final Bitmap bitmap, @NonNull final int[] location) {
+        this.bitmap = bitmap;
+        this.location = location;
     }
 
     @NonNull
-    @Override
-    public Observable<Bitmap> getScreenshotBitmap(@NonNull final Activity activity) {
-        return getNonMapViewsBitmap(activity);
+    Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    @NonNull
+    int[] getLocation() {
+        return location;
     }
 
 }

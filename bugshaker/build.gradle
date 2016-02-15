@@ -57,7 +57,7 @@ android {
 
     buildTypes {
         release {
-            consumerProguardFiles 'proguard/rxjava.pro', 'proguard/bugshaker.pro'
+            consumerProguardFiles 'proguard/rxjava.pro', 'proguard/bugshaker.pro', 'proguard/v7support.pro'
         }
     }
 

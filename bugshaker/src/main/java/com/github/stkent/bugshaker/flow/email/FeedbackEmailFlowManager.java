@@ -14,10 +14,10 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.email;
+package com.github.stkent.bugshaker.flow.email;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -30,7 +30,8 @@ import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.github.stkent.bugshaker.ActivityReferenceManager;
-import com.github.stkent.bugshaker.email.screenshot.ScreenshotProvider;
+import com.github.stkent.bugshaker.flow.dialog.DialogProvider;
+import com.github.stkent.bugshaker.flow.email.screenshot.ScreenshotProvider;
 import com.github.stkent.bugshaker.utilities.ActivityUtils;
 import com.github.stkent.bugshaker.utilities.Logger;
 import com.github.stkent.bugshaker.utilities.Toaster;
@@ -64,10 +65,13 @@ public final class FeedbackEmailFlowManager {
     private final ScreenshotProvider screenshotProvider;
 
     @NonNull
+    private final DialogProvider alertDialogProvider;
+
+    @NonNull
     private final Logger logger;
 
     @Nullable
-    private AlertDialog bugShakerAlertDialog;
+    private Dialog alertDialog;
 
     private String[] emailAddresses;
     private String emailSubjectLine;
@@ -130,6 +134,7 @@ public final class FeedbackEmailFlowManager {
             @NonNull final ActivityReferenceManager activityReferenceManager,
             @NonNull final FeedbackEmailIntentProvider feedbackEmailIntentProvider,
             @NonNull final ScreenshotProvider screenshotProvider,
+            @NonNull final DialogProvider alertDialogProvider,
             @NonNull final Logger logger) {
 
         this.applicationContext = applicationContext;
@@ -138,6 +143,7 @@ public final class FeedbackEmailFlowManager {
         this.activityReferenceManager = activityReferenceManager;
         this.feedbackEmailIntentProvider = feedbackEmailIntentProvider;
         this.screenshotProvider = screenshotProvider;
+        this.alertDialogProvider = alertDialogProvider;
         this.logger = logger;
     }
 
@@ -168,7 +174,7 @@ public final class FeedbackEmailFlowManager {
     }
 
     private boolean isFeedbackFlowStarted() {
-        return bugShakerAlertDialog != null && bugShakerAlertDialog.isShowing();
+        return alertDialog != null && alertDialog.isShowing();
     }
 
     private void showDialog() {
@@ -177,19 +183,14 @@ public final class FeedbackEmailFlowManager {
             return;
         }
 
-        bugShakerAlertDialog = new AlertDialog.Builder(currentActivity)
-                .setTitle("Shake detected!")
-                .setMessage("Would you like to report a bug?")
-                .setPositiveButton("Report", reportBugClickListener)
-                .setNegativeButton("Cancel", null)
-                .setCancelable(false)
-                .show();
+        alertDialog = alertDialogProvider.getAlertDialog(currentActivity, reportBugClickListener);
+        alertDialog.show();
     }
 
     private void dismissDialog() {
-        if (bugShakerAlertDialog != null) {
-            bugShakerAlertDialog.dismiss();
-            bugShakerAlertDialog = null;
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+            alertDialog = null;
         }
     }
 
