@@ -10,9 +10,9 @@ BugShaker allows your QA team and/or end users to easily submit bug reports by s
 
 This library is similar to [Telescope](https://github.com/mattprecious/telescope), but aims to be even easier to integrate into your apps and workflows:
 
-- developers are not required to add extra depth to their view hierarchies;
-- the embedding application does not need to request any extra permissions;
-- there's an [**iOS version**](https://github.com/detroit-labs/BugShaker) of this library, based on the same shake-to-summon mechanism.
+- all configuration occurs in your custom [`Application`](http://developer.android.com/reference/android/app/Application.html) subclass (no view hierarchy alterations required);
+- no need to request extra permissions;
+- **iOS version** of this library is [already available](https://github.com/detroit-labs/BugShaker) (based on the same shake-to-send mechanism).
 
 ## Screenshots
 
@@ -32,7 +32,7 @@ dependencies {
 }
 ```
 
-(2) Configure the shared `BugShaker` instance in your custom `Application` class, and call `start()` to begin listening for shakes:
+(2) Configure the shared `BugShaker` instance in your custom [`Application`](http://developer.android.com/reference/android/app/Application.html) class, and call `start()` to begin listening for shakes:
 
 ```java
 public class CustomApplication extends Application {
