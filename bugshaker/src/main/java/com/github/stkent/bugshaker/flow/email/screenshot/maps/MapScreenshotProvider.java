@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.email.screenshot.maps;
+package com.github.stkent.bugshaker.flow.email.screenshot.maps;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,8 +27,9 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.stkent.bugshaker.email.screenshot.BaseScreenshotProvider;
+import com.github.stkent.bugshaker.flow.email.screenshot.BaseScreenshotProvider;
 import com.github.stkent.bugshaker.utilities.ActivityUtils;
+import com.github.stkent.bugshaker.utilities.Logger;
 import com.google.android.gms.maps.MapView;
 
 import java.util.ArrayList;
@@ -68,8 +69,11 @@ public final class MapScreenshotProvider extends BaseScreenshotProvider {
         MAP_PAINT.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
     }
 
-    public MapScreenshotProvider(@NonNull final Context applicationContext) {
-        super(applicationContext);
+    public MapScreenshotProvider(
+            @NonNull final Context applicationContext,
+            @NonNull final Logger logger) {
+
+        super(applicationContext, logger);
     }
 
     @NonNull

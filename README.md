@@ -1,20 +1,22 @@
-<img src="/assets/repo_banner.png?raw=true" title="BugShaker" alt="The BugShaker logo" width="50%" />
+<img src="https://raw.githubusercontent.com/stkent/bugshaker-android/master/assets/repo_banner.png?raw=true" title="BugShaker" alt="The BugShaker logo" width="50%" />
 
-Send Android bug reports via email. Shake to summon!
+Shake to send a bug report!
 
 [![Build Status](https://travis-ci.org/stkent/bugshaker-android.svg?branch=master)](https://travis-ci.org/stkent/bugshaker-android) <a href="https://bintray.com/stkent/android-libraries/bugshaker/"><img src="https://img.shields.io/bintray/v/stkent/android-libraries/bugshaker.svg" /></a> <a href="http://www.detroitlabs.com/"><img src="https://img.shields.io/badge/Sponsor-Detroit%20Labs-000000.svg" /></a>
 
 # Introduction
 
-BugShaker-Android allows your testers and/or users to easily submit bug reports by shaking their device.
-When a shake is detected, the current screen state is captured and the user is
-prompted to submit a bug report via email with this screenshot attached.
+BugShaker allows your QA team and/or end users to easily submit bug reports by shaking their device. When [a shake is detected]((https://github.com/square/seismic)), the current screen state is captured and the user is prompted to submit a bug report via email with this screenshot attached.
 
-The iOS version of BugShaker was written by [Dan Trenz](https://github.com/dtrenz) and is available [here](https://github.com/detroit-labs/BugShaker). This Android version builds on Square's shake-detection library, [seismic](https://github.com/square/seismic).
+This library is similar to [Telescope](https://github.com/mattprecious/telescope), but aims to be even easier to integrate into your apps and workflows:
+
+- all configuration occurs in your custom [`Application`](http://developer.android.com/reference/android/app/Application.html) subclass (no view hierarchy alterations required);
+- no need to request extra permissions;
+- **iOS version** of this library is [already available](https://github.com/detroit-labs/BugShaker) (based on the same shake-to-send mechanism).
 
 ## Screenshots
 
-<img src="/assets/dialog_screenshot_1.1.0.png" width=420 /> <img src="/assets/compose_screenshot_1.1.0.png" width=420 />
+<img src="https://raw.githubusercontent.com/stkent/bugshaker-android/master/assets/dialog_screenshot_1.1.0.png" width=420 /> <img src="https://raw.githubusercontent.com/stkent/bugshaker-android/master/assets/compose_screenshot_1.1.0.png" width=420 />
 
 ## Play Store Demo App
 
@@ -30,7 +32,7 @@ dependencies {
 }
 ```
 
-(2) Configure the shared `BugShaker` instance in your custom `Application` class, and call `start()` to begin listening for shakes:
+(2) Configure the shared `BugShaker` instance in your custom [`Application`](http://developer.android.com/reference/android/app/Application.html) class, then call `assemble` and `start` to begin listening for shakes:
 
 ```java
 public class CustomApplication extends Application {
@@ -42,8 +44,10 @@ public class CustomApplication extends Application {
         BugShaker.get(this)
                  .setEmailAddresses("someone@example.com")   // required
                  .setEmailSubjectLine("Custom Subject Line") // optional
+                 .setAlertDialogType(AlertDialogType.NATIVE) // optional
                  .setLoggingEnabled(BuildConfig.DEBUG)       // optional
                  .setIgnoreFlagSecure(true)                  // optional
+                 .assemble()                                 // required
                  .start();                                   // required
     }
 

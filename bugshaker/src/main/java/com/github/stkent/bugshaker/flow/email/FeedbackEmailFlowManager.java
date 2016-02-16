@@ -14,10 +14,10 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.email;
+package com.github.stkent.bugshaker.flow.email;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -30,7 +30,8 @@ import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.github.stkent.bugshaker.ActivityReferenceManager;
-import com.github.stkent.bugshaker.email.screenshot.ScreenshotProvider;
+import com.github.stkent.bugshaker.flow.dialog.DialogProvider;
+import com.github.stkent.bugshaker.flow.email.screenshot.ScreenshotProvider;
 import com.github.stkent.bugshaker.utilities.ActivityUtils;
 import com.github.stkent.bugshaker.utilities.Logger;
 import com.github.stkent.bugshaker.utilities.Toaster;
@@ -63,8 +64,14 @@ public final class FeedbackEmailFlowManager {
     @NonNull
     private final ScreenshotProvider screenshotProvider;
 
+    @NonNull
+    private final DialogProvider alertDialogProvider;
+
+    @NonNull
+    private final Logger logger;
+
     @Nullable
-    private AlertDialog bugShakerAlertDialog;
+    private Dialog alertDialog;
 
     private String[] emailAddresses;
     private String emailSubjectLine;
@@ -94,9 +101,9 @@ public final class FeedbackEmailFlowManager {
                                 public void onError(final Throwable e) {
                                     final String errorString = "Screenshot capture failed";
                                     toaster.toast(errorString);
-                                    Logger.e(errorString);
+                                    logger.e(errorString);
 
-                                    Logger.printStackTrace(e);
+                                    logger.printStackTrace(e);
 
                                     sendEmailWithoutScreenshot(activity);
                                 }
@@ -113,7 +120,7 @@ public final class FeedbackEmailFlowManager {
                 final String warningString = "Window is secured; no screenshot taken";
 
                 toaster.toast(warningString);
-                Logger.d(warningString);
+                logger.d(warningString);
 
                 sendEmailWithoutScreenshot(activity);
             }
@@ -126,7 +133,9 @@ public final class FeedbackEmailFlowManager {
             @NonNull final Toaster toaster,
             @NonNull final ActivityReferenceManager activityReferenceManager,
             @NonNull final FeedbackEmailIntentProvider feedbackEmailIntentProvider,
-            @NonNull final ScreenshotProvider screenshotProvider) {
+            @NonNull final ScreenshotProvider screenshotProvider,
+            @NonNull final DialogProvider alertDialogProvider,
+            @NonNull final Logger logger) {
 
         this.applicationContext = applicationContext;
         this.emailCapabilitiesProvider = emailCapabilitiesProvider;
@@ -134,6 +143,8 @@ public final class FeedbackEmailFlowManager {
         this.activityReferenceManager = activityReferenceManager;
         this.feedbackEmailIntentProvider = feedbackEmailIntentProvider;
         this.screenshotProvider = screenshotProvider;
+        this.alertDialogProvider = alertDialogProvider;
+        this.logger = logger;
     }
 
     public void onActivityResumed(@NonNull final Activity activity) {
@@ -151,7 +162,7 @@ public final class FeedbackEmailFlowManager {
             final boolean ignoreFlagSecure) {
 
         if (isFeedbackFlowStarted()) {
-            Logger.d("Feedback flow already started; ignoring shake.");
+            logger.d("Feedback flow already started; ignoring shake.");
             return;
         }
 
@@ -163,7 +174,7 @@ public final class FeedbackEmailFlowManager {
     }
 
     private boolean isFeedbackFlowStarted() {
-        return bugShakerAlertDialog != null && bugShakerAlertDialog.isShowing();
+        return alertDialog != null && alertDialog.isShowing();
     }
 
     private void showDialog() {
@@ -172,19 +183,14 @@ public final class FeedbackEmailFlowManager {
             return;
         }
 
-        bugShakerAlertDialog = new AlertDialog.Builder(currentActivity)
-                .setTitle("Shake detected!")
-                .setMessage("Would you like to report a bug?")
-                .setPositiveButton("Report", reportBugClickListener)
-                .setNegativeButton("Cancel", null)
-                .setCancelable(false)
-                .show();
+        alertDialog = alertDialogProvider.getAlertDialog(currentActivity, reportBugClickListener);
+        alertDialog.show();
     }
 
     private void dismissDialog() {
-        if (bugShakerAlertDialog != null) {
-            bugShakerAlertDialog.dismiss();
-            bugShakerAlertDialog = null;
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+            alertDialog = null;
         }
     }
 
@@ -197,12 +203,12 @@ public final class FeedbackEmailFlowManager {
         final boolean result = ignoreFlagSecure || !isWindowSecured;
 
         if (!isWindowSecured) {
-            Logger.d("Window is not secured; should attempt to capture screenshot.");
+            logger.d("Window is not secured; should attempt to capture screenshot.");
         } else {
             if (ignoreFlagSecure) {
-                Logger.d("Window is secured, but we're ignoring that.");
+                logger.d("Window is secured, but we're ignoring that.");
             } else {
-                Logger.d("Window is secured, and we're respecting that.");
+                logger.d("Window is secured, and we're respecting that.");
             }
         }
 
@@ -229,7 +235,7 @@ public final class FeedbackEmailFlowManager {
 
         activity.startActivity(feedbackEmailIntent);
 
-        Logger.d("Sending email with screenshot.");
+        logger.d("Sending email with screenshot.");
     }
 
     private void sendEmailWithoutScreenshot(@NonNull final Activity activity) {
@@ -238,7 +244,7 @@ public final class FeedbackEmailFlowManager {
 
         activity.startActivity(feedbackEmailIntent);
 
-        Logger.d("Sending email with no screenshot.");
+        logger.d("Sending email with no screenshot.");
     }
 
 }

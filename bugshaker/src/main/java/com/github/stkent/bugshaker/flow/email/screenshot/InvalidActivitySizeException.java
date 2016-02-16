@@ -14,17 +14,16 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.email.screenshot.maps;
+package com.github.stkent.bugshaker.flow.email.screenshot;
 
 /**
- * Exception thrown to indicate that our attempt to capture a snapshot of an GoogleMap failed.
+ * Exception thrown to indicate that we attempted to capture a screenshot of an Activity
+ * whose width and/or height is 0.
  */
-public final class MapSnapshotFailedException extends Exception {
+final class InvalidActivitySizeException extends Exception {
 
-    private static final String DETAIL_MESSAGE = "GoogleMap snapshot capture failed.";
-
-    MapSnapshotFailedException() {
-        super(DETAIL_MESSAGE);
+    InvalidActivitySizeException(final Throwable throwable) {
+        super(throwable);
     }
 
 }

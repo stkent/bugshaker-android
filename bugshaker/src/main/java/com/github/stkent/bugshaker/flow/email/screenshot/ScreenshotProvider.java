@@ -14,25 +14,17 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.stkent.bugshaker.email.screenshot;
+package com.github.stkent.bugshaker.flow.email.screenshot;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import rx.Observable;
 
-public final class BasicScreenShotProvider extends BaseScreenshotProvider {
-
-    public BasicScreenShotProvider(@NonNull final Context applicationContext) {
-        super(applicationContext);
-    }
+public interface ScreenshotProvider {
 
     @NonNull
-    @Override
-    public Observable<Bitmap> getScreenshotBitmap(@NonNull final Activity activity) {
-        return getNonMapViewsBitmap(activity);
-    }
+    Observable<Uri> getScreenshotUri(@NonNull final Activity activity);
 
 }
