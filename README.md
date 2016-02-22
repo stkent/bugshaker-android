@@ -16,7 +16,7 @@ This library is similar to [Telescope](https://github.com/mattprecious/telescope
 
 ## Screenshots
 
-<img src="https://raw.githubusercontent.com/stkent/bugshaker-android/master/assets/dialog_screenshot_1.1.0.png" width=420 /> <img src="https://raw.githubusercontent.com/stkent/bugshaker-android/master/assets/compose_screenshot_1.1.0.png" width=420 />
+<img src="https://raw.githubusercontent.com/stkent/bugshaker-android/master/assets/dialog_screenshot_1.2.0.png" width=420 /> <img src="https://raw.githubusercontent.com/stkent/bugshaker-android/master/assets/compose_screenshot_1.2.0.png" width=420 />
 
 ## Play Store Demo App
 
