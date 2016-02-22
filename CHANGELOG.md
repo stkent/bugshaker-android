@@ -1,5 +1,14 @@
 # Change Log
 
+## v1.2.0
+
+_2016-02-21_
+
+- Alter internal handling of logging to avoid some log messages never printing.
+    - **API change:** consumers must now call `assemble` before calling `start` when initializing the shared `BugShaker` instance. Calling this method "locks in" the current configuration.
+- Allow consumers to specify alert dialog styling (native vs AppCompat) using the `setAlertDialogType` configuration method.
+- Tweak email body language.
+
 ## v1.1.0
 
 _2016-02-09_
