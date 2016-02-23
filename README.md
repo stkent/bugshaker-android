@@ -56,6 +56,22 @@ public class CustomApplication extends Application {
 
 It is recommended that logging always be disabled in production builds.
 
+## Supporting SDK version &lt; 16
+
+Bugshaker supports SDK >= 16 out of the box. If you try to install it on a build with an earlier SDK you will see an error in the processDebugManifest build task:
+
+```
+Error:Execution failed for task ':app:processDebugManifest'.
+> Manifest merger failed : uses-sdk:minSdkVersion 15 cannot be smaller than version 16 declared in library [com.github.stkent:bugshaker:1.2.0] /path/to/AndroidManifest.xml
+  Suggestion: use tools:overrideLibrary="com.github.stkent.bugshaker" to force usage
+```
+
+Just do as the error message suggests, and add the following &lt;uses-sdk&gt; element to the &lt;manifest&gt; element of your AndroidManifest.xml, to resolve the issue:
+
+```
+<uses-sdk tools:overrideLibrary="com.github.stkent.bugshaker"/>
+```
+
 # Contributing
 
 ## Issue Tracking
