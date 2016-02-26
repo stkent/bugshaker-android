@@ -18,5 +18,6 @@ android:
 branches:
   only:
     - master
+    - /^dev\d+\.\d+\.\d+$/
 
 script: ./travis-build.sh
