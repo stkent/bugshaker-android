@@ -68,9 +68,13 @@
 
     <rule ref="rulesets/java/finalizers.xml" />
 
-    <rule ref="rulesets/java/imports.xml" />
+    <rule ref="rulesets/java/imports.xml">
+        <exclude name="TooManyStaticImports" />
+    </rule>
 
-    <rule ref="rulesets/java/junit.xml" />
+    <rule ref="rulesets/java/junit.xml">
+        <exclude name="JUnitTestsShouldIncludeAssert" />
+    </rule>
 
     <rule ref="rulesets/java/logging-jakarta-commons.xml">
         <exclude name="GuardLogStatement" />
@@ -86,6 +90,7 @@
     <rule ref="rulesets/java/naming.xml">
         <exclude name="AbstractNaming" />
         <exclude name="LongVariable" />
+        <exclude name="MethodNamingConventions" />
         <exclude name="ShortClassName" />
         <exclude name="ShortVariable" />
         <exclude name="ShortMethodName" />

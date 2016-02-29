@@ -17,10 +17,10 @@
 package com.github.stkent.bugshaker.flow.email.screenshot.maps;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.stkent.bugshaker.utilities.Logger;
-import com.google.android.gms.maps.MapView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,11 +48,16 @@ public class MapScreenshotProviderTest {
     }
 
     @Test
-    public void testThat_concurrentModificationExceptionIsNotThrown_when_viewHierarchyContainsMultipleMapViews() {
+    public void testThat_noExceptionThrown_when_searchingViewHierarchyThatContainsMultipleViews() {
+        // Arrange
         final ViewGroup mockRootView = mock(ViewGroup.class);
-        when(mockRootView.getChildCount()).thenReturn(2);
-        when(mockRootView.getChildAt(anyInt())).thenReturn(mock(MapView.class));
+        final int numberOfChildViews = 4;
+        assert numberOfChildViews > 1;
 
+        when(mockRootView.getChildCount()).thenReturn(numberOfChildViews);
+        when(mockRootView.getChildAt(anyInt())).thenReturn(mock(View.class));
+
+        // Act
         mapScreenshotProvider.locateMapViewsInHierarchy(mockRootView);
     }
 

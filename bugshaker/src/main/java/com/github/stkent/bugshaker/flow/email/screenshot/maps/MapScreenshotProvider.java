@@ -115,7 +115,7 @@ public final class MapScreenshotProvider extends BaseScreenshotProvider {
 
     @NonNull
     @VisibleForTesting
-    protected final List<MapView> locateMapViewsInHierarchy(@NonNull final View view) {
+    protected List<MapView> locateMapViewsInHierarchy(@NonNull final View view) {
         final List<MapView> result = new ArrayList<>();
 
         final Queue<View> viewsToProcess = new LinkedList<>();
