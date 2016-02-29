@@ -48,8 +48,9 @@ public final class MapScreenshotProvider extends BaseScreenshotProvider {
                         final Bitmap baseLocatedBitmap,
                         final List<LocatedBitmap> overlayLocatedBitmaps) {
 
+                    final Canvas canvas = new Canvas(baseLocatedBitmap);
+
                     for (final LocatedBitmap locatedBitmap : overlayLocatedBitmaps) {
-                        final Canvas canvas = new Canvas(baseLocatedBitmap);
                         final int[] overlayLocation = locatedBitmap.getLocation();
 
                         canvas.drawBitmap(
