@@ -24,6 +24,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -33,11 +34,15 @@ import com.github.stkent.bugshaker.utilities.Logger;
 import com.google.android.gms.maps.MapView;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import rx.Observable;
 import rx.functions.Func1;
 import rx.functions.Func2;
+
+import static android.view.View.VISIBLE;
 
 public final class MapScreenshotProvider extends BaseScreenshotProvider {
 
@@ -110,18 +115,24 @@ public final class MapScreenshotProvider extends BaseScreenshotProvider {
     }
 
     @NonNull
-    private List<MapView> locateMapViewsInHierarchy(@NonNull final View view) {
+    @VisibleForTesting
+    protected List<MapView> locateMapViewsInHierarchy(@NonNull final View view) {
         final List<MapView> result = new ArrayList<>();
 
-        if (view instanceof MapView && view.getVisibility() == View.VISIBLE) {
-            // Yes, MapView is a ViewGroup, but I never want to see anyone nesting a MapView
-            // inside another MapView...
-            result.add((MapView) view);
-        } else if (view instanceof ViewGroup) {
-            final ViewGroup viewGroup = (ViewGroup) view;
+        final Queue<View> viewsToProcess = new LinkedList<>();
+        viewsToProcess.add(view);
 
-            for (int childIndex = 0; childIndex < viewGroup.getChildCount(); childIndex++) {
-                result.addAll(locateMapViewsInHierarchy(viewGroup.getChildAt(childIndex)));
+        while (!viewsToProcess.isEmpty()) {
+            final View viewToProcess = viewsToProcess.remove();
+
+            if (viewToProcess instanceof MapView && viewToProcess.getVisibility() == VISIBLE) {
+                result.add((MapView) viewToProcess);
+            } else if (viewToProcess instanceof ViewGroup) {
+                final ViewGroup viewGroup = (ViewGroup) viewToProcess;
+
+                for (int childIndex = 0; childIndex < viewGroup.getChildCount(); childIndex++) {
+                    viewsToProcess.add(viewGroup.getChildAt(childIndex));
+                }
             }
         }
 
