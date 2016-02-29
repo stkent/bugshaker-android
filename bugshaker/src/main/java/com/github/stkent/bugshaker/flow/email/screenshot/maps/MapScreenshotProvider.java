@@ -24,6 +24,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -113,7 +114,8 @@ public final class MapScreenshotProvider extends BaseScreenshotProvider {
     }
 
     @NonNull
-    private List<MapView> locateMapViewsInHierarchy(@NonNull final View view) {
+    @VisibleForTesting
+    protected final List<MapView> locateMapViewsInHierarchy(@NonNull final View view) {
         final List<MapView> result = new ArrayList<>();
 
         final Queue<View> viewsToProcess = new LinkedList<>();
