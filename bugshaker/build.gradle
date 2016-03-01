@@ -22,13 +22,13 @@ apply plugin: 'gnag-plugin'
 // Shared project metadata
 
 ext {
-    bugShakerVersion = '1.2.0'
+    bugShakerVersion = '1.3.0'
     bugShakerWebsiteUrl = 'https://github.com/stkent/bugshaker-android'
     bugShakerGitHubRepoName = 'stkent/bugshaker-android'
     bugShakerVcsUrl = "https://github.com/${bugShakerGitHubRepoName}.git"
     bugShakerGroupId = 'com.github.stkent'
     bugShakerArtifactId = 'bugshaker'
-    bugShakerDescription = 'Easy bug report emails. Shake to summon!'
+    bugShakerDescription = 'Shake to send a bug report!'
 }
 
 configurations {
@@ -49,7 +49,7 @@ android {
     buildToolsVersion '23.0.2'
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
         versionName bugShakerVersion
@@ -62,12 +62,16 @@ android {
     }
 
     lintOptions {
-        abortOnError true
+        abortOnError false
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
 dependencies {
-    def supportLibraryVersion = '23.1.1'
+    def supportLibraryVersion = '23.2.0'
     def seismicVersion = '1.0.2'
 
     javadocDeps "com.android.support:support-annotations:${supportLibraryVersion}"
@@ -79,6 +83,9 @@ dependencies {
 
     compile('com.google.android.gms:play-services-maps:8.4.0') { ext.optional = true }
     compile("com.android.support:appcompat-v7:${supportLibraryVersion}") { ext.optional = true }
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
 }
 
 check {
