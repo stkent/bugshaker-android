@@ -6,6 +6,7 @@ _2016-03-01_
 
 - Reduce minimum SDK of the library to 14. Dropping below this is impractical, mainly because `Application.registerActivityLifecycleCallbacks` is only available on 14+.
 - Update view hierarchy search algorithm to ensure that map bitmaps are overlaid in the correct order.
+- Update to v23.2.0 of the v7 support library.
 
 ## v1.2.0
 

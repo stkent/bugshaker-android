@@ -71,7 +71,7 @@ android {
 }
 
 dependencies {
-    def supportLibraryVersion = '23.1.1'
+    def supportLibraryVersion = '23.2.0'
     def seismicVersion = '1.0.2'
 
     javadocDeps "com.android.support:support-annotations:${supportLibraryVersion}"
