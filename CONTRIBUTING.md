@@ -1,6 +1,6 @@
 # Issue Tracking
 
-Library issues are tracked using GitHub Issues. Please review all tag types to understand issue categorization.
+Library issues are tracked using [GitHub Issues](https://github.com/stkent/bugshaker-android/issues). Please review all tag types to understand issue categorization.
 
 Always review open issues before opening a new one. If you would like to work on an existing issue, please comment to that effect and assign yourself to the issue.
 
