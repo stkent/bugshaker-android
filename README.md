@@ -2,7 +2,7 @@
 
 Shake to send a bug report!
 
-[![Build Status](https://travis-ci.org/stkent/bugshaker-android.svg?branch=master)](https://travis-ci.org/stkent/bugshaker-android) <a href="https://bintray.com/stkent/android-libraries/bugshaker/"><img src="https://img.shields.io/bintray/v/stkent/android-libraries/bugshaker.svg" /></a> <a href="http://www.detroitlabs.com/"><img src="https://img.shields.io/badge/Sponsor-Detroit%20Labs-000000.svg" /></a>
+[![Build Status](https://travis-ci.org/stkent/bugshaker-android.svg?branch=master)](https://travis-ci.org/stkent/bugshaker-android) <a href="https://bintray.com/stkent/android-libraries/bugshaker/"><img src="https://img.shields.io/bintray/v/stkent/android-libraries/bugshaker.svg" /></a> <a href="http://www.detroitlabs.com/"><img src="https://img.shields.io/badge/Sponsor-Detroit%20Labs-000000.svg" /></a> [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-BugShaker-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3299)
 
 # Introduction
 
