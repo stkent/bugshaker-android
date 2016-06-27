@@ -4,7 +4,7 @@ Library issues are tracked using [GitHub Issues](https://github.com/stkent/bugsh
 
 Always review open issues before opening a new one. If you would like to work on an existing issue, please comment to that effect and assign yourself to the issue.
 
-# Commons Tasks
+# Common Tasks
 
 ## Library Module
 
