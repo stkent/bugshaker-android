@@ -25,7 +25,7 @@ Publish to your local Maven repository:
 Assemble and deploy to an attached device:
 
 ```shell
-./gradlew :example:assembleDebug && adb install -r example/build/outputs/apk/example-debug.apk
+./gradlew installDebug
 ```
 
 # Conventions
