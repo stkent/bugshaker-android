@@ -1,16 +1,48 @@
-# Gradle files
-.gradle/
-build/
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin
+gen
 
 # Local configuration file (sdk path, etc)
 local.properties
 
-# IntelliJ project files
+# Eclipse project files
+.classpath
+.project
+build.xml
+build
+
+# Intellij project files
+.idea
 *.iml
-.idea/
+*.ipr
+*.iws
 
-# Android Studio captures folder
-captures/
-
-# Misc
+# OS generated files
 .DS_Store
+
+# Gradle related files
+.gradle
+.settings
+
+# Crashlytics
+crashlytics-build.properties
+com_crashlytics_export_strings.xml
+
+# Running the android unit tests are causing this folder to appear
+project/okhttp
+
+# Emacs temp files
+*~
+
+# Python Compiled Bytecode
+*.pyc
