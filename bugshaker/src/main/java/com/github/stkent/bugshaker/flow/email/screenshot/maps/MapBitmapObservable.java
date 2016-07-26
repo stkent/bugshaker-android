@@ -1,13 +1,13 @@
 /**
  * Copyright 2016 Stuart Kent
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.
- *
+ * <p/>
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -30,38 +30,39 @@ import rx.Subscriber;
 
 final class MapBitmapObservable {
 
-    @MainThread
-    static Observable<LocatedBitmap> create(@NonNull final MapView mapView) {
-        final int[] locationOnScreen = new int[] {0, 0};
-        mapView.getLocationOnScreen(locationOnScreen);
+	@MainThread
+	static Observable<LocatedBitmap> create(@NonNull final MapView mapView) {
+		final int[] locationOnScreen = new int[] { 0, 0 };
+		mapView.getLocationOnScreen(locationOnScreen);
 
-        return Observable.create(new Observable.OnSubscribe<LocatedBitmap>() {
-            @Override
-            public void call(final Subscriber<? super LocatedBitmap> subscriber) {
-                mapView.getMapAsync(new OnMapReadyCallback() {
-                    @Override
-                    public void onMapReady(@NonNull final GoogleMap googleMap) {
-                        googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-                            @Override
-                            public void onSnapshotReady(@Nullable final Bitmap bitmap) {
-                                if (bitmap != null) {
-                                    subscriber.onNext(
-                                            new LocatedBitmap(bitmap, locationOnScreen));
+		return Observable.create(new Observable.OnSubscribe<LocatedBitmap>() {
+			@Override
+			public void call(final Subscriber<? super LocatedBitmap> subscriber) {
+				mapView.getMapAsync(new OnMapReadyCallback() {
+					@Override
+					public void onMapReady(@NonNull final GoogleMap googleMap) {
+						googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+							@Override
+							public void onSnapshotReady(@Nullable final Bitmap bitmap) {
+								if (bitmap != null) {
+									subscriber.onNext(
+										new LocatedBitmap(bitmap, locationOnScreen));
 
-                                    subscriber.onCompleted();
-                                } else {
-                                    subscriber.onError(new MapSnapshotFailedException());
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    }
+									subscriber.onCompleted();
+								}
+								else {
+									subscriber.onError(new MapSnapshotFailedException());
+								}
+							}
+						});
+					}
+				});
+			}
+		});
+	}
 
-    private MapBitmapObservable() {
+	private MapBitmapObservable() {
 
-    }
+	}
 
 }

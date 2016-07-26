@@ -29,6 +29,7 @@ public final class CustomApplication extends Application {
 
         BugShaker.get(this)
                  .setEmailAddresses("someone@example.com")
+                 .setEmailSubjectLine("Bug Detected!")
                  .setLoggingEnabled(BuildConfig.DEBUG)
                  .setAlertDialogType(AlertDialogType.APP_COMPAT)
                  .assemble()

@@ -1,13 +1,13 @@
 /**
  * Copyright 2016 Stuart Kent
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.
- *
+ * <p/>
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -22,19 +22,19 @@ import android.widget.Toast;
 
 public final class Toaster {
 
-    @NonNull
-    private final Context applicationContext;
+	@NonNull
+	private final Context applicationContext;
 
-    public Toaster(@NonNull final Context applicationContext) {
-        this.applicationContext = applicationContext;
-    }
+	public Toaster(@NonNull final Context applicationContext) {
+		this.applicationContext = applicationContext;
+	}
 
-    public void toast(@NonNull final String message) {
-        Toast.makeText(
-                applicationContext,
-                message,
-                Toast.LENGTH_LONG)
-                .show();
-    }
+	public void toast(@NonNull final String message) {
+		Toast.makeText(
+			applicationContext,
+			message,
+			Toast.LENGTH_LONG)
+			.show();
+	}
 
 }
