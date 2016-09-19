@@ -32,6 +32,7 @@ import com.github.stkent.bugshaker.flow.email.GenericEmailIntentProvider;
 import com.github.stkent.bugshaker.flow.email.screenshot.BasicScreenShotProvider;
 import com.github.stkent.bugshaker.flow.email.screenshot.ScreenshotProvider;
 import com.github.stkent.bugshaker.flow.email.screenshot.maps.MapScreenshotProvider;
+import com.github.stkent.bugshaker.flow.pivotaltracker.FeedbackPivotalFlowManager;
 import com.github.stkent.bugshaker.utilities.Logger;
 import com.github.stkent.bugshaker.utilities.Toaster;
 import com.squareup.seismic.ShakeDetector;
@@ -52,6 +53,7 @@ public final class BugShaker implements ShakeDetector.Listener {
     private final Application application;
     private EmailCapabilitiesProvider emailCapabilitiesProvider;
     private FeedbackEmailFlowManager feedbackEmailFlowManager;
+    private FeedbackPivotalFlowManager feedbackPivotalFlowManager;
     private Logger logger;
 
     // Instance configuration:
@@ -60,6 +62,12 @@ public final class BugShaker implements ShakeDetector.Listener {
     private AlertDialogType alertDialogType = AlertDialogType.NATIVE;
     private boolean ignoreFlagSecure        = false;
     private boolean loggingEnabled          = false;
+
+    private boolean sendEmail;
+    private String pivotalTrackerToken;
+    private String project_id;
+
+
 
     // Instance configuration state:
     private boolean assembled      = false;
@@ -70,12 +78,20 @@ public final class BugShaker implements ShakeDetector.Listener {
 
         @Override
         public void onActivityResumed(final Activity activity) {
-            feedbackEmailFlowManager.onActivityResumed(activity);
+            if(sendEmail){
+                feedbackEmailFlowManager.onActivityResumed(activity);
+            }else{
+                feedbackPivotalFlowManager.onActivityResumed(activity);
+            }
         }
 
         @Override
         public void onActivityStopped(final Activity activity) {
-            feedbackEmailFlowManager.onActivityStopped();
+            if(sendEmail){
+                feedbackEmailFlowManager.onActivityStopped();
+            }else{
+                feedbackPivotalFlowManager.onActivityStopped();
+            }
         }
     };
 
@@ -131,6 +147,56 @@ public final class BugShaker implements ShakeDetector.Listener {
         this.emailSubjectLine = emailSubjectLine;
         return this;
     }
+
+
+    /**
+     *
+     * @param token
+     * @return
+     */
+    public BugShaker setPivotalTrackerToken(@NonNull final String token) {
+        if (assembled || startAttempted) {
+            throw new IllegalStateException(RECONFIGURATION_EXCEPTION_MESSAGE);
+        }
+
+        this.pivotalTrackerToken = token;
+        return this;
+    }
+
+
+
+
+    /**
+     *
+     * @param project_id
+     * @return
+     */
+    public BugShaker setPivotalTrackerProjectId(@NonNull final String project_id) {
+        if (assembled || startAttempted) {
+            throw new IllegalStateException(RECONFIGURATION_EXCEPTION_MESSAGE);
+        }
+
+        this.project_id = project_id;
+        return this;
+    }
+
+
+
+
+    /**
+     *
+     * @param sendEmail
+     * @return
+     */
+    public BugShaker setIsSendEmail(@NonNull final boolean sendEmail) {
+        if (assembled || startAttempted) {
+            throw new IllegalStateException(RECONFIGURATION_EXCEPTION_MESSAGE);
+        }
+        this.sendEmail = sendEmail;
+        return this;
+    }
+
+
 
     /**
      * (Optional) Defines a dialog type (native/material) to present when a shake is detected.
@@ -211,17 +277,30 @@ public final class BugShaker implements ShakeDetector.Listener {
         emailCapabilitiesProvider = new EmailCapabilitiesProvider(
                 application.getPackageManager(), genericEmailIntentProvider, logger);
 
-        feedbackEmailFlowManager = new FeedbackEmailFlowManager(
-                application,
-                emailCapabilitiesProvider,
-                new Toaster(application),
-                new ActivityReferenceManager(),
-                new FeedbackEmailIntentProvider(application, genericEmailIntentProvider),
-                getScreenshotProvider(),
-                getAlertDialogProvider(),
-                logger);
 
-        assembled = true;
+        if(sendEmail){
+            feedbackEmailFlowManager = new FeedbackEmailFlowManager(
+                    application,
+                    emailCapabilitiesProvider,
+                    new Toaster(application),
+                    new ActivityReferenceManager(),
+                    new FeedbackEmailIntentProvider(application, genericEmailIntentProvider),
+                    getScreenshotProvider(),
+                    getAlertDialogProvider(),
+                    logger);
+
+            assembled = true;
+
+        }else{
+            feedbackPivotalFlowManager = new FeedbackPivotalFlowManager(application,
+                    new Toaster(application),
+                    new ActivityReferenceManager(),
+                    getScreenshotProvider(),
+                    getAlertDialogProvider(),
+                    new String[]{pivotalTrackerToken,project_id},
+                    logger);
+            assembled = true;
+        }
         return this;
     }
 
@@ -266,10 +345,15 @@ public final class BugShaker implements ShakeDetector.Listener {
     public void hearShake() {
         logger.d("Shake detected!");
 
+
+        if(sendEmail){
         feedbackEmailFlowManager.startFlowIfNeeded(
                 emailAddresses,
                 emailSubjectLine,
                 ignoreFlagSecure);
+        }else{
+            feedbackPivotalFlowManager.startFlowIfNeeded(ignoreFlagSecure);
+        }
     }
 
     /**

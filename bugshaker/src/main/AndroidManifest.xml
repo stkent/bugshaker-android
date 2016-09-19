@@ -1,5 +1,6 @@
-<manifest package="com.github.stkent.bugshaker"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.stkent.bugshaker">
 
     <application>
         <provider
@@ -11,6 +12,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name=".ImageEditActivity"
+            ></activity>
     </application>
 
 </manifest>
