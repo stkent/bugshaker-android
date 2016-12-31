@@ -4,6 +4,14 @@ Shake to send a bug report!
 
 [![Build Status](https://travis-ci.org/stkent/bugshaker-android.svg?branch=master)](https://travis-ci.org/stkent/bugshaker-android) <a href="https://bintray.com/stkent/android-libraries/bugshaker/"><img src="https://img.shields.io/bintray/v/stkent/android-libraries/bugshaker.svg" /></a> <a href="http://www.detroitlabs.com/"><img src="https://img.shields.io/badge/Sponsor-Detroit%20Labs-000000.svg" /></a> [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-BugShaker-green.svg?style=flat)](http://android-arsenal.com/details/1/3299)
 
+# Development Status: Dormant
+
+- Not currently under active development.
+- Active development may resume in the future.
+- Bug reports will be triaged and fixed. No guarantees are made regarding fix timelines.
+- Feature requests will be triaged. No guarantees are made regarding acceptance or implementation timelines.
+- Pull requests from external contributors are not currently being accepted.
+
 # Introduction
 
 BugShaker allows your QA team and/or end users to easily submit bug reports by shaking their device. When [a shake is detected]((https://github.com/square/seismic)), the current screen state is captured and the user is prompted to submit a bug report via email with this screenshot attached.
