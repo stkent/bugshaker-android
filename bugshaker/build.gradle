@@ -76,6 +76,7 @@ dependencies {
     compile "com.squareup:seismic:${seismicVersion}"
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
+    compile 'com.loopj.android:android-async-http:1.4.9'
 
     compile('com.google.android.gms:play-services-maps:9.0.2') { ext.optional = true }
     compile("com.android.support:appcompat-v7:${supportLibraryVersion}") { ext.optional = true }

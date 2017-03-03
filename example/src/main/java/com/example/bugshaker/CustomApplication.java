@@ -27,12 +27,14 @@ public final class CustomApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        BugShaker.get(this)
-                 .setEmailAddresses("someone@example.com")
-                 .setLoggingEnabled(BuildConfig.DEBUG)
-                 .setAlertDialogType(AlertDialogType.APP_COMPAT)
-                 .assemble()
-                 .start();
+         BugShaker.get(this)
+                .setIsSendEmail(false)
+                .setPivotalTrackerProjectId("PROJECT_ID")
+                .setPivotalTrackerToken("TOKEN")
+                .setLoggingEnabled(BuildConfig.DEBUG)
+                .setAlertDialogType(AlertDialogType.APP_COMPAT)
+                .assemble()
+                .start();
     }
 
 }
