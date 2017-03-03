@@ -1,0 +1,18 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--Brush sizes-->
+    <dimen name="small_brush">10dp</dimen>
+    <integer name="small_size">5</integer>
+    <dimen name="medium_brush">20dp</dimen>
+    <integer name="medium_size">10</integer>
+    <dimen name="large_brush">30dp</dimen>
+    <integer name="large_size">15</integer>
+
+    <integer name="small_eraser_size">10</integer>
+    <integer name="medium_eraser_size">20</integer>
+    <integer name="large_eraser_size">30</integer>
+
+</resources>

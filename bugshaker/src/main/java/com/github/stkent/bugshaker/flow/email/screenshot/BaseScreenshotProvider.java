@@ -1,13 +1,13 @@
 /**
  * Copyright 2016 Stuart Kent
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.
- *
+ * <p/>
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -30,38 +30,38 @@ import rx.schedulers.Schedulers;
 
 public abstract class BaseScreenshotProvider implements ScreenshotProvider {
 
-    @NonNull
-    private final Context applicationContext;
+	@NonNull
+	private final Context applicationContext;
 
-    @NonNull
-    private final Logger logger;
+	@NonNull
+	private final Logger logger;
 
-    public BaseScreenshotProvider(
-            @NonNull final Context applicationContext,
-            @NonNull final Logger logger) {
+	protected BaseScreenshotProvider(
+		@NonNull final Context applicationContext,
+		@NonNull final Logger logger) {
 
-        this.applicationContext = applicationContext;
-        this.logger = logger;
-    }
+		this.applicationContext = applicationContext;
+		this.logger = logger;
+	}
 
-    @NonNull
-    public abstract Observable<Bitmap> getScreenshotBitmap(@NonNull final Activity activity);
+	@NonNull
+	protected abstract Observable<Bitmap> getScreenshotBitmap(@NonNull final Activity activity);
 
-    @NonNull
-    @Override
-    public final Observable<Uri> getScreenshotUri(@NonNull final Activity activity) {
-        return getScreenshotBitmap(activity)
-                .observeOn(Schedulers.io())
-                .flatMap(new Func1<Bitmap, Observable<Uri>>() {
-                    @Override
-                    public Observable<Uri> call(final Bitmap bitmap) {
-                        return ScreenshotUriObservable.create(applicationContext, bitmap, logger);
-                    }
-                });
-    }
+	@NonNull
+	@Override
+	public final Observable<Uri> getScreenshotUri(@NonNull final Activity activity) {
+		return getScreenshotBitmap(activity)
+			.observeOn(Schedulers.io())
+			.flatMap(new Func1<Bitmap, Observable<Uri>>() {
+				@Override
+				public Observable<Uri> call(final Bitmap bitmap) {
+					return ScreenshotUriObservable.create(applicationContext, bitmap, logger);
+				}
+			});
+	}
 
-    protected final Observable<Bitmap> getNonMapViewsBitmap(@NonNull final Activity activity) {
-        return NonMapViewsBitmapObservable.create(activity);
-    }
+	protected final Observable<Bitmap> getNonMapViewsBitmap(@NonNull final Activity activity) {
+		return NonMapViewsBitmapObservable.create(activity);
+	}
 
 }

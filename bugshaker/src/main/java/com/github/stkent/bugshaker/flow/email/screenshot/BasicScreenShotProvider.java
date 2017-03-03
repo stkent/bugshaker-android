@@ -1,13 +1,13 @@
 /**
  * Copyright 2016 Stuart Kent
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License.
- *
+ * <p/>
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -27,17 +27,17 @@ import rx.Observable;
 
 public final class BasicScreenShotProvider extends BaseScreenshotProvider {
 
-    public BasicScreenShotProvider(
-            @NonNull final Context applicationContext,
-            @NonNull final Logger logger) {
+	public BasicScreenShotProvider(
+		@NonNull final Context applicationContext,
+		@NonNull final Logger logger) {
 
-        super(applicationContext, logger);
-    }
+		super(applicationContext, logger);
+	}
 
-    @NonNull
-    @Override
-    public Observable<Bitmap> getScreenshotBitmap(@NonNull final Activity activity) {
-        return getNonMapViewsBitmap(activity);
-    }
+	@NonNull
+	@Override
+	public Observable<Bitmap> getScreenshotBitmap(@NonNull final Activity activity) {
+		return getNonMapViewsBitmap(activity);
+	}
 
 }

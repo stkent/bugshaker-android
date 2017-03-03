@@ -17,5 +17,7 @@
 
 -->
 <paths>
-    <files-path path="bug-reports/" name="bug-reports" />
+    <files-path
+        name="bug-reports"
+        path="bug-reports/" />
 </paths>
