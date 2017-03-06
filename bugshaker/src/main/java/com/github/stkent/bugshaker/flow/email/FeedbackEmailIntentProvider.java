@@ -51,7 +51,7 @@ public final class FeedbackEmailIntentProvider {
     }
 
     @NonNull
-    Intent getFeedbackEmailIntent(
+    /* default */ Intent getFeedbackEmailIntent(
             @NonNull final String[] emailAddresses,
             @Nullable final String userProvidedEmailSubjectLine) {
 
@@ -63,7 +63,7 @@ public final class FeedbackEmailIntentProvider {
     }
 
     @NonNull
-    Intent getFeedbackEmailIntent(
+    /* default */ Intent getFeedbackEmailIntent(
             @NonNull final String[] emailAddresses,
             @Nullable final String userProvidedEmailSubjectLine,
             @NonNull final Uri screenshotUri) {

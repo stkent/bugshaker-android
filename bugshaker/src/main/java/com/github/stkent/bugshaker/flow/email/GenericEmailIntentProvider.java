@@ -23,7 +23,7 @@ import android.support.annotation.NonNull;
 public final class GenericEmailIntentProvider {
 
     @NonNull
-    Intent getEmailIntent(
+    /* default */ Intent getEmailIntent(
             @NonNull final String[] emailAddresses,
             @NonNull final String emailSubjectLine,
             @NonNull final String emailBody) {
@@ -37,7 +37,7 @@ public final class GenericEmailIntentProvider {
     }
 
     @NonNull
-    Intent getEmailWithAttachmentIntent(
+    /* default */ Intent getEmailWithAttachmentIntent(
         @NonNull final String[] emailAddresses,
         @NonNull final String emailSubjectLine,
         @NonNull final String emailBody,

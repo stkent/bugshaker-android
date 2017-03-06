@@ -68,7 +68,7 @@ public final class EmailCapabilitiesProvider {
         return true;
     }
 
-    boolean canSendEmailsWithAttachments() {
+    /* default */ boolean canSendEmailsWithAttachments() {
         logger.d("Checking for email apps that can send attachments...");
 
         final List<ResolveInfo> emailAppInfoList = getEmailWithAttachmentAppList();
