@@ -42,7 +42,7 @@ final class NonMapViewsBitmapObservable {
     }
 
     @NonNull
-    static Observable<Bitmap> create(@NonNull final Activity activity) {
+    /* default */ static Observable<Bitmap> create(@NonNull final Activity activity) {
         return Observable.create(new Observable.OnSubscribe<Bitmap>() {
             @Override
             public void call(final Subscriber<? super Bitmap> subscriber) {

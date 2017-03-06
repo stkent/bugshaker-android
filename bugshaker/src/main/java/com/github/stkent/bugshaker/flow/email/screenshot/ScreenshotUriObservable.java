@@ -33,7 +33,7 @@ import java.io.OutputStream;
 import rx.Observable;
 import rx.Subscriber;
 
-final class ScreenshotUriObservable {
+/* default */ final class ScreenshotUriObservable {
 
     @SuppressWarnings("SpellCheckingInspection")
     private static final String AUTHORITY_SUFFIX = ".bugshaker.fileprovider";
@@ -41,7 +41,7 @@ final class ScreenshotUriObservable {
     private static final String SCREENSHOT_FILE_NAME = "latest-screenshot.jpg";
     private static final int JPEG_COMPRESSION_QUALITY = 90;
 
-    static Observable<Uri> create(
+    /* default */ static Observable<Uri> create(
             @NonNull final Context applicationContext,
             @NonNull final Bitmap bitmap,
             @NonNull final Logger logger) {
@@ -92,7 +92,7 @@ final class ScreenshotUriObservable {
     }
 
     private ScreenshotUriObservable() {
-
+        // This constructor intentionally left blank.
     }
 
     private static File getScreenshotFile(@NonNull final Context applicationContext) {

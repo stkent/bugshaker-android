@@ -19,7 +19,7 @@ package com.github.stkent.bugshaker.flow.email.screenshot.maps;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-final class LocatedBitmap {
+/* default */ final class LocatedBitmap {
 
     @NonNull
     private final Bitmap bitmap;
@@ -27,18 +27,18 @@ final class LocatedBitmap {
     @NonNull
     private final int[] location;
 
-    LocatedBitmap(@NonNull final Bitmap bitmap, @NonNull final int[] location) {
+    /* default */ LocatedBitmap(@NonNull final Bitmap bitmap, @NonNull final int[] location) {
         this.bitmap = bitmap;
         this.location = location;
     }
 
     @NonNull
-    Bitmap getBitmap() {
+    /* default */ Bitmap getBitmap() {
         return bitmap;
     }
 
     @NonNull
-    int[] getLocation() {
+    /* default */ int[] getLocation() {
         return location;
     }
 

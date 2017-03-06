@@ -28,10 +28,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import rx.Observable;
 import rx.Subscriber;
 
-final class MapBitmapObservable {
+/* default */ final class MapBitmapObservable {
 
     @MainThread
-    static Observable<LocatedBitmap> create(@NonNull final MapView mapView) {
+    /* default */ static Observable<LocatedBitmap> create(@NonNull final MapView mapView) {
         final int[] locationOnScreen = new int[] {0, 0};
         mapView.getLocationOnScreen(locationOnScreen);
 
@@ -61,7 +61,7 @@ final class MapBitmapObservable {
     }
 
     private MapBitmapObservable() {
-
+        // This constructor intentionally left blank.
     }
 
 }
