@@ -62,6 +62,8 @@
         <exclude name="TooFewBranchesForASwitchStatement" />
         <exclude name="EmptyMethodInAbstractClassShouldBeAbstract" />
         <exclude name="UseVarargs" />
+        <!-- I like static stuff before instance stuff -->
+        <exclude name="FieldDeclarationsShouldBeAtStartOfClass" />
     </rule>
 
     <rule ref="rulesets/java/empty.xml" />
