@@ -219,8 +219,10 @@ public final class FeedbackEmailFlowManager {
             @NonNull final Activity activity,
             @NonNull final Uri screenshotUri) {
 
-        final Intent feedbackEmailIntent = feedbackEmailIntentProvider
-                .getFeedbackEmailIntent(emailAddresses, emailSubjectLine, screenshotUri);
+        final Intent feedbackEmailIntent = feedbackEmailIntentProvider.getFeedbackEmailIntent(
+                emailAddresses,
+                emailSubjectLine,
+                screenshotUri);
 
         final List<ResolveInfo> resolveInfoList = applicationContext.getPackageManager()
                 .queryIntentActivities(feedbackEmailIntent, PackageManager.MATCH_DEFAULT_ONLY);
@@ -239,8 +241,9 @@ public final class FeedbackEmailFlowManager {
     }
 
     private void sendEmailWithoutScreenshot(@NonNull final Activity activity) {
-        final Intent feedbackEmailIntent = feedbackEmailIntentProvider
-                .getFeedbackEmailIntent(emailAddresses, emailSubjectLine);
+        final Intent feedbackEmailIntent = feedbackEmailIntentProvider.getFeedbackEmailIntent(
+                emailAddresses,
+                emailSubjectLine);
 
         activity.startActivity(feedbackEmailIntent);
 

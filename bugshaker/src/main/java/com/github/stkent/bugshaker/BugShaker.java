@@ -16,6 +16,7 @@
  */
 package com.github.stkent.bugshaker;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.hardware.SensorManager;
@@ -39,14 +40,15 @@ import com.squareup.seismic.ShakeDetector;
 import static android.content.Context.SENSOR_SERVICE;
 
 /**
- * The main interaction point for library users. Encapsulates all shake detection. Setters allow
- * users to customize some aspects (recipients, subject line) of bug report emails.
+ * The main interaction point for library users. Encapsulates all shake detection. Setters allow users to customize some
+ * aspects (recipients, subject line) of bug report emails.
  */
 public final class BugShaker implements ShakeDetector.Listener {
 
     private static final String RECONFIGURATION_EXCEPTION_MESSAGE =
             "Configuration must be completed before calling assemble or start";
 
+    @SuppressLint("StaticFieldLeak") // we're holding the application context.
     private static BugShaker sharedInstance;
 
     private final Application application;
@@ -65,9 +67,7 @@ public final class BugShaker implements ShakeDetector.Listener {
     private boolean assembled      = false;
     private boolean startAttempted = false;
 
-    private final SimpleActivityLifecycleCallback simpleActivityLifecycleCallback
-            = new SimpleActivityLifecycleCallback() {
-
+    private final SimpleActivityLifecycleCallback simpleActivityLifecycleCallback = new SimpleActivityLifecycleCallback() {
         @Override
         public void onActivityResumed(final Activity activity) {
             feedbackEmailFlowManager.onActivityResumed(activity);
@@ -83,6 +83,7 @@ public final class BugShaker implements ShakeDetector.Listener {
      * @param application the embedding application
      * @return the singleton <code>BugShaker</code> instance
      */
+    @NonNull
     public static BugShaker get(@NonNull final Application application) {
         synchronized (BugShaker.class) {
             if (sharedInstance == null) {
@@ -98,13 +99,13 @@ public final class BugShaker implements ShakeDetector.Listener {
     }
 
     /**
-     * (Required) Defines one or more email addresses to send bug reports to. This method MUST be
-     * called before calling <code>assemble</code>. This method CANNOT be called after calling
-     * <code>assemble</code> or <code>start</code>.
+     * (Required) Defines one or more email addresses to send bug reports to. This method MUST be called before calling
+     * <code>assemble</code>. This method CANNOT be called after calling <code>assemble</code> or <code>start</code>.
      *
      * @param emailAddresses one or more email addresses
      * @return the current <code>BugShaker</code> instance (to allow for method chaining)
      */
+    @NonNull
     public BugShaker setEmailAddresses(@NonNull final String... emailAddresses) {
         if (assembled || startAttempted) {
             throw new IllegalStateException(
@@ -116,13 +117,14 @@ public final class BugShaker implements ShakeDetector.Listener {
     }
 
     /**
-     * (Optional) Defines a custom subject line to use for all bug reports. By default, reports will
-     * use the string defined in <code>DEFAULT_SUBJECT_LINE</code>. This method CANNOT be called
-     * after calling <code>assemble</code> or <code>start</code>.
+     * (Optional) Defines a custom subject line to use for all bug reports. By default, reports will use the string
+     * defined in <code>DEFAULT_SUBJECT_LINE</code>. This method CANNOT be called after calling <code>assemble</code> or
+     * <code>start</code>.
      *
      * @param emailSubjectLine a custom email subject line
      * @return the current <code>BugShaker</code> instance (to allow for method chaining)
      */
+    @NonNull
     public BugShaker setEmailSubjectLine(@NonNull final String emailSubjectLine) {
         if (assembled || startAttempted) {
             throw new IllegalStateException(RECONFIGURATION_EXCEPTION_MESSAGE);
@@ -133,13 +135,13 @@ public final class BugShaker implements ShakeDetector.Listener {
     }
 
     /**
-     * (Optional) Defines a dialog type (native/material) to present when a shake is detected.
-     * Native dialogs are used by default. This method CANNOT be called after calling
-     * <code>assemble</code> or <code>start</code>.
+     * (Optional) Defines a dialog type (native/material) to present when a shake is detected. Native dialogs are used
+     * by default. This method CANNOT be called after calling <code>assemble</code> or <code>start</code>.
      *
      * @param alertDialogType the dialog type to present
      * @return the current <code>BugShaker</code> instance (to allow for method chaining)
      */
+    @NonNull
     public BugShaker setAlertDialogType(@NonNull final AlertDialogType alertDialogType) {
         if (assembled || startAttempted) {
             throw new IllegalStateException(RECONFIGURATION_EXCEPTION_MESSAGE);
@@ -150,12 +152,13 @@ public final class BugShaker implements ShakeDetector.Listener {
     }
 
     /**
-     * (Optional) Enables debug and error log messages. Logging is disabled by default. This method
-     * CANNOT be called after calling <code>assemble</code> or <code>start</code>.
+     * (Optional) Enables debug and error log messages. Logging is disabled by default. This method CANNOT be called
+     * after calling <code>assemble</code> or <code>start</code>.
      *
      * @param loggingEnabled true if logging should be enabled; false otherwise
      * @return the current <code>BugShaker</code> instance (to allow for method chaining)
      */
+    @NonNull
     public BugShaker setLoggingEnabled(final boolean loggingEnabled) {
         if (assembled || startAttempted) {
             throw new IllegalStateException(RECONFIGURATION_EXCEPTION_MESSAGE);
@@ -166,15 +169,14 @@ public final class BugShaker implements ShakeDetector.Listener {
     }
 
     /**
-     * (Optional) Choose whether to ignore the <code>FLAG_SECURE</code> <code>Window</code> flag
-     * when capturing screenshots. This method CANNOT be called after calling <code>assemble</code>
-     * or <code>start</code>.
+     * (Optional) Choose whether to ignore the <code>FLAG_SECURE</code> <code>Window</code> flag when capturing
+     * screenshots. This method CANNOT be called after calling <code>assemble</code> or <code>start</code>.
      *
-     * @param ignoreFlagSecure true if screenshots should be allowed even when
-     *                         <code>FLAG_SECURE</code> is set on the current <code>Window</code>;
-     *                         false otherwise
+     * @param ignoreFlagSecure true if screenshots should be allowed even when <code>FLAG_SECURE</code> is set on the
+     *                         current <code>Window</code>; false otherwise
      * @return the current <code>BugShaker</code> instance (to allow for method chaining)
      */
+    @NonNull
     public BugShaker setIgnoreFlagSecure(final boolean ignoreFlagSecure) {
         if (assembled || startAttempted) {
             throw new IllegalStateException(RECONFIGURATION_EXCEPTION_MESSAGE);
@@ -185,17 +187,15 @@ public final class BugShaker implements ShakeDetector.Listener {
     }
 
     /**
-     * (Required) Assembles dependencies based on provided configuration information. This method
-     * CANNOT be called more than once. This method CANNOT be called after calling
-     * <code>start</code>.
+     * (Required) Assembles dependencies based on provided configuration information. This method CANNOT be called more
+     * than once. This method CANNOT be called after calling <code>start</code>.
      *
      * @return the current <code>BugShaker</code> instance (to allow for method chaining)
      */
+    @NonNull
     public BugShaker assemble() {
         if (assembled) {
-            logger.d("You have already assembled this BugShaker instance. Calling assemble again "
-                    + "is a no-op.");
-
+            logger.d("You have already assembled this BugShaker instance. Calling assemble again is a no-op.");
             return this;
         }
 
@@ -205,11 +205,12 @@ public final class BugShaker implements ShakeDetector.Listener {
 
         logger = new Logger(loggingEnabled);
 
-        final GenericEmailIntentProvider genericEmailIntentProvider
-                = new GenericEmailIntentProvider();
+        final GenericEmailIntentProvider genericEmailIntentProvider = new GenericEmailIntentProvider();
 
         emailCapabilitiesProvider = new EmailCapabilitiesProvider(
-                application.getPackageManager(), genericEmailIntentProvider, logger);
+                application.getPackageManager(),
+                genericEmailIntentProvider,
+                logger);
 
         feedbackEmailFlowManager = new FeedbackEmailFlowManager(
                 application,
@@ -226,8 +227,7 @@ public final class BugShaker implements ShakeDetector.Listener {
     }
 
     /**
-     * (Required) Start listening for device shaking. You MUST call <code>assemble</code> before
-     * calling this method.
+     * (Required) Start listening for device shaking. You MUST call <code>assemble</code> before calling this method.
      */
     public void start() {
         if (!assembled) {
@@ -273,9 +273,10 @@ public final class BugShaker implements ShakeDetector.Listener {
     }
 
     /**
-     * @return a MapScreenshotProvider if the embedding application utilizes the Google Maps Android
-     *         API, and a BasicScreenshotProvider otherwise
+     * @return a MapScreenshotProvider if the embedding application utilizes the Google Maps Android API, and a
+     *         BasicScreenshotProvider otherwise
      */
+    @NonNull
     private ScreenshotProvider getScreenshotProvider() {
         try {
             Class.forName(
@@ -293,6 +294,7 @@ public final class BugShaker implements ShakeDetector.Listener {
         }
     }
 
+    @NonNull
     private DialogProvider getAlertDialogProvider() {
         if (alertDialogType == AlertDialogType.APP_COMPAT) {
             try {

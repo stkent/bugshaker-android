@@ -18,14 +18,9 @@ package com.github.stkent.bugshaker.flow.email;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import com.github.stkent.bugshaker.utilities.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,17 +32,25 @@ public final class FeedbackEmailIntentProvider {
     private static final String DEFAULT_EMAIL_SUBJECT_LINE_SUFFIX = " Android App Feedback";
 
     @NonNull
-    private final Context applicationContext;
-
-    @NonNull
     private final GenericEmailIntentProvider genericEmailIntentProvider;
 
+    @NonNull
+    private final App app;
+
+    @NonNull
+    private final Environment environment;
+
+    @NonNull
+    private final Device device;
+
     public FeedbackEmailIntentProvider(
-            @NonNull final Context applicationContext,
+            @NonNull final Context context,
             @NonNull final GenericEmailIntentProvider genericEmailIntentProvider) {
 
-        this.applicationContext = applicationContext;
         this.genericEmailIntentProvider = genericEmailIntentProvider;
+        this.app = new App(context);
+        this.environment = new Environment();
+        this.device = new Device(context);
     }
 
     @NonNull
@@ -55,11 +58,11 @@ public final class FeedbackEmailIntentProvider {
             @NonNull final String[] emailAddresses,
             @Nullable final String userProvidedEmailSubjectLine) {
 
-        final String appInfo = getApplicationInfoString();
         final String emailSubjectLine = getEmailSubjectLine(userProvidedEmailSubjectLine);
+        final String emailBody = getApplicationInfoString(app, environment, device);
 
         return genericEmailIntentProvider
-                .getEmailIntent(emailAddresses, emailSubjectLine, appInfo);
+                .getEmailIntent(emailAddresses, emailSubjectLine, emailBody);
     }
 
     @NonNull
@@ -68,32 +71,37 @@ public final class FeedbackEmailIntentProvider {
             @Nullable final String userProvidedEmailSubjectLine,
             @NonNull final Uri screenshotUri) {
 
-        final String appInfo = getApplicationInfoString();
         final String emailSubjectLine = getEmailSubjectLine(userProvidedEmailSubjectLine);
+        final String emailBody = getApplicationInfoString(app, environment, device);
 
         return genericEmailIntentProvider
                 .getEmailWithAttachmentIntent(
-                        emailAddresses, emailSubjectLine, appInfo, screenshotUri);
+                        emailAddresses, emailSubjectLine, emailBody, screenshotUri);
     }
 
     @NonNull
-    private CharSequence getApplicationName() {
-        return applicationContext.getApplicationInfo()
-                .loadLabel(applicationContext.getPackageManager());
-    }
+    private String getApplicationInfoString(
+            @NonNull final App app,
+            @NonNull final Environment environment,
+            @NonNull final Device device) {
 
-    @NonNull
-    private String getApplicationInfoString() {
-        return    "My Device: " + getDeviceName()
-                + "\n"
-                + "App Version: " + getVersionDisplayString()
-                + "\n"
-                + "Android Version: " + getAndroidOsVersionDisplayString()
-                + "\n"
-                + "Time Stamp: " + getCurrentUtcTimeStringForDate(new Date())
-                + "\n"
-                + "---------------------"
-                + "\n\n";
+        final String androidVersionString = String.format(
+                "%s (%s)", environment.getAndroidVersionName(), environment.getAndroidVersionCode());
+
+        final String appVersionString = String.format("%s (%s)", app.getVersionName(), app.getVersionCode());
+
+        // @formatter:off
+        return    "Time Stamp: " + getCurrentUtcTimeStringForDate(new Date()) + "\n"
+                + "App Version: " + appVersionString + "\n"
+                + "Install Source: " + app.getInstallSource() + "\n"
+                + "Android Version: " + androidVersionString + "\n"
+                + "Device Manufacturer: " + device.getManufacturer() + "\n"
+                + "Device Model: " + device.getModel() + "\n"
+                + "Display Resolution: " + device.getResolution() + "\n"
+                + "Display Density (Actual): " + device.getActualDensity() + "\n"
+                + "Display Density (Bucket) " + device.getDensityBucket() + "\n"
+                + "---------------------\n\n";
+        // @formatter:on
     }
 
     @NonNull
@@ -102,44 +110,7 @@ public final class FeedbackEmailIntentProvider {
             return userProvidedEmailSubjectLine;
         }
 
-        return getApplicationName() + DEFAULT_EMAIL_SUBJECT_LINE_SUFFIX;
-    }
-
-    @NonNull
-    private String getDeviceName() {
-        final String manufacturer = Build.MANUFACTURER;
-        final String model = Build.MODEL;
-
-        String deviceName;
-
-        if (model.startsWith(manufacturer)) {
-            deviceName = model;
-        } else {
-            deviceName = manufacturer + " " + model;
-        }
-
-        return StringUtils.capitalizeFully(deviceName);
-    }
-
-    @NonNull
-    private String getVersionDisplayString() {
-        try {
-            final PackageManager packageManager = applicationContext.getPackageManager();
-            final PackageInfo packageInfo
-                    = packageManager.getPackageInfo(applicationContext.getPackageName(), 0);
-
-            final String applicationVersionName = packageInfo.versionName;
-            final int applicationVersionCode = packageInfo.versionCode;
-
-            return String.format("%s (%s)", applicationVersionName, applicationVersionCode);
-        } catch (final PackageManager.NameNotFoundException e) {
-            return "Unknown Version";
-        }
-    }
-
-    @NonNull
-    private String getAndroidOsVersionDisplayString() {
-        return Build.VERSION.RELEASE + " (" + Build.VERSION.SDK_INT + ")";
+        return app.getName() + DEFAULT_EMAIL_SUBJECT_LINE_SUFFIX;
     }
 
     @NonNull
