@@ -21,8 +21,12 @@ allprojects {
     apply plugin: 'com.github.hierynomus.license'
 
     license {
-        header = file("${rootProject.projectDir}/Apache2License.txt")
+        header = file("${rootProject.projectDir}/HEADER_LICENSE.txt")
         strictCheck true
+
+        mapping {
+            java='SLASHSTAR_STYLE'
+        }
     }
 }
 
