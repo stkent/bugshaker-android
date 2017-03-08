@@ -75,7 +75,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
 
-    compile('com.google.android.gms:play-services-maps:9.0.2') { ext.optional = true }
+    compile('com.google.android.gms:play-services-maps:10.2.0') { ext.optional = true }
     compile("com.android.support:appcompat-v7:${supportLibraryVersion}") { ext.optional = true }
 
     testCompile 'junit:junit:4.12'
