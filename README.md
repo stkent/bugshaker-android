@@ -34,33 +34,33 @@ https://play.google.com/store/apps/details?id=com.github.stkent.bugshaker
 
 # Getting Started
 
-(1) Specify BugShaker-Android as a dependency in your build.gradle file:
+1. Specify BugShaker-Android as a dependency in your build.gradle file:
 
-```groovy
-dependencies {
-    compile 'com.github.stkent:bugshaker:{latest-version}'
-}
-```
+	```groovy
+	dependencies {
+	    compile 'com.github.stkent:bugshaker:{latest-version}'
+	}
+	```
 
-(2) Configure the shared `BugShaker` instance in your custom [`Application`](http://developer.android.com/reference/android/app/Application.html) class, then call `assemble` and `start` to begin listening for shakes:
+2. Configure the shared `BugShaker` instance in your custom [`Application`](http://developer.android.com/reference/android/app/Application.html) class, then call `assemble` and `start` to begin listening for shakes:
 
-```java
-public class CustomApplication extends Application {
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        BugShaker.get(this)
-                 .setEmailAddresses("someone@example.com")   // required
-                 .setEmailSubjectLine("Custom Subject Line") // optional
-                 .setAlertDialogType(AlertDialogType.NATIVE) // optional
-                 .setLoggingEnabled(BuildConfig.DEBUG)       // optional
-                 .setIgnoreFlagSecure(true)                  // optional
-                 .assemble()                                 // required
-                 .start();                                   // required
-    }
-}
-```
+	```java
+	public class CustomApplication extends Application {
+	    @Override
+	    public void onCreate() {
+	        super.onCreate();
+	
+	        BugShaker.get(this)
+	                 .setEmailAddresses("someone@example.com")   // required
+	                 .setEmailSubjectLine("Custom Subject Line") // optional
+	                 .setAlertDialogType(AlertDialogType.NATIVE) // optional
+	                 .setLoggingEnabled(BuildConfig.DEBUG)       // optional
+	                 .setIgnoreFlagSecure(true)                  // optional
+	                 .assemble()                                 // required
+	                 .start();                                   // required
+	    }
+	}
+	```
 
 It is recommended that logging always be disabled in production builds.
 
