@@ -35,9 +35,8 @@ import rx.Subscriber;
 
 /* default */ final class ScreenshotUriObservable {
 
-    @SuppressWarnings("SpellCheckingInspection")
     private static final String AUTHORITY_SUFFIX = ".bugshaker.fileprovider";
-    private static final String SCREENSHOTS_DIRECTORY_NAME = "bug-reports";
+    private static final String SCREENSHOTS_DIRECTORY_NAME = "bugshaker-internal";
     private static final String SCREENSHOT_FILE_NAME = "latest-screenshot.jpg";
     private static final int JPEG_COMPRESSION_QUALITY = 90;
 
@@ -96,8 +95,7 @@ import rx.Subscriber;
     }
 
     private static File getScreenshotFile(@NonNull final Context applicationContext) {
-        final File screenshotsDir = new File(
-                applicationContext.getFilesDir(), SCREENSHOTS_DIRECTORY_NAME);
+        final File screenshotsDir = new File(applicationContext.getFilesDir(), SCREENSHOTS_DIRECTORY_NAME);
 
         //noinspection ResultOfMethodCallIgnored
         screenshotsDir.mkdirs();

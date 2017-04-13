@@ -1,16 +1,21 @@
-<manifest package="com.github.stkent.bugshaker"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.stkent.bugshaker">
 
     <application>
+
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name=".flow.email.screenshot.BugShakerFileProvider"
             android:authorities="${applicationId}.bugshaker.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
+
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
+                android:resource="@xml/library_file_paths" />
+
         </provider>
+
     </application>
 
 </manifest>

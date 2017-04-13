@@ -17,5 +17,6 @@
 
 -->
 <paths>
-    <files-path path="bug-reports/" name="bug-reports" />
+    <!-- The exact path defined here is unimportant. -->
+    <files-path path="images/" name="images" />
 </paths>

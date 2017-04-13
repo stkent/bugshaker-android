@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.example.bugshaker"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.bugshaker">
 
     <application
         android:name="com.example.bugshaker.CustomApplication"
@@ -40,6 +41,22 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCT0Me0Yy9EyZRYye77e0y7QjtlBMENyTo" />
+
+        <!--
+        This exists to check that the FileProvider embedded in the library does not conflict with a non-subclassed
+        FileProvider defined in the embedding application manifest.
+        -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/example_file_paths" />
+
+        </provider>
 
     </application>
 
