@@ -74,7 +74,7 @@ android {
 }
 
 dependencies {
-    def supportLibraryVersion = '25.2.0'
+    def supportLibraryVersion = '25.3.1'
     def seismicVersion = '1.0.2'
 
     javadocDeps "com.android.support:support-annotations:${supportLibraryVersion}"
@@ -82,9 +82,9 @@ dependencies {
 
     compile "com.squareup:seismic:${seismicVersion}"
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.2.7'
+    compile 'io.reactivex:rxjava:1.2.9'
 
-    compile('com.google.android.gms:play-services-maps:10.2.0') { ext.optional = true }
+    compile('com.google.android.gms:play-services-maps:10.2.1') { ext.optional = true }
     compile("com.android.support:appcompat-v7:${supportLibraryVersion}") { ext.optional = true }
 
     testCompile 'junit:junit:4.12'
