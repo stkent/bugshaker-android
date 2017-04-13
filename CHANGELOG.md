@@ -1,5 +1,13 @@
 # Change Log
 
+## v1.4.0
+
+_2017-04-13_
+
+- [Fixed] Library `FileProvider` will no longer conflict with embedding application `FileProvider` (#108).
+- [Added] More device information included in bug report email!
+- [Internal] Dependency updates.
+
 ## v1.3.0
 
 _2016-03-01_

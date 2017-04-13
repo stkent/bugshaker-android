@@ -2,7 +2,7 @@
 
 ext {
     // Library info:
-    libraryVersion = '1.3.0'
+    libraryVersion = '1.4.0'
     libraryName = 'BugShaker'
     libraryGroupId = 'com.github.stkent'
     libraryArtifactId = 'bugshaker'
