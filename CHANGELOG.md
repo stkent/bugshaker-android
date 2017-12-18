@@ -1,5 +1,11 @@
 # Change Log
 
+## v1.4.1
+
+_2017-12-18_
+
+- [Internal] Dependency updates.
+
 ## v1.4.0
 
 _2017-04-13_
