@@ -1,8 +1,25 @@
-// Shared project metadata
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
+        classpath 'com.btkelly:gnag:2.0.0'
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'gnag'
 
 ext {
     // Library info:
-    libraryVersion = '1.4.0'
+    libraryVersion = '1.4.1'
     libraryName = 'bugshaker'
     libraryGroupId = 'com.github.stkent'
     libraryArtifactId = 'bugshaker'
@@ -25,89 +42,65 @@ ext {
     bintrayRepo = 'android-libraries'
 }
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-        classpath 'com.btkelly:gnag:1.3.1'
-    }
-}
-
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.ben-manes.versions'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'gnag'
-
-apply from: 'https://raw.githubusercontent.com/stkent/JCenter/master/bintray1.7.3.gradle'
-apply from: 'https://raw.githubusercontent.com/stkent/JCenter/master/install1.5.gradle'
-
-configurations {
-    javadocDeps
-}
-
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.2'
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName libraryVersion
     }
 
     buildTypes {
+        debug { // Required so that dependencies are properly protected when building debug example build type.
+            consumerProguardFiles 'proguard/rxjava.pro', 'proguard/bugshaker.pro', 'proguard/v7support.pro'
+        }
+
         release {
             consumerProguardFiles 'proguard/rxjava.pro', 'proguard/bugshaker.pro', 'proguard/v7support.pro'
         }
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
     testOptions {
-        unitTests.returnDefaultValues = true
+        unitTests {
+            returnDefaultValues = true
+        }
     }
 }
 
-dependencies {
-    def supportLibraryVersion = '25.3.1'
-    def seismicVersion = '1.0.2'
-
-    javadocDeps "com.android.support:support-annotations:${supportLibraryVersion}"
-    javadocDeps "com.squareup:seismic:${seismicVersion}"
-
-    compile "com.squareup:seismic:${seismicVersion}"
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.2.9'
-
-    compile('com.google.android.gms:play-services-maps:10.2.1') { ext.optional = true }
-    compile("com.android.support:appcompat-v7:${supportLibraryVersion}") { ext.optional = true }
-
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.7.14'
-}
+//configurations {
+//    releaseImplementation {
+//        canBeConsumed = true
+//    }
+//}
 
 gnag {
     failOnError true
 
     github {
-        repoName 'stkent/bugshaker-android'
+        repoName libraryGitHubRepoName
     }
 
     checkstyle {
         reporterConfig project.file('config/checkstyle.xml')
     }
 
+    pmd {
+        reporterConfig project.file('config/pmd.xml')
+    }
+
     findbugs {
         reporterConfig project.file('config/findbugs.xml')
     }
 
-    pmd {
-        reporterConfig project.file('config/pmd.xml')
+    ktlint {
+        enabled false
     }
 
     androidLint {
@@ -116,12 +109,30 @@ gnag {
     }
 }
 
+dependencies {
+    def supportLibraryVersion = '27.0.2'
+    def seismicVersion = '1.0.2'
+
+    api "com.squareup:seismic:$seismicVersion" // TODO: hide this in the next breaking change
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'io.reactivex:rxjava:1.3.4'
+
+    implementation('com.google.android.gms:play-services-maps:11.4.2') { ext.optional = true }
+    implementation("com.android.support:appcompat-v7:${supportLibraryVersion}") { ext.optional = true }
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.13.0'
+}
+
 install {
     repositories.mavenInstaller {
         pom {
             // See comment by Endre Stølsvik on https://issues.gradle.org/browse/GRADLE-1749.
             withXml {
-                def depMap = configurations.compile.dependencies.collectEntries { [it.name, it] }
+                def depMap = configurations.implementation.allDependencies
+                        .matching { it.name != 'unspecified' } // Per https://github.com/bintray/gradle-bintray-plugin/tree/335059739ec560a20adaa6f31642a3948d4e838d#maven-publications
+                        .collectEntries { [it.name, it] }
+
                 asNode().dependencies.dependency.findAll {
                     def dep = depMap.get(it.artifactId.text())
                     return dep?.hasProperty('optional') && dep.optional
@@ -136,3 +147,6 @@ install {
         }
     }
 }
+
+apply from: 'https://raw.githubusercontent.com/stkent/JCenter/master/bintray1.7.3.gradle'
+apply from: 'https://raw.githubusercontent.com/stkent/JCenter/master/install1.5.gradle'
