@@ -28,7 +28,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import rx.Observable;
 import rx.Subscriber;
 
-/* default */ final class MapBitmapObservable {
+/* default */ final class MapBitmapObservableUtils {
 
     @MainThread
     /* default */ static Observable<LocatedBitmap> create(@NonNull final MapView mapView) {
@@ -60,7 +60,7 @@ import rx.Subscriber;
         });
     }
 
-    private MapBitmapObservable() {
+    private MapBitmapObservableUtils() {
         // This constructor intentionally left blank.
     }
 

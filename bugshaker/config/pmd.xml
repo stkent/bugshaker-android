@@ -78,12 +78,9 @@
         <exclude name="JUnitTestsShouldIncludeAssert" />
     </rule>
 
-    <rule ref="rulesets/java/logging-jakarta-commons.xml">
-        <exclude name="GuardLogStatement" />
-    </rule>
+    <rule ref="rulesets/java/logging-jakarta-commons.xml" />
 
     <rule ref="rulesets/java/logging-java.xml">
-        <exclude name="GuardLogStatementJavaUtil" />
         <exclude name="LoggerIsNotStaticFinal" />
     </rule>
 

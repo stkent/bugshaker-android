@@ -127,6 +127,7 @@ public final class FeedbackEmailFlowManager {
         }
     };
 
+    @SuppressWarnings("ParameterNumber")
     public FeedbackEmailFlowManager(
             @NonNull final Context applicationContext,
             @NonNull final EmailCapabilitiesProvider emailCapabilitiesProvider,

@@ -47,6 +47,7 @@ public class MapScreenshotProviderTest {
         mapScreenshotProvider = new MapScreenshotProvider(applicationContext, new Logger(false));
     }
 
+    @SuppressWarnings("MethodName")
     @Test
     public void testThat_noExceptionThrown_when_searchingViewHierarchyThatContainsMultipleViews() {
         // Arrange
