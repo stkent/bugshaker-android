@@ -10,13 +10,13 @@ jdk:
 
 # todo: remove once https://github.com/travis-ci/travis-ci/issues/8874 is resolved
 before_install:
-  - yes | sdkmanager "platforms;android-28"
+  - yes | sdkmanager "platforms;android-29"
 
 android:
   components:
     - tools
-    - build-tools-28.0.3
-    - android-28
+    - build-tools-29.0.2
+    - android-29
     - platform-tools
 
     # Additional components
