@@ -18,7 +18,7 @@ package com.github.stkent.bugshaker.flow.email;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public final class GenericEmailIntentProvider {
 

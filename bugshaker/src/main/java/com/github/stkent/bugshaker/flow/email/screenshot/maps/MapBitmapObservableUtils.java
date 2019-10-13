@@ -17,9 +17,9 @@
 package com.github.stkent.bugshaker.flow.email.screenshot.maps;
 
 import android.graphics.Bitmap;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;

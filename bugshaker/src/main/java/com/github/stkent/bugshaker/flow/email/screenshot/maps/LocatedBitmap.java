@@ -17,7 +17,7 @@
 package com.github.stkent.bugshaker.flow.email.screenshot.maps;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /* default */ final class LocatedBitmap {
 

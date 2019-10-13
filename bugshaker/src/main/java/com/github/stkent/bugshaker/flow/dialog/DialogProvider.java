@@ -19,7 +19,7 @@ package com.github.stkent.bugshaker.flow.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public interface DialogProvider {
 

@@ -16,7 +16,7 @@
  */
 package com.github.stkent.bugshaker.flow.email.screenshot;
 
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 
 /**
  * Providing a custom {@code FileProvider} prevents manifest {@code <provider>} name collisions.

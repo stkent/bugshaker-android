@@ -17,7 +17,7 @@
 package com.github.stkent.bugshaker.flow.email;
 
 import android.os.Build;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public final class Environment {
 

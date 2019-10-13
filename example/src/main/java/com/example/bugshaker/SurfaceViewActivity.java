@@ -18,7 +18,7 @@ package com.example.bugshaker;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.SurfaceView;
 
 public class SurfaceViewActivity extends BaseActivity {

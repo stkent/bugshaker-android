@@ -16,7 +16,7 @@
  */
 package com.github.stkent.bugshaker.utilities;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 public final class Logger {

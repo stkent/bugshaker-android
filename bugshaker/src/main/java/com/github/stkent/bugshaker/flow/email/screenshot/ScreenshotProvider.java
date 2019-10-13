@@ -18,7 +18,7 @@ package com.github.stkent.bugshaker.flow.email.screenshot;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import rx.Observable;
 
