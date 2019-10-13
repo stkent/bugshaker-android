@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+
 import androidx.annotation.NonNull;
 
 import com.github.stkent.bugshaker.utilities.Logger;
@@ -52,12 +53,8 @@ public abstract class BaseScreenshotProvider implements ScreenshotProvider {
     public final Observable<Uri> getScreenshotUri(@NonNull final Activity activity) {
         return getScreenshotBitmap(activity)
                 .observeOn(Schedulers.io())
-                .flatMap(new Func1<Bitmap, Observable<Uri>>() {
-                    @Override
-                    public Observable<Uri> call(final Bitmap bitmap) {
-                        return ScreenshotUriObservable.create(applicationContext, bitmap, logger);
-                    }
-                });
+                .flatMap((Func1<Bitmap, Observable<Uri>>) bitmap ->
+                        ScreenshotUriObservable.create(applicationContext, bitmap, logger));
     }
 
     protected final Observable<Bitmap> getNonMapViewsBitmap(@NonNull final Activity activity) {

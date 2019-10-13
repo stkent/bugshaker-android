@@ -23,10 +23,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.github.stkent.bugshaker.flow.email.screenshot.BaseScreenshotProvider;
 import com.github.stkent.bugshaker.utilities.ActivityUtils;
@@ -48,25 +49,25 @@ public final class MapScreenshotProvider extends BaseScreenshotProvider {
 
     private static final Func2<Bitmap, List<LocatedBitmap>, Bitmap> BITMAP_COMBINING_FUNCTION
             = new Func2<Bitmap, List<LocatedBitmap>, Bitmap>() {
-                @Override
-                public Bitmap call(
-                        final Bitmap baseLocatedBitmap,
-                        final List<LocatedBitmap> overlayLocatedBitmaps) {
+        @Override
+        public Bitmap call(
+                final Bitmap baseLocatedBitmap,
+                final List<LocatedBitmap> overlayLocatedBitmaps) {
 
-                    final Canvas canvas = new Canvas(baseLocatedBitmap);
+            final Canvas canvas = new Canvas(baseLocatedBitmap);
 
-                    for (final LocatedBitmap locatedBitmap : overlayLocatedBitmaps) {
-                        final int[] overlayLocation = locatedBitmap.getLocation();
+            for (final LocatedBitmap locatedBitmap : overlayLocatedBitmaps) {
+                final int[] overlayLocation = locatedBitmap.getLocation();
 
-                        canvas.drawBitmap(
-                                locatedBitmap.getBitmap(),
-                                overlayLocation[0],
-                                overlayLocation[1],
-                                MAP_PAINT);
-                    }
+                canvas.drawBitmap(
+                        locatedBitmap.getBitmap(),
+                        overlayLocation[0],
+                        overlayLocation[1],
+                        MAP_PAINT);
+            }
 
-                    return baseLocatedBitmap;
-                }
+            return baseLocatedBitmap;
+        }
     };
 
     private static final Paint MAP_PAINT = new Paint();
@@ -105,18 +106,13 @@ public final class MapScreenshotProvider extends BaseScreenshotProvider {
     private Observable<List<LocatedBitmap>> getMapViewBitmapsObservable(@NonNull final List<MapView> mapViews) {
         return Observable
                 .from(mapViews)
-                .concatMap(new Func1<MapView, Observable<LocatedBitmap>>() {
-                    @Override
-                    public Observable<LocatedBitmap> call(@NonNull final MapView mapView) {
-                        return MapBitmapObservableUtils.create(mapView);
-                    }
-                })
+                .concatMap((Func1<MapView, Observable<LocatedBitmap>>) MapBitmapObservableUtils::create)
                 .toList();
     }
 
     @NonNull
     @VisibleForTesting
-    /* default */ List<MapView> locateMapViewsInHierarchy(@NonNull final View view) {
+        /* default */ List<MapView> locateMapViewsInHierarchy(@NonNull final View view) {
         final List<MapView> result = new ArrayList<>();
 
         final Queue<View> viewsToProcess = new LinkedList<>();

@@ -19,6 +19,7 @@ package com.github.stkent.bugshaker.flow.email.screenshot;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
@@ -31,7 +32,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import rx.Observable;
-import rx.Subscriber;
 
 /* default */ final class ScreenshotUriObservable {
 
@@ -40,50 +40,48 @@ import rx.Subscriber;
     private static final String SCREENSHOT_FILE_NAME = "latest-screenshot.jpg";
     private static final int JPEG_COMPRESSION_QUALITY = 90;
 
-    /* default */ static Observable<Uri> create(
+    /* default */
+    static Observable<Uri> create(
             @NonNull final Context applicationContext,
             @NonNull final Bitmap bitmap,
             @NonNull final Logger logger) {
 
-        return Observable.create(new Observable.OnSubscribe<Uri>() {
-            @Override
-            public void call(final Subscriber<? super Uri> subscriber) {
-                OutputStream fileOutputStream = null;
+        return Observable.create(subscriber -> {
+            OutputStream fileOutputStream = null;
 
-                try {
-                    final File screenshotFile = getScreenshotFile(applicationContext);
+            try {
+                final File screenshotFile = getScreenshotFile(applicationContext);
 
-                    fileOutputStream = new BufferedOutputStream(
-                            new FileOutputStream(screenshotFile));
+                fileOutputStream = new BufferedOutputStream(
+                        new FileOutputStream(screenshotFile));
 
-                    bitmap.compress(
-                            Bitmap.CompressFormat.JPEG,
-                            JPEG_COMPRESSION_QUALITY,
-                            fileOutputStream);
+                bitmap.compress(
+                        Bitmap.CompressFormat.JPEG,
+                        JPEG_COMPRESSION_QUALITY,
+                        fileOutputStream);
 
-                    fileOutputStream.flush();
+                fileOutputStream.flush();
 
-                    logger.d("Screenshot saved to " + screenshotFile.getAbsolutePath());
+                logger.d("Screenshot saved to " + screenshotFile.getAbsolutePath());
 
-                    final Uri result = FileProvider.getUriForFile(
-                            applicationContext,
-                            applicationContext.getPackageName() + AUTHORITY_SUFFIX,
-                            screenshotFile);
+                final Uri result = FileProvider.getUriForFile(
+                        applicationContext,
+                        applicationContext.getPackageName() + AUTHORITY_SUFFIX,
+                        screenshotFile);
 
-                    logger.d("Screenshot Uri created: " + result);
+                logger.d("Screenshot Uri created: " + result);
 
-                    subscriber.onNext(result);
-                    subscriber.onCompleted();
-                } catch (final IOException e) {
-                    subscriber.onError(e);
-                } finally {
-                    if (fileOutputStream != null) {
-                        try {
-                            fileOutputStream.close();
-                        } catch (final IOException ignored) {
-                            // We did our best...
-                            logger.e("Failed to close OutputStream.");
-                        }
+                subscriber.onNext(result);
+                subscriber.onCompleted();
+            } catch (final IOException e) {
+                subscriber.onError(e);
+            } finally {
+                if (fileOutputStream != null) {
+                    try {
+                        fileOutputStream.close();
+                    } catch (final IOException ignored) {
+                        // We did our best...
+                        logger.e("Failed to close OutputStream.");
                     }
                 }
             }
