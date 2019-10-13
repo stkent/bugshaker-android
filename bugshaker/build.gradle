@@ -54,11 +54,11 @@ android {
 
     buildTypes {
         debug { // Required so that dependencies are properly protected when building debug example build type.
-            consumerProguardFiles 'proguard/rxjava.pro', 'proguard/bugshaker.pro', 'proguard/v7support.pro'
+            consumerProguardFiles 'proguard/rxjava.pro', 'proguard/bugshaker.pro', 'proguard/appcompat.pro'
         }
 
         release {
-            consumerProguardFiles 'proguard/rxjava.pro', 'proguard/bugshaker.pro', 'proguard/v7support.pro'
+            consumerProguardFiles 'proguard/rxjava.pro', 'proguard/bugshaker.pro', 'proguard/appcompat.pro'
         }
     }
 

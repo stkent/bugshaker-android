@@ -299,7 +299,7 @@ public final class BugShaker implements ShakeDetector.Listener {
         if (alertDialogType == AlertDialogType.APP_COMPAT) {
             try {
                 Class.forName(
-                        "android.support.v7.app.AlertDialog",
+                        "androidx.appcompat.app.AlertDialog",
                         false,
                         BugShaker.class.getClassLoader());
 
