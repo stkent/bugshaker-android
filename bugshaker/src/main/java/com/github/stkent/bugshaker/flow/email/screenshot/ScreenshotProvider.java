@@ -25,6 +25,6 @@ import rx.Observable;
 public interface ScreenshotProvider {
 
     @NonNull
-    Observable<Uri> getScreenshotUri(@NonNull final Activity activity);
+    Observable<Uri> getScreenshotUri(@NonNull Activity activity);
 
 }

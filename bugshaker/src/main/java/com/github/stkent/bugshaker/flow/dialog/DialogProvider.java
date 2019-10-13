@@ -31,7 +31,7 @@ public interface DialogProvider {
 
     @NonNull
     Dialog getAlertDialog(
-            @NonNull final Activity activity,
-            @NonNull final DialogInterface.OnClickListener reportBugClickListener);
+            @NonNull Activity activity,
+            @NonNull DialogInterface.OnClickListener reportBugClickListener);
 
 }

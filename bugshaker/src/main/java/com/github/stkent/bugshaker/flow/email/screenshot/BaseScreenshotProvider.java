@@ -45,7 +45,7 @@ public abstract class BaseScreenshotProvider implements ScreenshotProvider {
     }
 
     @NonNull
-    public abstract Observable<Bitmap> getScreenshotBitmap(@NonNull final Activity activity);
+    public abstract Observable<Bitmap> getScreenshotBitmap(@NonNull Activity activity);
 
     @NonNull
     @Override

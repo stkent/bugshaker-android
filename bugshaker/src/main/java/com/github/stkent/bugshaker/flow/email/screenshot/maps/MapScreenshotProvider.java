@@ -108,7 +108,7 @@ public final class MapScreenshotProvider extends BaseScreenshotProvider {
                 .concatMap(new Func1<MapView, Observable<LocatedBitmap>>() {
                     @Override
                     public Observable<LocatedBitmap> call(@NonNull final MapView mapView) {
-                        return MapBitmapObservable.create(mapView);
+                        return MapBitmapObservableUtils.create(mapView);
                     }
                 })
                 .toList();
@@ -116,7 +116,7 @@ public final class MapScreenshotProvider extends BaseScreenshotProvider {
 
     @NonNull
     @VisibleForTesting
-    protected List<MapView> locateMapViewsInHierarchy(@NonNull final View view) {
+    /* default */ List<MapView> locateMapViewsInHierarchy(@NonNull final View view) {
         final List<MapView> result = new ArrayList<>();
 
         final Queue<View> viewsToProcess = new LinkedList<>();

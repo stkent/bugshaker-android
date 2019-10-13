@@ -7,7 +7,7 @@ buildscript {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
-        classpath 'com.btkelly:gnag:2.0.0'
+        classpath 'com.btkelly:gnag:2.3.0'
     }
 }
 
@@ -43,12 +43,11 @@ ext {
 }
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.2'
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName libraryVersion
     }
@@ -87,10 +86,6 @@ gnag {
         repoName libraryGitHubRepoName
     }
 
-    checkstyle {
-        reporterConfig project.file('config/checkstyle.xml')
-    }
-
     pmd {
         reporterConfig project.file('config/pmd.xml')
     }
@@ -110,7 +105,7 @@ gnag {
 }
 
 dependencies {
-    def supportLibraryVersion = '27.0.2'
+    def supportLibraryVersion = '28.0.0'
     def seismicVersion = '1.0.2'
 
     api "com.squareup:seismic:$seismicVersion" // TODO: hide this in the next breaking change
