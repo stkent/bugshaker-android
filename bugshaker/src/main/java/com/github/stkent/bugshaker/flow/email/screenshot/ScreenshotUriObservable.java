@@ -40,8 +40,7 @@ import rx.Observable;
     private static final String SCREENSHOT_FILE_NAME = "latest-screenshot.jpg";
     private static final int JPEG_COMPRESSION_QUALITY = 90;
 
-    /* default */
-    static Observable<Uri> create(
+    /* default */ static Observable<Uri> create(
             @NonNull final Context applicationContext,
             @NonNull final Bitmap bitmap,
             @NonNull final Logger logger) {
