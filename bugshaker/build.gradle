@@ -105,7 +105,7 @@ gnag {
 }
 
 dependencies {
-    def supportLibraryVersion = '28.0.0'
+    def appCompatVersion = '1.0.0'
     def seismicVersion = '1.0.2'
 
     api "com.squareup:seismic:$seismicVersion" // TODO: hide this in the next breaking change
@@ -113,7 +113,7 @@ dependencies {
     implementation 'io.reactivex:rxjava:1.3.4'
 
     implementation('com.google.android.gms:play-services-maps:11.4.2') { ext.optional = true }
-    implementation("com.android.support:appcompat-v7:${supportLibraryVersion}") { ext.optional = true }
+    implementation("androidx.appcompat:appcompat:${appCompatVersion}") { ext.optional = true }
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.13.0'

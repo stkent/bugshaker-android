@@ -19,8 +19,8 @@ package com.github.stkent.bugshaker.flow.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 public final class AppCompatDialogProvider implements DialogProvider {
 
