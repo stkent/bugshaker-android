@@ -16,48 +16,32 @@
  */
 package com.github.stkent.bugshaker.flow.email.screenshot.maps;
 
-import android.graphics.Bitmap;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
 
 import rx.Observable;
-import rx.Subscriber;
 
 /* default */ final class MapBitmapObservableUtils {
 
     @MainThread
     /* default */ static Observable<LocatedBitmap> create(@NonNull final MapView mapView) {
-        final int[] locationOnScreen = new int[] {0, 0};
+        final int[] locationOnScreen = new int[]{0, 0};
         mapView.getLocationOnScreen(locationOnScreen);
 
-        return Observable.create(new Observable.OnSubscribe<LocatedBitmap>() {
-            @Override
-            public void call(final Subscriber<? super LocatedBitmap> subscriber) {
-                mapView.getMapAsync(new OnMapReadyCallback() {
-                    @Override
-                    public void onMapReady(@NonNull final GoogleMap googleMap) {
-                        googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-                            @Override
-                            public void onSnapshotReady(@Nullable final Bitmap bitmap) {
-                                if (bitmap != null) {
-                                    subscriber.onNext(
-                                            new LocatedBitmap(bitmap, locationOnScreen));
-
-                                    subscriber.onCompleted();
-                                } else {
-                                    subscriber.onError(new MapSnapshotFailedException());
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-        });
+        return Observable.create(
+                subscriber ->
+                        mapView.getMapAsync(
+                                googleMap ->
+                                        googleMap.snapshot(bitmap -> {
+                                            if (bitmap != null) {
+                                                subscriber.onNext(new LocatedBitmap(bitmap, locationOnScreen));
+                                                subscriber.onCompleted();
+                                            } else {
+                                                subscriber.onError(new MapSnapshotFailedException());
+                                            }
+                                        })));
     }
 
     private MapBitmapObservableUtils() {

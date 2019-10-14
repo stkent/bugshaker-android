@@ -23,15 +23,15 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import androidx.annotation.NonNull;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
 
+import androidx.annotation.NonNull;
+
 import com.github.stkent.bugshaker.utilities.ActivityUtils;
 
 import rx.Observable;
-import rx.Subscriber;
 
 final class NonMapViewsBitmapObservable {
 
@@ -43,21 +43,18 @@ final class NonMapViewsBitmapObservable {
 
     @NonNull
     /* default */ static Observable<Bitmap> create(@NonNull final Activity activity) {
-        return Observable.create(new Observable.OnSubscribe<Bitmap>() {
-            @Override
-            public void call(final Subscriber<? super Bitmap> subscriber) {
-                try {
-                    final Bitmap screenBitmap = getScreenSizedBitmap(activity);
+        return Observable.create(subscriber -> {
+            try {
+                final Bitmap screenBitmap = getScreenSizedBitmap(activity);
 
-                    drawPositionedViewOnScreenBitmap(
-                            ActivityUtils.getRootView(activity), screenBitmap);
+                drawPositionedViewOnScreenBitmap(
+                        ActivityUtils.getRootView(activity), screenBitmap);
 
-                    subscriber.onNext(screenBitmap);
-                    subscriber.onCompleted();
-                } catch (final IllegalArgumentException e) {
-                    final Exception exception = new InvalidActivitySizeException(e);
-                    subscriber.onError(exception);
-                }
+                subscriber.onNext(screenBitmap);
+                subscriber.onCompleted();
+            } catch (final IllegalArgumentException e) {
+                final Exception exception = new InvalidActivitySizeException(e);
+                subscriber.onError(exception);
             }
         });
     }
@@ -72,7 +69,7 @@ final class NonMapViewsBitmapObservable {
         final Canvas viewCanvas = new Canvas(viewBitmap);
         view.draw(viewCanvas);
 
-        final int[] viewLocationOnScreen = new int[] {0, 0};
+        final int[] viewLocationOnScreen = new int[]{0, 0};
         view.getLocationOnScreen(viewLocationOnScreen);
 
         final Canvas screenCanvas = new Canvas(screenBitmap);
