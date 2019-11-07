@@ -38,7 +38,7 @@ https://play.google.com/store/apps/details?id=com.github.stkent.bugshaker
 
 	```groovy
 	dependencies {
-	    compile 'com.github.stkent:bugshaker:{latest-version}'
+	    implementation 'com.github.stkent:bugshaker:{latest-version}'
 	}
 	```
 
