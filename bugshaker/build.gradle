@@ -19,7 +19,7 @@ apply plugin: "gnag"
 
 ext {
     // Library info:
-    libraryVersion = "1.4.1"
+    libraryVersion = "2.0.0"
     libraryName = "bugshaker"
     libraryGroupId = "com.github.stkent"
     libraryArtifactId = "bugshaker"
