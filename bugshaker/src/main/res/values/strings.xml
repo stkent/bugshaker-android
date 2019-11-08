@@ -30,4 +30,5 @@
     <string name="bugshaker_email_body_display_resolution">Display Resolution: %s\n</string>
     <string name="bugshaker_email_body_display_density_actual">Display Density (Actual): %s\n</string>
     <string name="bugshaker_email_body_display_density_bucket">Display Density (Bucket): %s\n</string>
+    <string name="bugshaker_email_default_subject_line">%s Android App Feedback</string>
 </resources>

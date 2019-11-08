@@ -32,8 +32,6 @@ import java.util.TimeZone;
 
 public final class FeedbackEmailIntentProvider {
 
-    private static final String DEFAULT_EMAIL_SUBJECT_LINE_SUFFIX = " Android App Feedback";
-
     @NonNull
     private final Context context;
 
@@ -140,7 +138,10 @@ public final class FeedbackEmailIntentProvider {
             return userProvidedEmailSubjectLine;
         }
 
-        return app.getName() + DEFAULT_EMAIL_SUBJECT_LINE_SUFFIX;
+        return context.getString(
+                R.string.bugshaker_email_default_subject_line,
+                app.getName()
+        );
     }
 
     @NonNull
