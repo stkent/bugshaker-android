@@ -22,6 +22,8 @@ import android.content.DialogInterface;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
+import com.github.stkent.bugshaker.R;
+
 public final class AppCompatDialogProvider implements DialogProvider {
 
     @NonNull
@@ -31,11 +33,11 @@ public final class AppCompatDialogProvider implements DialogProvider {
             @NonNull final DialogInterface.OnClickListener reportBugClickListener) {
 
         return new AlertDialog.Builder(activity)
-                .setTitle(ALERT_DIALOG_TITLE)
-                .setMessage(ALERT_DIALOG_MESSAGE)
-                .setPositiveButton(ALERT_DIALOG_POSITIVE_BUTTON, reportBugClickListener)
-                .setNegativeButton(ALERT_DIALOG_NEGATIVE_BUTTON, null)
-                .setCancelable(ALERT_DIALOG_CANCELABLE)
+                .setTitle(R.string.bugshaker_dialog_title)
+                .setMessage(R.string.bugshaker_dialog_message)
+                .setPositiveButton(R.string.bugshaker_dialog_positive_action, reportBugClickListener)
+                .setNegativeButton(R.string.bugshaker_dialog_negative_action, null)
+                .setCancelable(false)
                 .create();
     }
 
