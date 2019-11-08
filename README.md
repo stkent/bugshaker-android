@@ -36,9 +36,9 @@ https://play.google.com/store/apps/details?id=com.github.stkent.bugshaker
 
 1. Specify BugShaker-Android as a dependency in your build.gradle file:
 
-	```groovy
+	```none
 	dependencies {
-	    implementation 'com.github.stkent:bugshaker:{latest-version}'
+	    implementation("com.github.stkent:bugshaker:{latest-version}")
 	}
 	```
 
