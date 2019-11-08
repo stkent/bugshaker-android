@@ -21,4 +21,13 @@
     <string name="bugshaker_dialog_message">Would you like to report a bug?</string>
     <string name="bugshaker_dialog_positive_action">Report</string>
     <string name="bugshaker_dialog_negative_action">Cancel</string>
+    <string name="bugshaker_email_body_time_stamp">Time Stamp: %s\n</string>
+    <string name="bugshaker_email_body_app_version">App Version: %s\n</string>
+    <string name="bugshaker_email_body_install_source">Install Source: %s\n</string>
+    <string name="bugshaker_email_body_android_version">Android Version: %s\n</string>
+    <string name="bugshaker_email_body_device_manufacturer">Device Manufacturer: %s\n</string>
+    <string name="bugshaker_email_body_device_model">Device Model: %s\n</string>
+    <string name="bugshaker_email_body_display_resolution">Display Resolution: %s\n</string>
+    <string name="bugshaker_email_body_display_density_actual">Display Density (Actual): %s\n</string>
+    <string name="bugshaker_email_body_display_density_bucket">Display Density (Bucket): %s\n</string>
 </resources>

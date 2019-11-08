@@ -19,8 +19,11 @@ package com.github.stkent.bugshaker.flow.email;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.github.stkent.bugshaker.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,6 +33,9 @@ import java.util.TimeZone;
 public final class FeedbackEmailIntentProvider {
 
     private static final String DEFAULT_EMAIL_SUBJECT_LINE_SUFFIX = " Android App Feedback";
+
+    @NonNull
+    private final Context context;
 
     @NonNull
     private final GenericEmailIntentProvider genericEmailIntentProvider;
@@ -47,6 +53,7 @@ public final class FeedbackEmailIntentProvider {
             @NonNull final Context context,
             @NonNull final GenericEmailIntentProvider genericEmailIntentProvider) {
 
+        this.context = context;
         this.genericEmailIntentProvider = genericEmailIntentProvider;
         this.app = new App(context);
         this.environment = new Environment();
@@ -86,22 +93,45 @@ public final class FeedbackEmailIntentProvider {
             @NonNull final Device device) {
 
         final String androidVersionString = String.format(
-                "%s (%s)", environment.getAndroidVersionName(), environment.getAndroidVersionCode());
+                "%s (%s)",
+                environment.getAndroidVersionName(),
+                environment.getAndroidVersionCode()
+        );
 
-        final String appVersionString = String.format("%s (%s)", app.getVersionName(), app.getVersionCode());
+        final String appVersionString = String.format(
+                "%s (%s)",
+                app.getVersionName(),
+                app.getVersionCode()
+        );
 
-        // @formatter:off
-        return    "Time Stamp: " + getCurrentUtcTimeStringForDate(new Date()) + "\n"
-                + "App Version: " + appVersionString + "\n"
-                + "Install Source: " + app.getInstallSource() + "\n"
-                + "Android Version: " + androidVersionString + "\n"
-                + "Device Manufacturer: " + device.getManufacturer() + "\n"
-                + "Device Model: " + device.getModel() + "\n"
-                + "Display Resolution: " + device.getResolution() + "\n"
-                + "Display Density (Actual): " + device.getActualDensity() + "\n"
-                + "Display Density (Bucket) " + device.getDensityBucket() + "\n"
-                + "---------------------\n\n";
-        // @formatter:on
+        return context.getString(
+                R.string.bugshaker_email_body_time_stamp,
+                getCurrentUtcTimeStringForDate(new Date())
+        ) + context.getString(
+                R.string.bugshaker_email_body_app_version,
+                appVersionString
+        ) + context.getString(
+                R.string.bugshaker_email_body_install_source,
+                app.getInstallSource()
+        ) + context.getString(
+                R.string.bugshaker_email_body_android_version,
+                androidVersionString
+        ) + context.getString(
+                R.string.bugshaker_email_body_device_manufacturer,
+                device.getManufacturer()
+        ) + context.getString(
+                R.string.bugshaker_email_body_device_model,
+                device.getModel()
+        ) + context.getString(
+                R.string.bugshaker_email_body_display_resolution,
+                device.getResolution()
+        ) + context.getString(
+                R.string.bugshaker_email_body_display_density_actual,
+                device.getActualDensity()
+        ) + context.getString(
+                R.string.bugshaker_email_body_display_density_bucket,
+                device.getDensityBucket()
+        ) + "---------------------\n\n";
     }
 
     @NonNull
