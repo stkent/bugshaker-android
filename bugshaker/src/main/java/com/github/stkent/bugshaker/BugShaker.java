@@ -21,6 +21,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.hardware.SensorManager;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import com.github.stkent.bugshaker.flow.dialog.AlertDialogType;
 import com.github.stkent.bugshaker.flow.dialog.AppCompatDialogProvider;
@@ -45,8 +47,13 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 public final class BugShaker implements ShakeDetector.Listener {
 
+    private static final AlertDialogType DEFAULT_ALERT_DIALOG_TYPE = AlertDialogType.NATIVE;
+
     private static final String RECONFIGURATION_EXCEPTION_MESSAGE =
-            "Configuration must be completed before calling assemble or start";
+            "Configuration must be completed before calling assemble or start.";
+
+    private static final String DIALOG_CONFIGURATION_CONFLICT_EXCEPTION_MESSAGE =
+            "You may call either setAlertDialogType or setCustomDialogProvider, but not both.";
 
     @SuppressLint("StaticFieldLeak") // we're holding the application context.
     private static BugShaker sharedInstance;
@@ -59,12 +66,17 @@ public final class BugShaker implements ShakeDetector.Listener {
     // Instance configuration:
     private String[] emailAddresses;
     private String emailSubjectLine;
-    private AlertDialogType alertDialogType = AlertDialogType.NATIVE;
-    private boolean ignoreFlagSecure        = false;
-    private boolean loggingEnabled          = false;
+
+    @Nullable
+    private AlertDialogType alertDialogType;
+
+    @Nullable
+    private DialogProvider customDialogProvider;
+    private boolean ignoreFlagSecure = false;
+    private boolean loggingEnabled = false;
 
     // Instance configuration state:
-    private boolean assembled      = false;
+    private boolean assembled = false;
     private boolean startAttempted = false;
 
     private final SimpleActivityLifecycleCallback simpleActivityLifecycleCallback = new SimpleActivityLifecycleCallback() {
@@ -92,6 +104,11 @@ public final class BugShaker implements ShakeDetector.Listener {
         }
 
         return sharedInstance;
+    }
+
+    @VisibleForTesting
+    public static void clearSharedInstance() {
+        sharedInstance = null;
     }
 
     private BugShaker(@NonNull final Application application) {
@@ -147,7 +164,32 @@ public final class BugShaker implements ShakeDetector.Listener {
             throw new IllegalStateException(RECONFIGURATION_EXCEPTION_MESSAGE);
         }
 
+        if (customDialogProvider != null) {
+            throw new IllegalStateException(DIALOG_CONFIGURATION_CONFLICT_EXCEPTION_MESSAGE);
+        }
+
         this.alertDialogType = alertDialogType;
+        return this;
+    }
+
+    /**
+     * (Optional) Sets a custom dialog provider. This provider will be used to build a dialog each time a shake is
+     * detected. This method CANNOT be called after calling <code>assemble</code> or <code>start</code>.
+     *
+     * @param dialogProvider the dialog provider to use
+     * @return the current <code>BugShaker</code> instance (to allow for method chaining)
+     */
+    @NonNull
+    public BugShaker setCustomDialogProvider(@NonNull final DialogProvider dialogProvider) {
+        if (assembled || startAttempted) {
+            throw new IllegalStateException(RECONFIGURATION_EXCEPTION_MESSAGE);
+        }
+
+        if (alertDialogType != null) {
+            throw new IllegalStateException(DIALOG_CONFIGURATION_CONFLICT_EXCEPTION_MESSAGE);
+        }
+
+        customDialogProvider = dialogProvider;
         return this;
     }
 
@@ -296,6 +338,17 @@ public final class BugShaker implements ShakeDetector.Listener {
 
     @NonNull
     private DialogProvider getAlertDialogProvider() {
+        if (customDialogProvider != null) {
+            return customDialogProvider;
+        }
+
+        final AlertDialogType alertDialogType;
+        if (this.alertDialogType != null) {
+            alertDialogType = this.alertDialogType;
+        } else {
+            alertDialogType = DEFAULT_ALERT_DIALOG_TYPE;
+        }
+
         if (alertDialogType == AlertDialogType.APP_COMPAT) {
             try {
                 Class.forName(

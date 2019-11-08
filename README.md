@@ -64,6 +64,13 @@ https://play.google.com/store/apps/details?id=com.github.stkent.bugshaker
 
 It is recommended that logging always be disabled in production builds.
 
+# Advanced Usage
+
+If you would like to customize the alert dialog presented to users when a shake is detected, update your `BugShaker` configuration as follows:
+
+- Remove any `setAlertDialogType` calls;
+- Add a call to `setCustomDialogProvider`, passing in your own `DialogProvider` instance.
+
 # License
 
     Copyright 2016 Stuart Kent

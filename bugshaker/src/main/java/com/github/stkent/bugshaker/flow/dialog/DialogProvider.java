@@ -23,6 +23,12 @@ import androidx.annotation.NonNull;
 
 public interface DialogProvider {
 
+    /**
+     * @param activity the Activity that will present this dialog
+     * @param reportBugClickListener a listener that implementations must invoke when the user confirms that they would
+     *                               like to submit a bug report
+     * @return a fully configured AlertDialog instance.
+     */
     @NonNull
     Dialog getAlertDialog(
             @NonNull Activity activity,
