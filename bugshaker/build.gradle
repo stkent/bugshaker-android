@@ -4,42 +4,42 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
-        classpath 'com.btkelly:gnag:2.3.0'
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.17.0"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
+        classpath "com.github.dcendents:android-maven-gradle-plugin:2.0"
+        classpath "com.btkelly:gnag:2.3.0"
     }
 }
 
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.ben-manes.versions'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'gnag'
+apply plugin: "com.android.library"
+apply plugin: "com.github.ben-manes.versions"
+apply plugin: "com.jfrog.bintray"
+apply plugin: "com.github.dcendents.android-maven"
+apply plugin: "gnag"
 
 ext {
     // Library info:
-    libraryVersion = '1.4.1'
-    libraryName = 'bugshaker'
-    libraryGroupId = 'com.github.stkent'
-    libraryArtifactId = 'bugshaker'
-    libraryDescription = 'Shake to send a bug report!'
-    libraryInceptionYear = '2016'
-    libraryGitHubRepoName = 'stkent/bugshaker-android'
+    libraryVersion = "2.0.0"
+    libraryName = "bugshaker"
+    libraryGroupId = "com.github.stkent"
+    libraryArtifactId = "bugshaker"
+    libraryDescription = "Shake to send a bug report!"
+    libraryInceptionYear = "2016"
+    libraryGitHubRepoName = "stkent/bugshaker-android"
     libraryGitHubUrl = "https://github.com/${libraryGitHubRepoName}"
     libraryIssueTrackerUrl = "${libraryGitHubUrl}/issues"
     libraryWebsiteUrl = libraryGitHubUrl
-    libraryLabels = ['android']
-    libraryLicenseName = 'Apache License Version 2.0'
-    libraryLicenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    libraryLabels = ["android"]
+    libraryLicenseName = "Apache License Version 2.0"
+    libraryLicenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
 
     // Developer info:
-    developerId = 'stkent'
-    developerName = 'Stuart Kent'
-    developerEmail = 'skent.dev@gmail.com'
+    developerId = "stkent"
+    developerName = "Stuart Kent"
+    developerEmail = "skent.dev@gmail.com"
 
     // Bintray categorization information:
-    bintrayRepo = 'android-libraries'
+    bintrayRepo = "android-libraries"
 }
 
 android {
@@ -59,11 +59,11 @@ android {
 
     buildTypes {
         debug { // Required so that dependencies are properly protected when building debug example build type.
-            consumerProguardFiles 'proguard/rxjava.pro', 'proguard/bugshaker.pro', 'proguard/appcompat.pro'
+            consumerProguardFiles "proguard/rxjava.pro", "proguard/bugshaker.pro", "proguard/appcompat.pro"
         }
 
         release {
-            consumerProguardFiles 'proguard/rxjava.pro', 'proguard/bugshaker.pro', 'proguard/appcompat.pro'
+            consumerProguardFiles "proguard/rxjava.pro", "proguard/bugshaker.pro", "proguard/appcompat.pro"
         }
     }
 
@@ -78,12 +78,6 @@ android {
     }
 }
 
-//configurations {
-//    releaseImplementation {
-//        canBeConsumed = true
-//    }
-//}
-
 gnag {
     failOnError true
 
@@ -92,11 +86,11 @@ gnag {
     }
 
     pmd {
-        reporterConfig project.file('config/pmd.xml')
+        reporterConfig project.file("config/pmd.xml")
     }
 
     findbugs {
-        reporterConfig project.file('config/findbugs.xml')
+        reporterConfig project.file("config/findbugs.xml")
     }
 
     ktlint {
@@ -105,23 +99,20 @@ gnag {
 
     androidLint {
         enabled true
-        severity 'Error'
+        severity "Error"
     }
 }
 
 dependencies {
-    def appCompatVersion = '1.1.0'
-    def seismicVersion = '1.0.2'
+    api("com.squareup:seismic:1.0.2")
+    implementation("io.reactivex:rxandroid:1.2.1")
+    implementation("io.reactivex:rxjava:1.3.4")
 
-    api "com.squareup:seismic:$seismicVersion" // TODO: hide this in the next breaking change
-    implementation 'io.reactivex:rxandroid:1.2.1'
-    implementation 'io.reactivex:rxjava:1.3.4'
+    implementation("com.google.android.gms:play-services-maps:17.0.0") { ext.optional = true }
+    implementation("androidx.appcompat:appcompat:1.1.0") { ext.optional = true }
 
-    implementation('com.google.android.gms:play-services-maps:11.4.2') { ext.optional = true }
-    implementation("androidx.appcompat:appcompat:${appCompatVersion}") { ext.optional = true }
-
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.13.0'
+    testImplementation("junit:junit:4.12")
+    testImplementation("org.mockito:mockito-core:2.13.0")
 }
 
 install {
@@ -130,17 +121,17 @@ install {
             // See comment by Endre Stølsvik on https://issues.gradle.org/browse/GRADLE-1749.
             withXml {
                 def depMap = configurations.implementation.allDependencies
-                        .matching { it.name != 'unspecified' } // Per https://github.com/bintray/gradle-bintray-plugin/tree/335059739ec560a20adaa6f31642a3948d4e838d#maven-publications
+                        .matching { it.name != "unspecified" } // Per https://github.com/bintray/gradle-bintray-plugin/tree/335059739ec560a20adaa6f31642a3948d4e838d#maven-publications
                         .collectEntries { [it.name, it] }
 
                 asNode().dependencies.dependency.findAll {
                     def dep = depMap.get(it.artifactId.text())
-                    return dep?.hasProperty('optional') && dep.optional
+                    return dep?.hasProperty("optional") && dep.optional
                 }.each {
                     if (it.optional) {
-                        it.optional.value = 'true'
+                        it.optional.value = "true"
                     } else {
-                        it.appendNode('optional', 'true')
+                        it.appendNode("optional", "true")
                     }
                 }
             }
@@ -148,5 +139,5 @@ install {
     }
 }
 
-apply from: 'https://raw.githubusercontent.com/stkent/JCenter/master/bintray1.7.3.gradle'
-apply from: 'https://raw.githubusercontent.com/stkent/JCenter/master/install1.5.gradle'
+apply from: "https://raw.githubusercontent.com/stkent/JCenter/master/bintray1.7.3.gradle"
+apply from: "https://raw.githubusercontent.com/stkent/JCenter/master/install1.5.gradle"

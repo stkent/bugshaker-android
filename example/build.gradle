@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: "com.android.application"
 
 android {
     compileOptions {
@@ -12,14 +12,14 @@ android {
         applicationId "com.github.stkent.bugshaker"
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 6
-        versionName "1.4.1"
+        versionCode 7
+        versionName "2.0.0"
     }
 
     signingConfigs {
         release {
-            String releaseKeyStoreFileName = System.properties['user.home'] + "/.bugshaker/bugshaker.jks"
-            String releasePropFileName = System.properties['user.home'] + "/.bugshaker/bugshaker.properties"
+            String releaseKeyStoreFileName = System.properties["user.home"] + "/.bugshaker/bugshaker.jks"
+            String releasePropFileName = System.properties["user.home"] + "/.bugshaker/bugshaker.properties"
 
             if (file(releaseKeyStoreFileName).exists() && file(releasePropFileName).exists()) {
                 Properties releaseProps = new Properties()
@@ -36,12 +36,12 @@ android {
     buildTypes {
         debug {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt')
+            proguardFiles getDefaultProguardFile("proguard-android.txt")
         }
 
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt')
+            proguardFiles getDefaultProguardFile("proguard-android.txt")
 
             signingConfig signingConfigs.release
         }
@@ -49,8 +49,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.gms:play-services-maps:11.4.2'
-    implementation project(':bugshaker')
-//    implementation project(path: ':bugshaker', configuration: 'releaseImplementation')
+    implementation("androidx.appcompat:appcompat:1.1.0")
+    implementation("com.google.android.gms:play-services-maps:17.0.0")
+    implementation project(":bugshaker")
 }

@@ -23,12 +23,12 @@ import androidx.annotation.NonNull;
 
 public interface DialogProvider {
 
-    String  ALERT_DIALOG_TITLE           = "Shake detected!";
-    String  ALERT_DIALOG_MESSAGE         = "Would you like to report a bug?";
-    String  ALERT_DIALOG_POSITIVE_BUTTON = "Report";
-    String  ALERT_DIALOG_NEGATIVE_BUTTON = "Cancel";
-    boolean ALERT_DIALOG_CANCELABLE      = false;
-
+    /**
+     * @param activity the Activity that will present this dialog
+     * @param reportBugClickListener a listener that implementations must invoke when the user confirms that they would
+     *                               like to submit a bug report
+     * @return a fully configured AlertDialog instance.
+     */
     @NonNull
     Dialog getAlertDialog(
             @NonNull Activity activity,

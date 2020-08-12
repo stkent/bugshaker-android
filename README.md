@@ -26,7 +26,9 @@ This library is similar to [Telescope](https://github.com/mattprecious/telescope
 
 ## Screenshots
 
-<img src="https://raw.githubusercontent.com/stkent/bugshaker-android/master/assets/dialog.png" width=420 /> <img src="https://raw.githubusercontent.com/stkent/bugshaker-android/master/assets/compose.png" width=420 />
+|Prompt|Email|
+|------|-----|
+|<img src="https://raw.githubusercontent.com/stkent/bugshaker-android/master/assets/dialog.png" />|<img src="https://raw.githubusercontent.com/stkent/bugshaker-android/master/assets/compose.png" />
 
 ## Play Store Demo App
 
@@ -36,9 +38,9 @@ https://play.google.com/store/apps/details?id=com.github.stkent.bugshaker
 
 1. Specify BugShaker-Android as a dependency in your build.gradle file:
 
-	```groovy
+	```none
 	dependencies {
-	    implementation 'com.github.stkent:bugshaker:{latest-version}'
+	    implementation("com.github.stkent:bugshaker:{latest-version}")
 	}
 	```
 
@@ -63,6 +65,13 @@ https://play.google.com/store/apps/details?id=com.github.stkent.bugshaker
 	```
 
 It is recommended that logging always be disabled in production builds.
+
+# Advanced Usage
+
+If you would like to customize the alert dialog presented to users when a shake is detected, update your `BugShaker` configuration as follows:
+
+- Remove any `setAlertDialogType` calls;
+- Add a call to `setCustomDialogProvider`, passing in your own `DialogProvider` instance.
 
 # License
 

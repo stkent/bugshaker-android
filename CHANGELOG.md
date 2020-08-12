@@ -1,5 +1,17 @@
 # Change Log
 
+## v2.0.0
+
+_2019-11-08_
+
+*Breaking changes.* Please review carefully:
+
+- [Breaking] Migrated to AndroidX and Java 8. Your app must be configured to use both to adopt BugShaker 2.X. Fixes and improvements to 2.X will not be backported to 1.X.
+- [Added] Ability to supply a custom dialog provider for complete control over shake detected dialog.
+- [Internal] Updated targetSdk to 29.
+- [Internal] Moved all default strings to resources so that future contributors can add translations.
+- [Internal] Significantly updated com.google.android.gms:play-services-maps (11.X -> 17.X).
+
 ## v1.4.1
 
 _2017-12-18_

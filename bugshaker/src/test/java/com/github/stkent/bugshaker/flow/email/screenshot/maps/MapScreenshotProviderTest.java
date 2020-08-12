@@ -26,12 +26,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MapScreenshotProviderTest {
@@ -43,7 +42,6 @@ public class MapScreenshotProviderTest {
 
     @Before
     public void setUp() {
-        initMocks(this);
         mapScreenshotProvider = new MapScreenshotProvider(applicationContext, new Logger(false));
     }
 
