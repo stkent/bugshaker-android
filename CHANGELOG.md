@@ -2,7 +2,7 @@
 
 ## v2.0.0
 
-_2019-11-08_
+_2021-01-13_
 
 *Breaking changes.* Please review carefully:
 
